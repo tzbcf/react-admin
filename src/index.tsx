@@ -1,6 +1,17 @@
+/*
+ * FileName : index.tsx
+ * ProjectName : myapp
+ * Author : terrorblade
+ * Created Date: 2020-03-17 15:37:15
+ * Description : 
+ * -----
+ * Last Modified: 2020-03-17 15:38:40
+ * Modified By : 
+ * -----
+ * Copyright (c) 2019 芒果动听 Corporation. All rights reserved.
+ */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
