@@ -1,0 +1,33 @@
+/*
+ * FileName : launch.json
+ * ProjectName : myapp
+ * Author : terrorblade
+ * Created Date: 2020-03-17 16:58:02
+ * Description : 
+ * -----
+ * Last Modified: 2020-03-17 16:58:50
+ * Modified By : 
+ * -----
+ * Copyright (c) 2019 芒果动听 Corporation. All rights reserved.
+ */
+
+
+
+
+
+
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome against localhost",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}"
+        }
+    ]
+}

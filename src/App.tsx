@@ -1,27 +1,35 @@
+/*
+ * FileName : App.tsx
+ * ProjectName : myapp
+ * Author : terrorblade
+ * Created Date: 2020-04-10 11:12:56
+ * Description : 
+ * -----
+ * Last Modified: 2020-04-10 11:26:13
+ * Modified By : 
+ * -----
+ * Copyright (c) 2019 芒果动听 Corporation. All rights reserved.
+ */
+
 import React from 'react';
-import logo from './logo.svg';
+import Routers from './config/router';
+import {Switch, BrowserRouter} from 'react-router-dom';
+import RouterWithSubRouter from './lib/routerWithSubRouters';
+import { Provider } from 'react-redux';
+import {store} from './store';
 import './App.css';
-import app from './app.module.scss';
-import index from './app.module.less';
-function App() {
-  console.log("------", app)
+window.store = store;
+const App: React.FC = () => {
   return (
-    <div className={app.App}>
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Switch>
+          {
+            RouterWithSubRouter(Routers)
+          }
+        </Switch>
+      </BrowserRouter>
+    </Provider>
   );
 }
 

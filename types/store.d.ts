@@ -1,21 +1,15 @@
-/*
- * FileName : app.module.less
+/**
+ * FileName : store.d.ts
  * ProjectName : myapp
  * Author : terrorblade
- * Created Date: 2020-04-10 10:20:43
+ * Created Date: 2020-04-09 11:15:16
  * Description : 
  * -----
- * Last Modified: 2020-04-10 10:21:02
+ * Last Modified: 2020-04-09 11:15:30
  * Modified By : 
  * -----
  * Copyright (c) 2019 芒果动听 Corporation. All rights reserved.
  */
 
 
-
-
-
-
-.App{
-    text-align: left;
-}
+declare var store: any;
