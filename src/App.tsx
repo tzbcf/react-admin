@@ -1,10 +1,12 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-
+import app from './app.module.scss';
+import index from './app.module.less';
 function App() {
+  console.log("------", app)
   return (
-    <div className="App">
+    <div className={app.App}>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
