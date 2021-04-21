@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App';
 import 'antd/dist/antd.less';
-import { BrowserRouter} from "react-router-dom";
-import {renderRoutes, routerConfig} from './router/router';
+import './index.css';
+
 ReactDOM.render(
   <BrowserRouter>
-  {renderRoutes(routerConfig)}
+      <App />
   </BrowserRouter>,
   document.getElementById('root')
 );

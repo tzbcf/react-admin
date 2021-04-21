@@ -1,27 +1,19 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import Home from './layout/home';
+import Login from './layout/login';
+import Nofound from './layout/nofound';
 import './App.css';
-import {Button} from 'antd';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-      <Button > 我是个测试按钮 </Button>
-    </div>
+    <Switch>
+        <Route exact path='/' render={() => <Redirect to='/home/index' push />} />
+        <Route path='/home' component={Home} />
+        <Route path='/404' component={Nofound} />
+        <Route path='/login' component={Login} />
+        <Route component={Nofound} />
+    </Switch>
   );
 }
 

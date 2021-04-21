@@ -1,69 +1,35 @@
 import React from 'react';
-import Login from '../layout/login';
-import NoFound from '../layout/nofound';
-import home from '../layout/home';
-import List from '../pages/list';
-import Details from '../pages/details';
-import { Route,Switch } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import AllCompontent from '../pages';
+import menuConfig, {RouterConfigBase, RouterConfig } from './menuRouter';
+import RouterWrap from './routerWrap';
 
-export interface RouterConfig {
-    key: string;
-    path:string;
-    component: React.FC<any>;
-    exact?: boolean;
-    strict?: boolean;
-    children?: RouterConfig[];
-};
-
-const renderRoutes = (routes:RouterConfig[], extraProps = {}, switchProps = {}) => routes ? (
-  <Switch {...switchProps}>
-    {routes.map((route, i) => (
-      <Route
-        key={route.key || i}
-        path={route.path}
-        exact={route.exact}
-        strict={route.strict}
-        render={(props: any) => <route.component {...props} {...extraProps} route={route} />}
-      />
-    ))}
-  </Switch>
-) : null
-
-const routerConfig: RouterConfig[] = [
-    {
-        key: 'page_login',
-        path: '/login',
-        exact: true,
-        component: Login
-    },
-    {
-      key: 'page_layout',
-      path: '/home',
-      component: home,
-      children: [
-        {
-          key: 'page_layout_list',
-          path: '/home/list',
-          exact: true,
-          component: List
-        },
-        {
-          key: 'page_layout_details',
-          path: '/home/details',
-          exact: true,
-          component: Details
-        }
-      ]
-    },
-    {
-      key: 'page_noFound',
-      path: '/404',
-      exact: true,
-      component: NoFound
-    },
-];
-
-export {
-    renderRoutes,
-    routerConfig
+const Routers: React.FC = () => {
+  const Router = (v: RouterConfigBase) => {
+    const Component = v.component && AllCompontent[v.component];
+    return (<Route
+      key={v.key || v.route}
+      path={v.route}
+      render={(restProps: any) => {
+        console.log('--------0', restProps)
+        return (<RouterWrap {...{restProps, Com: Component, route: v}}  />)
+      } }
+    ></Route >)
+  }
+  const subRoute = (v: RouterConfig): any =>
+    v.subs && v.subs.map((subR: RouterConfig) => (subR.subs ? subRoute(subR) : Router(subR)));
+  const CreateRouter = (v: RouterConfig) => {
+    return v.component ? Router(v) : subRoute(v);
+  }
+  const RouterList = (v: string) => menuConfig[v].map(CreateRouter);
+  return (
+    <Switch>
+      {
+        Object.keys(menuConfig).map((v: string)=>RouterList(v))
+      }
+      <Route render={() => <Redirect to='/404' />} />
+    </Switch>
+  )
 }
+
+export default Routers;
