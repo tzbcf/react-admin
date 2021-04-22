@@ -4,11 +4,8 @@ import queryString from 'query-string';
 
 const RouteWrapper = (props: any) => {
     let { Com, route, restProps } = props;
-    console.log('--------1', restProps)
-    console.log('--------2', Com)
-    console.log('--------3', route)
 
-    /** useMemo 缓存query，避免每次生成生的query */
+    /** useMemo 缓存query，避免每次生成新的query */
     const queryMemo = useMemo(() => {
         const queryReg = /\?\S*/g;
         const matchQuery = (reg: RegExp) => {

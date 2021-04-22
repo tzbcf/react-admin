@@ -11,7 +11,6 @@ const Routers: React.FC = () => {
       key={v.key || v.route}
       path={v.route}
       render={(restProps: any) => {
-        console.log('--------0', restProps)
         return (<RouterWrap {...{restProps, Com: Component, route: v}}  />)
       } }
     ></Route >)

@@ -1,44 +1,49 @@
 import React, { useState } from 'react';
-import MenuConfig from '../../../router/menuRouter';
+import MenuConfig, { RouterConfig } from '../../../router/menuRouter';
 // import {RouterConfig } from '../../../router/router';
-import { Menu, Button } from 'antd';
-// const { SubMenu } = Menu;
+import { Menu, Button, Layout } from 'antd';
+import  Icons  from '../../../components/common/icon';
+const { Sider } = Layout;
+const { SubMenu } = Menu;
 
-// const MenuDom = () => {
-//   return (<>
-//     {
-//       menuList.map(v => {
-//         console.log('1-----', v)
-//         if (v.subMenu && v.children) {
-//           return <SubMenu key={v.key} title={v.name}>{ MenuDom (v.children)}</SubMenu>
-//         }
-//         return <Menu key={v.key} >{ v.name}</Menu>
-//       })
-//     }
-//   </>)
-// }
+const MenuDom = (menuList: RouterConfig[]) => {
+  return (<>
+    {
+      menuList.map((v: RouterConfig) => {
+        console.log('1-----', v)
+        if (!v.isNoSub && v.subs && v.subs.length) {
+          return <SubMenu key={v.key} title={v.title} icon={React.createElement(Icons[v.icon])}>{ MenuDom (v.subs)}</SubMenu>
+        }
+        return <Menu.Item key={v.key} icon={React.createElement(Icons[v.icon])} >{ v.title}</Menu.Item>
+      })
+    }
+  </>)
+}
 
-const MenuTabs = () => {
+const MenuTabs = (props: { menu: any }) => {
   const [collapsed, setcollapsed] = useState(false);
-  console.log('a-----',MenuConfig )
+  console.log('a-----', props);
   const toggleCollapsed = () => {
     setcollapsed(!collapsed);
-  }
+  };
   return (
-    <div>
-      <Button type='primary' onClick={toggleCollapsed}></Button>
-    <Menu
-        mode='inline'
-        style={{width: '256px'}}
-    inlineCollapsed={collapsed}
+    <Sider
+      style={{ width: collapsed ? '200px' : '80px' }}
+      collapsed={collapsed}
     >
-      {/* {
-        MenuDom(MenuConfig)
-      } */}
-    </Menu>
-    </div>
-
+      <Button type='primary' onClick={toggleCollapsed}>
+        测试
+      </Button>
+      <Menu
+        mode='inline'
+        inlineCollapsed={collapsed}
+      >
+        {
+        MenuDom(MenuConfig.menus)
+      }
+      </Menu>
+    </Sider>
   );
-}
+};
 
 export default MenuTabs;

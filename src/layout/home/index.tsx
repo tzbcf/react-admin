@@ -1,26 +1,26 @@
 import React from 'react';
 import Routers from '../../router/router';
-// import { Switch, Route } from 'react-router-dom';
-// import MainIndex from '../../pages/main';
+import MenuConfig from '../../router/menuRouter';
+import Menu from './menu';
+import { Layout } from 'antd';
+
+const { Header, Footer, Sider, Content } = Layout;
 
 const Main: React.FC = () => {
-    // const {route} = props;
-    // console.log('-----', Routers)
-    return (
-        <>
-        <div>我是主页</div>
-        <Routers />
-            {/* <Switch>
-      <Route
-        key='main'
-        path='/home/index'
-        exact={true}
-                >
-        <MainIndex />
-      </Route>
-    </Switch> */}
-        </>
-    )
-}
+  return (
+    <Layout>
+      <Sider>
+        <Menu menu={MenuConfig} />
+      </Sider>
+      <Layout>
+        <Header>我是头部</Header>
+        <Content>
+          <Routers />
+        </Content>
+        <Footer>我是底部</Footer>
+      </Layout>
+    </Layout>
+  );
+};
 
 export default Main;

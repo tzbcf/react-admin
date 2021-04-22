@@ -1,17 +1,17 @@
 export interface RouterConfigBase {
   key: string;
   title: string;
-  icon?: string;
+  icon: string;
   component?: string;
   query?: string;
   requireAuth?: string;
   route?: string;
   login?: boolean;
+  isNoSub?: boolean;
 }
 
 export interface RouterConfig extends RouterConfigBase{
   subs?: RouterConfigBase[];
-  isSub?: boolean;
 }
 
 const menuConfig: {
@@ -45,6 +45,7 @@ const menuConfig: {
           route: '/home/table/detail',
           title: '详情',
           icon: 'CopyOutlined',
+          isNoSub: true,
           component: 'Table_Detail'
         }
       ]

@@ -4,7 +4,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import 'antd/dist/antd.less';
-import './index.css';
+import './utils/index.less';
 
 ReactDOM.render(
   <BrowserRouter>
