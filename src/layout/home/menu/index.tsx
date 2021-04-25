@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { connect } from 'react-redux'
 import MenuConfig, { RouterConfig } from '../../../router/menuRouter';
 // import {RouterConfig } from '../../../router/router';
-import { Menu, Button, Layout } from 'antd';
-import  Icons  from '../../../components/common/icon';
+import { Menu, Layout } from 'antd';
+import Icons from '../../../components/common/icon';
+import { COLLAPSED_TOGGLE } from '../../../store/common/collapsed';
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
@@ -10,7 +12,6 @@ const MenuDom = (menuList: RouterConfig[]) => {
   return (<>
     {
       menuList.map((v: RouterConfig) => {
-        console.log('1-----', v)
         if (!v.isNoSub && v.subs && v.subs.length) {
           return <SubMenu key={v.key} title={v.title} icon={React.createElement(Icons[v.icon])}>{ MenuDom (v.subs)}</SubMenu>
         }
@@ -20,23 +21,24 @@ const MenuDom = (menuList: RouterConfig[]) => {
   </>)
 }
 
-const MenuTabs = (props: { menu: any }) => {
-  const [collapsed, setcollapsed] = useState(false);
-  console.log('a-----', props);
-  const toggleCollapsed = () => {
-    setcollapsed(!collapsed);
-  };
+const MenuTabs = (props: any) => {
+  console.log('-------MenuTabs', props)
+  setTimeout(() => {
+  console.log('-------MenuTabsssss', props.dispatch({type: COLLAPSED_TOGGLE, value:true}))
+  }, 3000)
+
+  // const [collapsed, setcollapsed] = useState(false);
+  // const toggleCollapsed = () => {
+  //   setcollapsed(!collapsed);
+  // };
   return (
     <Sider
-      style={{ width: collapsed ? '200px' : '80px' }}
-      collapsed={collapsed}
+      style={{ width: props.collapsed ? '200px' : '80px' }}
+      collapsed={props.collapsed}
     >
-      <Button type='primary' onClick={toggleCollapsed}>
-        测试
-      </Button>
       <Menu
         mode='inline'
-        inlineCollapsed={collapsed}
+        inlineCollapsed={props.collapsed}
       >
         {
         MenuDom(MenuConfig.menus)
@@ -46,4 +48,9 @@ const MenuTabs = (props: { menu: any }) => {
   );
 };
 
-export default MenuTabs;
+export default connect((state: any) => {
+  console.log('----connect-',state )
+  return {
+    collapsed: state.toggleCollapsed.collapsed
+  }
+})(MenuTabs);

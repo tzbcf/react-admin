@@ -1,6 +1,6 @@
 import React from 'react';
 import Routers from '../../router/router';
-import MenuConfig from '../../router/menuRouter';
+// import MenuConfig from '../../router/menuRouter';
 import Menu from './menu';
 import { Layout } from 'antd';
 
@@ -10,7 +10,7 @@ const Main: React.FC = () => {
   return (
     <Layout>
       <Sider>
-        <Menu menu={MenuConfig} />
+        <Menu />
       </Sider>
       <Layout>
         <Header>我是头部</Header>
