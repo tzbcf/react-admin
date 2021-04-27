@@ -1,10 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux'
-import MenuConfig, { RouterConfig } from '../../../router/menuRouter';
+import { connect } from 'react-redux';
+import MenuConfig, { RouterConfig } from 'src/router/menuRouter';
 // import {RouterConfig } from '../../../router/router';
 import { Menu, Layout } from 'antd';
-import Icons from '../../../components/common/icon';
-import { COLLAPSED_TOGGLE } from '../../../store/common/collapsed';
+import Icons from 'src/components/common/icon';
+import { INITSTATE } from 'src/store/common/collapsed';
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
@@ -21,24 +21,17 @@ const MenuDom = (menuList: RouterConfig[]) => {
   </>)
 }
 
-const MenuTabs = (props: any) => {
-  console.log('-------MenuTabs', props)
-  setTimeout(() => {
-  console.log('-------MenuTabsssss', props.dispatch({type: COLLAPSED_TOGGLE, value:true}))
-  }, 3000)
+interface Props extends INITSTATE {}
 
-  // const [collapsed, setcollapsed] = useState(false);
-  // const toggleCollapsed = () => {
-  //   setcollapsed(!collapsed);
-  // };
+const MenuTabs: React.FC<Props> = (props) => {
+  const { collapsed } = props;
   return (
     <Sider
       style={{ width: props.collapsed ? '200px' : '80px' }}
-      collapsed={props.collapsed}
+      collapsed={collapsed}
     >
       <Menu
         mode='inline'
-        inlineCollapsed={props.collapsed}
       >
         {
         MenuDom(MenuConfig.menus)
@@ -49,7 +42,6 @@ const MenuTabs = (props: any) => {
 };
 
 export default connect((state: any) => {
-  console.log('----connect-',state )
   return {
     collapsed: state.toggleCollapsed.collapsed
   }

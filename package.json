@@ -52,6 +52,8 @@
   "devDependencies": {
     "@craco/craco": "^6.1.1",
     "craco-antd": "^1.19.0",
-    "query-string": "^7.0.0"
+    "craco-less": "^1.17.1",
+    "query-string": "^7.0.0",
+    "simple-progress-webpack-plugin": "^1.1.2"
   }
 }

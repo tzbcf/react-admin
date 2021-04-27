@@ -2,27 +2,18 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>React-admin</title>
   </head>
   <body>
     <link rel="stylesheet/less" type="text/css" href="%PUBLIC_URL%/theme.less" />
     <script src="%PUBLIC_URL%/less.min.js"></script>
     <script>
-      const primaryColor = localStorage.getItem('@primary-color');
-      console.log('---33--',primaryColor)
-      primaryColor && window.less.modifyVars({
-          '@primary-color': primaryColor,
-        }).then((res)=>console.log('a------', res))
-        .catch((err)=> console.log('err-----',err));
+      // const primaryColor = localStorage.getItem('@primary-color');
+      // primaryColor && window.less.modifyVars({
+      //     '@primary-color': primaryColor,
+      //   }).then((res)=>console.info('color change suceess', res))
+      //   .catch((err)=> console.warn('color changge error',err));
     </script>
     <div id="root"></div>
   </body>

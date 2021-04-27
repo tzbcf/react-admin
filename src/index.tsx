@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import App from './App';
 import mergeReucer from './store';
 import 'antd/dist/antd.less';
-import './utils/index.less';
+import 'src/utils/style/index.less';
 
 const store = createStore(mergeReucer);
 store.subscribe(() =>

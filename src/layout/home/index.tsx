@@ -1,23 +1,27 @@
 import React from 'react';
-import Routers from '../../router/router';
+import Routers from 'src/router/router';
 // import MenuConfig from '../../router/menuRouter';
-import Menu from './menu';
+import Menu from 'src/components/menu';
+import HeaderDom from 'src/components/header';
+import FooterDom from 'src/components/footer';
 import { Layout } from 'antd';
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Footer, Content } = Layout;
 
 const Main: React.FC = () => {
   return (
     <Layout>
-      <Sider>
-        <Menu />
-      </Sider>
+      <Menu />
       <Layout>
-        <Header>我是头部</Header>
+        <Header>
+          <HeaderDom />
+        </Header>
         <Content>
           <Routers />
         </Content>
-        <Footer>我是底部</Footer>
+        <Footer>
+          <FooterDom />
+        </Footer>
       </Layout>
     </Layout>
   );
