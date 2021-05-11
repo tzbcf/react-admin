@@ -4,27 +4,38 @@ import MenuConfig, { RouterConfig } from 'src/router/menuRouter';
 // import {RouterConfig } from '../../../router/router';
 import { Menu, Layout } from 'antd';
 import Icons from 'src/components/common/icon';
-import { INITSTATE } from 'src/store/common/collapsed';
+import { LangMessage } from 'src/store/common/language';
+
 const { Sider } = Layout;
 const { SubMenu } = Menu;
-
-const MenuDom = (menuList: RouterConfig[]) => {
+// type MenuDomProps = {
+//   menuList: RouterConfig[],
+//   // m: LangMessage
+// }
+const MenuDom = (menuList: RouterConfig[], m: LangMessage ) => {
+  // const { menuList } = props;
   return (<>
     {
       menuList.map((v: RouterConfig) => {
         if (!v.isNoSub && v.subs && v.subs.length) {
-          return <SubMenu key={v.key} title={v.title} icon={React.createElement(Icons[v.icon])}>{ MenuDom (v.subs)}</SubMenu>
+          return <SubMenu key={v.key} title={m[v.title]} icon={React.createElement(Icons[v.icon])}>{
+            // <MenuDom menuList={v.subs} />
+            MenuDom(v.subs, m)
+          }</SubMenu>
         }
-        return <Menu.Item key={v.key} icon={React.createElement(Icons[v.icon])} >{ v.title}</Menu.Item>
+        return <Menu.Item key={v.key} icon={React.createElement(Icons[v.icon])} >{m[v.title]}</Menu.Item>
       })
     }
   </>)
 }
 
-interface Props extends INITSTATE {}
+type Props = {
+  collapsed: boolean,
+  message: LangMessage
+}
 
 const MenuTabs: React.FC<Props> = (props) => {
-  const { collapsed } = props;
+  const { collapsed, message : m } = props;
   return (
     <Sider
       style={{ width: props.collapsed ? '200px' : '80px' }}
@@ -34,8 +45,9 @@ const MenuTabs: React.FC<Props> = (props) => {
         mode='inline'
       >
         {
-        MenuDom(MenuConfig.menus)
-      }
+          // <MenuDom menuList={MenuConfig.menus} />
+          MenuDom(MenuConfig.menus, m)
+        }
       </Menu>
     </Sider>
   );
@@ -43,6 +55,7 @@ const MenuTabs: React.FC<Props> = (props) => {
 
 export default connect((state: any) => {
   return {
-    collapsed: state.toggleCollapsed.collapsed
+    collapsed: state.toggleCollapsed.collapsed,
+    message: state.langSwitch.message
   }
 })(MenuTabs);

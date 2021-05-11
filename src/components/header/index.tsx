@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button } from 'antd';
+import { Button, Row, Col } from 'antd';
 import { useHistory } from 'react-router-dom';
 import Icons from 'src/components/common/icon';
 import { INITSTATE, COLLAPSED_TOGGLE } from 'src/store/common/collapsed';
-
+import Lang from 'src/components/common/language';
 interface Props extends INITSTATE {
   dispatch: any;
  }
@@ -22,15 +22,22 @@ const Header: React.FC<Props> = (props) => {
     })
   }
   return (
-    <div>
-      <a onClick={toggle}>
+    <Row>
+      <Col>
+        <a onClick={toggle}></a>
+      </Col>
+      <Col>
       {
         React.createElement(Icons[collapsed ? 'MenuUnfoldOutlined' : 'MenuFoldOutlined'])
       }
-      </a>
-      <span>我是头部呢</span>
-      <Button type='primary' onClick={loginOut}>退出</Button>
-    </div>
+      </Col>
+      <Col>
+        <Lang />
+      </Col>
+      <Col>
+        <Button type='primary' onClick={loginOut}>退出</Button>
+      </Col>
+    </Row>
   )
 }
 

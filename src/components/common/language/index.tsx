@@ -1,22 +1,36 @@
 import React, {useState} from 'react';
 import { Select } from 'antd';
+import { connect } from 'react-redux';
+import { LANG_SWITCH } from 'src/store/common/language';
 const { Option } = Select;
 
-const Lang = () => {
+const Lang = (props: any) => {
+  const { locale, dispatch } = props;
+  console.log('----a----lang', locale)
+  console.log('----a----localStorage.getItem', localStorage.getItem('language'))
+
   const [lang, setLang] = useState(localStorage.getItem('language') || 'Languages');
 
   const handleChange = (res: string) => {
     setLang(res);
+    dispatch({
+      type: LANG_SWITCH,
+      value: res
+    });
     localStorage.setItem('language', res);
   };
 
   return (
-    <Select placeholder='Languages' value={lang} bordered={false} onChange={handleChange} className='flexCenter'>
+    <Select placeholder='Languages' value={locale || lang} bordered={false} onChange={handleChange} className='flexCenter'>
       <Option value='en_US'>English</Option>
       <Option value='es_ES'>España</Option>
-      <Option value='zh_CN'>简体中文</Option>
+      <Option value='zhCN'>简体中文</Option>
     </Select>
   );
 };
 
-export default Lang;
+export default connect((state: any) => {
+  return {
+    locale: state.langSwitch.locale
+  }
+})(Lang);

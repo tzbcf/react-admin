@@ -11,7 +11,7 @@ import 'src/utils/style/index.less';
 
 const store = createStore(mergeReucer);
 store.subscribe(() =>
-  console.log(store.getState())
+  console.log('subscribe------------',store.getState())
 )
 ReactDOM.render(
   <Provider store={store}>

@@ -22,28 +22,28 @@ const menuConfig: {
   menus: [
     {
       key: 'main',
-      title: '首页',
+      title: 'mainTitle',
       icon: 'HomeOutlined',
       route: '/home/index',
       component: 'Main'
     },
     {
       key: 'table',
-      title: '表格',
+      title: 'tableTitle',
       route: '/table',
       icon: 'TableOutlined',
       subs: [
         {
           key: 'table_list',
           route: '/home/table/list',
-          title: '列表',
+          title: 'tableList',
           icon: 'UnorderedListOutlined',
           component: 'Table_List'
         },
         {
           key: 'table_detail',
           route: '/home/table/detail',
-          title: '详情',
+          title: 'tableDetail',
           icon: 'CopyOutlined',
           isNoSub: true,
           component: 'Table_Detail'
