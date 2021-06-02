@@ -7,13 +7,15 @@ declare module 'react-router-dom' {
     const withRouter: any;
     const Redirect: any;
     const useHistory: any;
+    const Link: any;
     export {
         Switch,
         Route,
         BrowserRouter,
         withRouter,
         Redirect,
-        useHistory
+        useHistory,
+        Link
     }
 }
 

@@ -1,11 +1,9 @@
 import React from 'react';
-import Icons from 'src/components/common/icon';
+import {CopyrightOutlined} from '@ant-design/icons';
 
 const Footer = () => {
   return (<div style={{textAlign: 'center'}}>
-    {
-      React.createElement(Icons['CopyrightOutlined'])
-    }
+    <CopyrightOutlined />
     <span style={{marginLeft: '5px'}}>2021 WASION INTERNATIONAL</span>
   </div>)
 };

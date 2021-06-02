@@ -1,4 +1,5 @@
-@primary-color: #40a9ff;
+@primary-color: #3AB17A;
+@ant-layout-sider:#001529;
 /* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
 /* stylelint-disable no-duplicate-selectors */
 /* stylelint-disable */
@@ -5566,6 +5567,16 @@ form .ant-upload {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
+.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover{
+  border-color:@primary-color;
+}
+.ant-input-affix-wrapper:focus, .ant-input-affix-wrapper-focused{
+  border-color:@primary-color;
+}
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled){
+  background-color:@primary-color;
+  color:#fff;
+}
 .ant-input-group-addon:first-child {
   border-right: 0;
 }
@@ -5633,7 +5644,7 @@ form .ant-upload {
 }
 .ant-input-affix-wrapper .ant-input-prefix,
 .ant-input-affix-wrapper .ant-input-suffix {
-  color: #000000;
+  color: @primary-color;
 }
 .ant-input-affix-wrapper .ant-input-disabled ~ .ant-input-suffix .anticon {
   color: rgba(0, 0, 0, 0.25);
@@ -5675,14 +5686,14 @@ form .ant-upload {
   background: #f0f2f5;
 }
 .ant-layout-header {
-  background: @primary-color;
+  background: #fff;
 }
 .ant-layout-footer {
   color: #000000;
   background: #f0f2f5;
 }
 .ant-layout-sider {
-  background: @primary-color;
+  background: @ant-layout-sider;
 }
 .ant-layout-sider-trigger {
   color: #fff;
@@ -5970,7 +5981,7 @@ form .ant-upload {
   background-color: color(~`colorPalette("@{primary-color}", 1)`);
 }
 .ant-menu {
-  color: #000000;
+  color: rgba(255,255,255,0.65);
   background: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
@@ -6001,7 +6012,7 @@ form .ant-upload {
 .ant-menu:not(.ant-menu-inline) .ant-menu-submenu-open,
 .ant-menu-submenu-active,
 .ant-menu-submenu-title:hover {
-  color: @primary-color;
+  color:#fff;
 }
 .ant-menu-horizontal > .ant-menu-item:hover,
 .ant-menu-horizontal > .ant-menu-item-active,
@@ -6009,14 +6020,14 @@ form .ant-upload {
   background-color: transparent;
 }
 .ant-menu-item-selected {
-  color: @primary-color;
+  color: #fff;
 }
 .ant-menu-item-selected > a,
 .ant-menu-item-selected > a:hover {
-  color: @primary-color;
+  color: #fff;
 }
 .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
-  background-color: color(~`colorPalette("@{primary-color}", 1)`);
+  background-color: @primary-color;
 }
 .ant-menu-inline,
 .ant-menu-vertical,
@@ -8753,8 +8764,8 @@ h4.ant-typography,
 }
 .ant-menu-root.ant-menu-inline,
 .ant-menu-root.ant-menu-vertical {
-  background: @primary-color;
-  border-right: 1px solid @primary-color;
+  background: @ant-layout-sider;
+  border-right: 1px solid @ant-layout-sider;
   color: #ffffff;
 }
 .ant-menu-root.ant-menu-inline a,

@@ -7,7 +7,6 @@ import { LANG_SWITCH } from 'src/store/common/language';
 import Home from './layout/home';
 import Login from './layout/login';
 import Nofound from './layout/nofound';
-import './App.css';
 
 const App = (props: any) => {
   const locale = localStorage.getItem('language');
@@ -15,7 +14,6 @@ const App = (props: any) => {
 
   useEffect(() => {
     if (locale) {
-      console.log('------useEffect', locale)
       dispatch({
         type: LANG_SWITCH,
         value: locale

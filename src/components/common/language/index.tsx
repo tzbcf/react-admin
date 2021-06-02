@@ -6,8 +6,6 @@ const { Option } = Select;
 
 const Lang = (props: any) => {
   const { locale, dispatch } = props;
-  console.log('----a----lang', locale)
-  console.log('----a----localStorage.getItem', localStorage.getItem('language'))
 
   const [lang, setLang] = useState(localStorage.getItem('language') || 'Languages');
 
@@ -21,7 +19,7 @@ const Lang = (props: any) => {
   };
 
   return (
-    <Select placeholder='Languages' value={locale || lang} bordered={false} onChange={handleChange} className='flexCenter'>
+    <Select placeholder='Languages' value={locale || lang} bordered={false} onChange={handleChange} className='flexCenter w100'>
       <Option value='en_US'>English</Option>
       <Option value='es_ES'>España</Option>
       <Option value='zhCN'>简体中文</Option>
