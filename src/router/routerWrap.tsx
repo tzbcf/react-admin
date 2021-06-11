@@ -1,3 +1,6 @@
+/**
+ * 路由页面组件包装
+ */
 import React, { useMemo } from 'react';
 import DocumentTitle from 'react-document-title';
 import queryString from 'query-string';

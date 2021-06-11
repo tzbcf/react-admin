@@ -1,4 +1,7 @@
-// 在有些场景中使用icon['CopyrightOutlined'],ts提示报错。所以外加层皮，并any不检查，同时只导入需要的icon
+/**
+ * 在有些场景中使用icon['CopyrightOutlined'],ts提示报错。所以外加层皮，并any不检查，同时只导入需要的icon
+ */
+
 import {
   HomeOutlined,
   TableOutlined,

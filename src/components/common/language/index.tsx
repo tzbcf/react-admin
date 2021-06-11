@@ -1,4 +1,7 @@
-import React, {useState} from 'react';
+/**
+ * 语言切换公共组件
+ */
+import React, { useState } from 'react';
 import { Select } from 'antd';
 import { connect } from 'react-redux';
 import { LANG_SWITCH } from 'src/store/common/language';

@@ -1,3 +1,6 @@
+/**
+ * 底部footer组件
+ */
 import React from 'react';
 import {CopyrightOutlined} from '@ant-design/icons';
 

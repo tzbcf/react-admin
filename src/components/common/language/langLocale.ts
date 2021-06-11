@@ -1,3 +1,6 @@
+/**
+ * antd组件的语言切换
+ */
 import zhCN from 'antd/lib/locale/zh_CN';
 import en_US from 'antd/lib/locale/en_US';
 import es_ES from 'antd/lib/locale/es_ES';

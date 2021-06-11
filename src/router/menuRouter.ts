@@ -1,3 +1,6 @@
+/**
+ * 路由config配置
+ */
 export interface RouterConfigBase {
   key: string;
   title: string;

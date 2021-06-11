@@ -1,11 +1,8 @@
 import {combineReducers} from 'redux';
-import testReducer from './test';
-import { toggleCollapsed } from './common/collapsed';
-import { langSwitch } from './common/language';
-
+import { toggleCollapsed } from './common/collapsed'; // 控制左边侧边栏
+import { langSwitch } from './common/language'; // 控制语言切换
 
 const mergeReucer = combineReducers({
-  testReducer,
   toggleCollapsed,
   langSwitch
 });

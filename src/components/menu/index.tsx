@@ -1,3 +1,6 @@
+/**
+ * 侧边导航栏组件
+ */
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';

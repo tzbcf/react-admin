@@ -1,3 +1,6 @@
+/**
+ * 404页面
+ */
 import React from 'react';
 
 const NoFound: React.FC = () => {

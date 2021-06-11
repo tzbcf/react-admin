@@ -1,4 +1,7 @@
-import React, {useState} from 'react';
+/**
+ * 头部组件
+ */
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Button, Row, Col, Badge, Popover, Avatar } from 'antd';
 import { useHistory } from 'react-router-dom';

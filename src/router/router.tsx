@@ -1,3 +1,6 @@
+/**
+ * 路由封装
+ */
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import AllCompontent from '../pages';
