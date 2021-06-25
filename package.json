@@ -30,7 +30,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "craco start"
+    "dev": "craco start",
+    "dev:MDR": "set PROJECT_TYPE=MDR && craco start",
+    "dev:PVMS": "set PROJECT_TYPE=PVMS && craco start"
   },
   "eslintConfig": {
     "extends": [

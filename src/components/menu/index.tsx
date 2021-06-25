@@ -4,7 +4,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import MenuConfig, { RouterConfig } from 'src/router/menuRouter';
+import routerConfig from 'src/router/menuRouter';
+import { RouterConfig } from 'src/router/types';
 import { INITSTATE } from 'src/store/common/collapsed';
 import { Menu, Layout } from 'antd';
 import Icons from 'src/components/common/icon';
@@ -40,7 +41,12 @@ interface Props extends INITSTATE {
 }
 
 const MenuTabs: React.FC<Props> = (props) => {
-  const { collapsed, message : msg } = props;
+  const { collapsed, message: msg } = props;
+  let menus:any = [];
+  Object.keys(routerConfig).map((key: string) => {
+    menus = menus.concat(routerConfig[key].default);
+  });
+  console.log('a------', menus)
   return (
     <Sider
       style={{ width: props.collapsed ? '200px' : '80px' }}
@@ -50,8 +56,7 @@ const MenuTabs: React.FC<Props> = (props) => {
         mode='inline'
       >
         {
-          // <MenuDom menuList={MenuConfig.menus} />
-          MenuDom(MenuConfig.menus, msg)
+          MenuDom(menus, msg)
         }
       </Menu>
     </Sider>

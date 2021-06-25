@@ -3,13 +3,14 @@
  */
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import AllCompontent from '../pages';
-import menuConfig, {RouterConfigBase, RouterConfig } from './menuRouter';
+// import AllCompontent from '../pages';
+import routerConfig from './menuRouter';
+import {RouterConfigBase, RouterConfig} from './types';
 import RouterWrap from './routerWrap';
 
 const Routers: React.FC = () => {
   const Router = (v: RouterConfigBase) => {
-    const Component = v.component && AllCompontent[v.component];
+    const Component = v.component ;
     return (<Route
       key={v.key || v.route}
       path={v.route}
@@ -23,11 +24,11 @@ const Routers: React.FC = () => {
   const CreateRouter = (v: RouterConfig) => {
     return v.component ? Router(v) : subRoute(v);
   }
-  const RouterList = (v: string) => menuConfig[v].map(CreateRouter);
+  const RouterList = (v: string) => routerConfig[v].default.map(CreateRouter);
   return (
     <Switch>
       {
-        Object.keys(menuConfig).map((v: string)=>RouterList(v))
+        Object.keys(routerConfig).map((v: string)=>RouterList(v))
       }
       <Route render={() => <Redirect to='/404' />} />
     </Switch>
