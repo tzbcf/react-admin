@@ -14,6 +14,9 @@ import {
   CopyrightOutlined,
   FullscreenOutlined,
   FullscreenExitOutlined,
+  TeamOutlined,
+  OrderedListOutlined,
+  UserAddOutlined
 } from '@ant-design/icons'
 
 export default {
@@ -27,5 +30,8 @@ export default {
   MenuFoldOutlined,
   CopyrightOutlined,
   FullscreenOutlined,
-  FullscreenExitOutlined
+  FullscreenExitOutlined,
+  TeamOutlined,
+  OrderedListOutlined,
+  UserAddOutlined
 } as any;

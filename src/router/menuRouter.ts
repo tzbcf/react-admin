@@ -52,6 +52,29 @@ const menuConfig: {
           component: 'Table_Detail'
         }
       ]
+    },
+    {
+      key: 'roleManage',
+      title: 'roleTitle',
+      route: '/roleManage',
+      icon: 'TeamOutlined',
+      subs: [
+        {
+          key: 'roleManage_list',
+          route: '/home/roleManage/list',
+          title: 'roleListTitle',
+          icon: 'OrderedListOutlined',
+          component: 'Role_List'
+        },
+        {
+          key: 'roleManage_add',
+          route: '/home/roleManage/add',
+          title: 'roleAddTitle',
+          icon: 'UserAddOutlined',
+          isNoSub: true,
+          component: 'Role_Add'
+        }
+      ]
     }
   ],
   others: []
