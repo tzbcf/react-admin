@@ -1,0 +1,14 @@
+/**
+ * 底部footer组件
+ */
+import React from 'react';
+import {CopyrightOutlined} from '@ant-design/icons';
+
+const Footer = () => {
+  return (<div style={{textAlign: 'center'}}>
+    <CopyrightOutlined />
+    <span style={{marginLeft: '5px'}}>2021 WASION INTERNATIONAL</span>
+  </div>)
+};
+
+export default Footer;

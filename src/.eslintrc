@@ -1,8 +1,5 @@
 {
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended"
-  ],
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
   "plugins": ["react", "typescript"],
   "parser": "@typescript-eslint/parser",
   "env": {
