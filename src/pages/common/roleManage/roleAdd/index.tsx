@@ -3,10 +3,10 @@
  * ProjectName : admin
  * Author : terrorblade
  * Created Date: 2021-06-20 17:17:01
- * Description : 
+ * Description :
  * -----
  * Last Modified: 2021-06-20 18:42:34
- * Modified By : 
+ * Modified By :
  * -----
  * Copyright (c) 2021 Magina Corporation. All rights reserved.
  */
@@ -58,17 +58,15 @@ const Details: React.FC = () => {
         },
       ];
     return (
-        <div className='main'>
-            <div>
-               <h4>权限树</h4>
-                <div className='pv10h20'>
-                    <Tree 
-                        checkable
-                        treeData={treeData}
-                    />
-                </div>
-            </div>
-        </div>
+      <div>
+          <h4>权限树</h4>
+          <div className='pv10h20'>
+              <Tree
+                  checkable
+                  treeData={treeData}
+              />
+          </div>
+      </div>
     )
 }
 

@@ -1,9 +1,11 @@
 /**
  * 路由页面组件包装
  */
-import React, { useMemo } from 'react';
+import React, { useMemo, Suspense } from 'react';
 import DocumentTitle from 'react-document-title';
 import queryString from 'query-string';
+import ToLoad from 'src/components/common/toLoad';
+
 
 const RouteWrapper = (props: any) => {
     let { Com, route, restProps } = props;
@@ -36,7 +38,9 @@ const RouteWrapper = (props: any) => {
     };
     return (
         <DocumentTitle title={route.title}>
-            <Com {...mergeQueryToProps()} />
+            <Suspense fallback={<ToLoad />}>
+                <Com {...mergeQueryToProps()} />
+            </Suspense>
         </DocumentTitle>
     );
 };

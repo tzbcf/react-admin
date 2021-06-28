@@ -2,7 +2,7 @@
  * 路由封装
  */
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 // import AllCompontent from '../pages';
 import routerConfig from './menuRouter';
 import {RouterConfigBase, RouterConfig} from './types';
@@ -24,13 +24,13 @@ const Routers: React.FC = () => {
   const CreateRouter = (v: RouterConfig) => {
     return v.component ? Router(v) : subRoute(v);
   }
-  const RouterList = (v: string) => routerConfig[v].default.map(CreateRouter);
+  const RouterList = (v: string) => routerConfig[v].map(CreateRouter);
   return (
     <Switch>
       {
         Object.keys(routerConfig).map((v: string)=>RouterList(v))
       }
-      <Route render={() => <Redirect to='/404' />} />
+      {/* <Route render={() => <Redirect to='/404' />} /> */}
     </Switch>
   )
 }

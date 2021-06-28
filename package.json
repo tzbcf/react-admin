@@ -26,13 +26,11 @@
     "web-vitals": "^1.1.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "build": "craco build",
     "dev": "craco start",
-    "dev:MDR": "set PROJECT_TYPE=MDR && craco start",
-    "dev:PVMS": "set PROJECT_TYPE=PVMS && craco start"
+    "dev:MDR": "cross-env PROJECT_TYPE=MDR craco start",
+    "dev:PVMS": "cross-env PROJECT_TYPE=PVMS craco start",
+    "build:MDR": "cross-env PROJECT_TYPE=MDR craco build"
   },
   "eslintConfig": {
     "extends": [
@@ -56,7 +54,10 @@
     "@craco/craco": "^6.1.1",
     "craco-antd": "^1.19.0",
     "craco-less": "^1.17.1",
+    "cross-env": "^7.0.3",
     "query-string": "^7.0.0",
-    "simple-progress-webpack-plugin": "^1.1.2"
+    "simple-progress-webpack-plugin": "^1.1.2",
+    "speed-measure-webpack-plugin": "^1.5.0",
+    "webpack-bundle-analyzer": "^4.4.2"
   }
 }

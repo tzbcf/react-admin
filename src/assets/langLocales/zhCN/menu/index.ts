@@ -5,5 +5,7 @@ export default {
   'tableDetail': '详情',
   'roleTitle': '角色管理',
   'roleListTitle': '角色列表',
-  'roleAddTitle': '角色添加'
+  'roleAddTitle': '角色添加',
+  'compontentTitle': '公共组件',
+  'compontentTitleLoad': '加载更多'
 }

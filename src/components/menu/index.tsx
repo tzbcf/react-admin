@@ -1,7 +1,7 @@
 /**
  * 侧边导航栏组件
  */
-import React from 'react';
+import React, {useState, Key} from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import routerConfig from 'src/router/menuRouter';
@@ -13,24 +13,21 @@ import { LangMessage } from 'src/store/common/language';
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
-// type MenuDomProps = {
-//   menuList: RouterConfig[],
-//   // m: LangMessage
-// }
+
 const MenuDom = (menuList: RouterConfig[], msg: LangMessage ) => {
-  // const { menuList } = props;
   return (<>
     {
       menuList.map((v: RouterConfig) => {
-        if (!v.isNoSub && v.subs && v.subs.length) {
+        if (v.subs && v.subs.length) {
           return <SubMenu key={v.key} title={msg[v.title]} icon={React.createElement(Icons[v.icon])}>{
-            // <MenuDom menuList={v.subs} />
             MenuDom(v.subs, msg)
           }</SubMenu>
         }
-        return <Menu.Item key={v.key} icon={React.createElement(Icons[v.icon])} >
-          <Link to={v.route}>{msg[v.title]}</Link>
-        </Menu.Item>
+        if (!v.isNoSub) {
+          return <Menu.Item key={v.key} icon={React.createElement(Icons[v.icon])} >
+            <Link to={v.route}>{msg[v.title]}</Link>
+          </Menu.Item>
+        }
       })
     }
   </>)
@@ -42,11 +39,26 @@ interface Props extends INITSTATE {
 
 const MenuTabs: React.FC<Props> = (props) => {
   const { collapsed, message: msg } = props;
-  let menus:any = [];
+
+  let menus:RouterConfig[] = [];
   Object.keys(routerConfig).map((key: string) => {
-    menus = menus.concat(routerConfig[key].default);
+    menus = menus.concat(routerConfig[key]);
   });
-  console.log('a------', menus)
+
+  const rootSubmenuKeys = menus.map((v: RouterConfig) => v.key);
+
+  const [openKeys, setOpenKeys] = useState<string[]>([]);
+
+  const onOpenChange = (keys: Key[]) => {
+    const menuKeys: string[] = [];
+    keys.forEach((v: Key) => typeof v === 'string' && menuKeys.push(v));
+    const latestOpenKey: string = menuKeys.find((key: string) =>  openKeys.indexOf(key) === -1) || '';
+    if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+      setOpenKeys(menuKeys);
+    } else {
+      setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
+    }
+  };
   return (
     <Sider
       style={{ width: props.collapsed ? '200px' : '80px' }}
@@ -54,6 +66,8 @@ const MenuTabs: React.FC<Props> = (props) => {
     >
       <Menu
         mode='inline'
+        openKeys={openKeys}
+        onOpenChange={onOpenChange}
       >
         {
           MenuDom(menus, msg)

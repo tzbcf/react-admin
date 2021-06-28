@@ -1,15 +1,13 @@
 /**
  * 公共路由页面
  */
-import asnycComponent from 'src/components/common/asyncComponents';
-import { RouterConfig } from '../../types';
-
+import { RouterConfig } from 'src/router/types';
+import {lazy} from 'react';
 
 const commonRouterConfig: RouterConfig[] = [
   {
     key: 'roleManage',
     title: 'roleTitle',
-    route: '/roleManage',
     icon: 'TeamOutlined',
     subs: [
       {
@@ -17,7 +15,7 @@ const commonRouterConfig: RouterConfig[] = [
         route: '/home/roleManage/list',
         title: 'roleListTitle',
         icon: 'OrderedListOutlined',
-        component: asnycComponent('src/pages/common/roleManage/roleList')
+        component: lazy(() => import('src/pages/common/roleManage/roleList'))
       },
       {
         key: 'roleManage_add',
@@ -25,7 +23,7 @@ const commonRouterConfig: RouterConfig[] = [
         title: 'roleAddTitle',
         icon: 'UserAddOutlined',
         isNoSub: true,
-        component: asnycComponent('src/pages/common/roleManage/roleAdd')
+        component: lazy(() => import('src/pages/common/roleManage/roleAdd'))
       }
     ]
   }

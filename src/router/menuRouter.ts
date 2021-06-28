@@ -15,18 +15,18 @@ const routerConfig: {
   common: [],
   others: []
 };
-routerConfig.common = require('./config/common');
-routerConfig.others = require('./config/others');
+routerConfig.common = require('./config/common').default;
+routerConfig.others = require('./config/others').default;
 switch (process.env.PROJECT_TYPE) {
   case 'MDR':
-    routerConfig.mdrRouter = require('./config/mdr');
+    routerConfig.mdrRouter = require('./config/mdr').default;
     break;
   case 'PVMS':
-    routerConfig.pvmsRouter = require('./config/mdr');
+    routerConfig.pvmsRouter = require('./config/pvms').default;
     break;
   default:
-    routerConfig.mdrRouter = require('./config/mdr');
-    routerConfig.pvmsRouter = require('./config/mdr');
+    routerConfig.mdrRouter = require('./config/mdr').default;
+    routerConfig.pvmsRouter = require('./config/pvms').default;
     break;
 }
 export default routerConfig;

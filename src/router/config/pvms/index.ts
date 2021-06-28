@@ -1,13 +1,10 @@
 /**
  * pvms系统业务页面
  */
-//  import asnycComponent from 'src/components/common/asyncComponents';
-import toLoad from 'src/components/common/toLoad';
+import {lazy} from 'react';
+import { RouterConfig } from '../../types';
 
- import { RouterConfig } from '../../types';
- console.log('get-----pvms-----router');
-
- const pvmsRouterConfig: RouterConfig[] = [
+const pvmsRouterConfig: RouterConfig[] = [
     {
       key: 'table',
       title: 'tableTitle',
@@ -19,7 +16,7 @@ import toLoad from 'src/components/common/toLoad';
           route: '/home/table/list',
           title: 'tableList',
           icon: 'UnorderedListOutlined',
-          component:toLoad
+          component: lazy(()=> import('src/pages/pvms/table/list'))
         },
         {
           key: 'table_detail',
@@ -27,7 +24,7 @@ import toLoad from 'src/components/common/toLoad';
           title: 'tableDetail',
           icon: 'CopyOutlined',
           isNoSub: true,
-          component: toLoad
+          component: lazy(()=> import('src/pages/pvms/table/details'))
         }
       ]
     },

@@ -19,7 +19,7 @@ const Main: React.FC = () => {
       <Layout>
         <Menu />
         <Layout>
-          <Content>
+          <Content className='p20'>
             <Routers />
           </Content>
           <Footer>

@@ -1,17 +1,16 @@
 /**
  * mdr系统业务页面
  */
-// import asnycComponent from 'src/components/common/asyncComponents';
-import toLoad from 'src/components/common/toLoad';
+import {lazy} from 'react';
 import { RouterConfig } from '../../types';
-console.log('get-----mdr-----router');
- const mdrRouterConfig: RouterConfig[] = [
+
+const mdrRouterConfig: RouterConfig[] = [
   {
     key: 'main',
     title: 'mainTitle',
     icon: 'HomeOutlined',
     route: '/home/index',
-    component: toLoad
+    component: lazy(() => import('src/pages/mdr/main'))
   },
  ]
 

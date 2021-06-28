@@ -1,18 +1,26 @@
+const { whenProd, whenDev } = require('@craco/craco');
 const CracoAntDesignPlugin = require('craco-antd');
 const SimpleProgressWebpackPlugin = require('simple-progress-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
 const CracoLessPlugin = require('craco-less');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
+const smp = new SpeedMeasurePlugin();
 
 module.exports = {
   webpack: {
     alias: {
       '@': path.resolve('src'),
     },
-    plugins: [
+    plugins: smp.wrap([
+      new webpack.DefinePlugin({
+        'process.env.PROJECT_TYPE': JSON.stringify(process.env.PROJECT_TYPE),
+      }),
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
       new SimpleProgressWebpackPlugin(),
-    ],
+      ...whenProd(() => [new BundleAnalyzerPlugin()],[]),
+    ]) ,
     //抽离公用模块
     optimization: {
       splitChunks: {
@@ -55,10 +63,10 @@ module.exports = {
         modifyLessRule: () => {
           return {
             test: /\.less$/,
-            use: ['style-loader', 'css-loader', 'less-loader']
-          }
-        }
-      }
-    }
+            use: ['style-loader', 'css-loader', 'less-loader'],
+          };
+        },
+      },
+    },
   ],
 };
