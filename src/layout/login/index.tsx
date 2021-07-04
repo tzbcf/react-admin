@@ -5,13 +5,14 @@ import React from 'react';
 import { Layout, Row, Col, Form, Button, Checkbox, Input } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 import indexStyle from './index.module.less';
 import Lang from 'src/components/common/language';
 import FooterDom from 'src/components/footer';
 import LOGO from 'src/assets/imgs/common/logo_login.png';
 const { Header, Footer, Content } = Layout;
 import { LangMessage } from 'src/store/common/language';
+import user from 'src/api/user';
 
 type Props = {
   Mes: LangMessage;
@@ -19,10 +20,12 @@ type Props = {
 
 const Login: React.FC<Props> = props => {
   const { Mes } = props;
-  const history = useHistory();
-  const onFinish = (values: any) => {
+  // const history = useHistory();
+  const onFinish = async (values: any) => {
     console.log('Success:', values);
-    history.push('/home/index');
+    const res = await user.login(values);
+    console.log('------', res);
+    // history.push('/home/mdrHomePage');
   };
 
   return (

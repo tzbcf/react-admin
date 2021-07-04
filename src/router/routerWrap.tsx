@@ -3,12 +3,13 @@
  */
 import React, { useMemo, Suspense } from 'react';
 import DocumentTitle from 'react-document-title';
+import { connect } from 'react-redux';
 import queryString from 'query-string';
 import ToLoad from 'src/components/common/toLoad';
 
 
 const RouteWrapper = (props: any) => {
-    let { Com, route, restProps } = props;
+    let { Com, route, restProps, message:mes } = props;
 
     /** useMemo 缓存query，避免每次生成新的query */
     const queryMemo = useMemo(() => {
@@ -37,7 +38,7 @@ const RouteWrapper = (props: any) => {
         return merge;
     };
     return (
-        <DocumentTitle title={route.title}>
+        <DocumentTitle title={mes[route.title]||''}>
             <Suspense fallback={<ToLoad />}>
                 <Com {...mergeQueryToProps()} />
             </Suspense>
@@ -45,4 +46,8 @@ const RouteWrapper = (props: any) => {
     );
 };
 
-export default RouteWrapper;
+export default connect((state: any) => {
+    return {
+      message: state.langSwitch.message
+    }
+  })(RouteWrapper);

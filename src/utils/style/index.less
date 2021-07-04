@@ -18,6 +18,18 @@ html,body,#root,.ant-layout-has-sider,.ant-layout{
 .search{
   margin-bottom: 20px;
 }
+#loading{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: rgba(0,0,0,.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 //----------------------- 标签 ------------------------
 // 设置去掉a标签默认样式
@@ -29,7 +41,9 @@ h4{
   padding: 10px 20px;
   border-bottom: 1px solid #eee;
 }
-
+ul li{
+  list-style-type: none;
+}
 // --------------------- flex 相关样式  start -------------------------
 
 // flex垂直居中
@@ -94,6 +108,12 @@ h4{
 .pv10h20{
   padding: 10px 20px;
 }
+.pr15{
+  padding-right: 15px;
+}
+.pv0h8{
+  padding: 0px 8px;
+}
 // ------------------  end  ----------------------------
 
 // ------------------  设置font-weight start -----------
@@ -111,6 +131,9 @@ h4{
 }
 .mb20{
   margin-bottom: 20px;
+}
+.mb10{
+  margin-bottom: 10px;
 }
 // 设置子集div左间距10px
 .chlidDivML10>div{

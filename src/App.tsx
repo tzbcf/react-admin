@@ -23,7 +23,7 @@ const App = (props: any) => {
   return (
     <ConfigProvider locale={langLocale[locale ||props.locale]}>
       <Switch>
-          <Route exact path='/' render={() => <Redirect to='/home/index' push />} />
+          <Route exact path='/' render={() => <Redirect to='/home/mdrHomePage' push />} />
           <Route path='/home' component={Home} />
           <Route path='/404' component={Nofound} />
           <Route path='/login' component={Login} />

@@ -1,4 +1,4 @@
-const { whenProd, whenDev } = require('@craco/craco');
+const { whenProd } = require('@craco/craco');
 const CracoAntDesignPlugin = require('craco-antd');
 const SimpleProgressWebpackPlugin = require('simple-progress-webpack-plugin');
 const webpack = require('webpack');

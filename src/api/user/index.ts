@@ -1,6 +1,8 @@
+import {post} from 'src/api/http';
+import {Login} from './types.d';
 class User{
-  login() {
-
+  async login(data: Login) {
+    return await post('/login', data);
   }
 }
 
