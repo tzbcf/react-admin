@@ -2,8 +2,7 @@
  * 路由封装
  */
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-// import AllCompontent from '../pages';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import routerConfig from './menuRouter';
 import {RouterConfigBase, RouterConfig} from './types';
 import RouterWrap from './routerWrap';
@@ -30,7 +29,7 @@ const Routers: React.FC = () => {
       {
         Object.keys(routerConfig).map((v: string)=>RouterList(v))
       }
-      {/* <Route render={() => <Redirect to='/404' />} /> */}
+      <Route render={() => <Redirect to='/404' />} />
     </Switch>
   )
 }
