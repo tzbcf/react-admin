@@ -22,7 +22,7 @@ import { RouterConfig } from '../../types';
         title: 'compontentTitleSearchList',
         route: '/home/compontent/searchList',
         icon: 'FileSearchOutlined',
-        component: lazy(() => import('src/components/common/searchList'))
+        component: lazy(() => import('src/pages/others/searchList'))
      }
     ]
   },
