@@ -23,15 +23,7 @@ import { RouterConfig } from '../../types';
       route: '/home/compontent/searchList',
       icon: 'FileSearchOutlined',
       component: lazy(() => import('src/pages/others/searchList'))
-    }
-  ]
-  },
-  {
-    key: 'table',
-    title: 'tableTitle',
-    route: '/table',
-    icon: 'TableOutlined',
-    subs: [
+      },
       {
         key: 'table_list',
         route: '/home/table/list',
@@ -48,7 +40,7 @@ import { RouterConfig } from '../../types';
         component: lazy(()=> import('src/pages/others/table/details'))
       }
     ]
-  }
+  },
  ]
 
  export default othersRouterConfig;

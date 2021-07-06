@@ -3,10 +3,10 @@
  * ProjectName : admin
  * Author : terrorblade
  * Created Date: 2021-06-20 17:17:08
- * Description : 
+ * Description :
  * -----
  * Last Modified: 2021-06-20 18:34:53
- * Modified By : 
+ * Modified By :
  * -----
  * Copyright (c) 2021 Magina Corporation. All rights reserved.
  */
@@ -15,7 +15,7 @@ import React from 'react';
 import { Table, Form, Button, Input } from 'antd';
 const Details: React.FC = () => {
     const [form] = Form.useForm();
-    
+
     const columns = [
         {
             title: '序列',
@@ -51,6 +51,20 @@ const Details: React.FC = () => {
     const data = [
         {
             key: '1',
+            name: '超级管理员',
+            count: '1',
+            createTime: '2021-06-20 10:10:10',
+            createUser: 'magina'
+        },
+        {
+            key: '2',
+            name: '超级管理员',
+            count: '1',
+            createTime: '2021-06-20 10:10:10',
+            createUser: 'magina'
+        },
+        {
+            key: '3',
             name: '超级管理员',
             count: '1',
             createTime: '2021-06-20 10:10:10',

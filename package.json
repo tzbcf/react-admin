@@ -49,11 +49,9 @@
   },
   "devDependencies": {
     "@craco/craco": "^6.1.1",
-    "@types/mockjs": "^1.0.3",
     "craco-antd": "^1.19.0",
     "craco-less": "^1.17.1",
     "cross-env": "^7.0.3",
-    "mockjs": "^1.1.0",
     "query-string": "^7.0.0",
     "simple-progress-webpack-plugin": "^1.1.2",
     "speed-measure-webpack-plugin": "^1.5.0",
