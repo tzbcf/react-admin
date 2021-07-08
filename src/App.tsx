@@ -27,7 +27,7 @@ const App = (props: any) => {
           <Route path='/home' component={Home} />
           <Route path='/404' component={Nofound} />
           <Route path='/login' component={Login} />
-          <Route component={Nofound} />
+          <Route render={() => <Redirect to='/404' push />} />
       </Switch>
     </ConfigProvider>
   );
