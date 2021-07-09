@@ -5,109 +5,132 @@
  * Created Date: 2021-06-20 17:17:08
  * Description :
  * -----
- * Last Modified: 2021-06-20 18:34:53
+ * Last Modified: 2021-07-08 19:29:47
  * Modified By :
  * -----
  * Copyright (c) 2021 Magina Corporation. All rights reserved.
  */
 
 import React from 'react';
-import { Table, Form, Button, Input } from 'antd';
-const Details: React.FC = () => {
-    const [form] = Form.useForm();
+import { connect } from 'react-redux';
+import { Table, Button, Modal } from 'antd';
+import { LangMessage } from 'src/store/common/language';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+const { confirm } = Modal;
+
+type Props = {
+    mes: LangMessage
+}
+const roleList: React.FC<Props> = (props) => {
+    const { mes } = props;
+    
+    const editor = (item: any)=> {
+        console.log('item------', item)
+    } 
+
+    const showDeleteConfirm = (item: any) => {
+        console.log('item------', item)
+        confirm({
+            title: 'Are you sure delete this task?',
+            icon: <ExclamationCircleOutlined />,
+            content: 'Some descriptions',
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk() {
+              console.log('OK');
+            },
+            onCancel() {
+              console.log('Cancel');
+            },
+          });
+    }
 
     const columns = [
         {
-            title: '序列',
-            dataIndex: 'key',
-            key: 'key',
+            title: mes['commonTitleSequence'],
+            dataIndex: 'rn_',
           },
         {
-            title: '角色名',
-            dataIndex: 'name',
-            key: 'name',
+            title: `${mes['roleManageTitleRole']} ${mes['commonTitleName']}`,
+            dataIndex: 'GROUP_NAME',
           },
           {
-            title: '关联帐户数',
-            dataIndex: 'count',
-            key: 'count',
+            title: mes['commonTitleRemark'],
+            dataIndex: 'REMARK',
           },
           {
-            title: '创建时间',
-            dataIndex: 'createTime',
-            key: 'createTime',
+            title: mes['roleManageTitleGlobalMaintenance'],
+            dataIndex: 'GLOBE_MODIFY_FLAG',
+            render(_: any, record: any){
+                return (
+                    <span>{ parseInt(record['GLOBE_MODIFY_FLAG'], 10) ? mes['commonTextYes'] : mes['commonTextNo']}</span>
+                )
+            }
           },
           {
-            title: '创建人',
-            dataIndex: 'createUser',
-            key: 'createUser',
+            title: `${mes['commonTitleCreate']}${mes['commonTitleTime']}`,
+            dataIndex: 'CRETE_TIME',
+            render(_: any, record: any){
+                return (
+                    <span>{ record['CRETE_TIME'].split(' ')[0] }</span>
+                )
+            }
           },
+          {
+            title: mes['commonTitleOperate'],
+            dataIndex: 'operate',
+            width: 200,
+            render(_: any, record: any) {
+                return (
+                    <>
+                        <Button type='primary' onClick={() => editor(record)}>{ mes['commonBtnEtitor'] }</Button>
+                        <Button type='default' className='ml10' onClick={()=>showDeleteConfirm(record)} danger>{ mes['commonBtnDelete'] }</Button>
+                    </>
+                )
+            }
+          }
     ];
     const pagination = {
-        total: 40,
-        showQuickJumper: true,
-        showSizeChanger: true
+        total: 2,
     };
     const data = [
         {
-            key: '1',
-            name: '超级管理员',
-            count: '1',
-            createTime: '2021-06-20 10:10:10',
-            createUser: 'magina'
+            rn_: 1, 
+            GROUP_NAME: 'test',
+            REMARK: '测试',
+            GLOBE_MODIFY_FLAG: '1',
+            CRETE_TIME: '2020-10-10 19:10:10'
         },
         {
-            key: '2',
-            name: '超级管理员',
-            count: '1',
-            createTime: '2021-06-20 10:10:10',
-            createUser: 'magina'
+            rn_: 2,
+            GROUP_NAME: 'admin',
+            REMARK: 'amin',
+            GLOBE_MODIFY_FLAG: '0',
+            CRETE_TIME: '2020-10-10 19:20:10'
         },
-        {
-            key: '3',
-            name: '超级管理员',
-            count: '1',
-            createTime: '2021-06-20 10:10:10',
-            createUser: 'magina'
-        }
     ];
-    const onReset = () => {
-        form.resetFields();
-    }
+    
     return (
         <div className='main'>
-            <div className='search'>
-                <h4>数据筛选</h4>
-                <div className='pv10h20'>
-                    <Form form={form}   layout='inline'>
-                        <Form.Item
-                             name='name'
-                             label='角色名'
-                            >
-                            <Input style={{width:'200px'}} />
-                        </Form.Item>
-                        <Form.Item wrapperCol={{ span: 14, offset: 6 }}>
-                            <Button htmlType='submit' type='primary'>
-                            Submit
-                            </Button>
-                        </Form.Item>
-                        <Form.Item wrapperCol={{ span: 14, offset: 6 }}>
-                            <Button htmlType='button' onClick={onReset}>
-                            Reset
-                            </Button>
-                        </Form.Item>
-                    </Form>
-                </div>
-            </div>
             <div className='list'>
-                <h4>角色列表</h4>
-                <Table dataSource={data} pagination={pagination} columns={columns} />
+                <div className='flexCenter flexBetween title'>
+                    <h4>{ `${mes['roleManageTitleRole']}${mes['commonTitleList']}` }</h4>
+                    <Button type='primary'>{ mes['commonBtnAdd'] }</Button>
+                </div>
+                <div className='pv10h20'>
+                    <Table dataSource={data} pagination={pagination} columns={columns} />
+                </div>
             </div>
         </div>
     )
 }
 
-export default Details;
+export default connect((state: any) => {
+    return {
+      mes: state.langSwitch.message
+    }
+  })(roleList);
 
 
 

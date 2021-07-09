@@ -10,22 +10,23 @@ import { INITSTATE } from 'src/store/common/collapsed';
 import { Menu, Layout } from 'antd';
 import Icons from 'src/components/common/icon';
 import { LangMessage } from 'src/store/common/language';
+import { MENUTABS_ADD } from 'src/store/common/menuTabs';
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
-const MenuDom = (menuList: RouterConfig[], msg: LangMessage ) => {
+const MenuDom = (menuList: RouterConfig[], msg: LangMessage, addTabs: Function ) => {
   return (<>
     {
       menuList.map((v: RouterConfig) => {
         if (v.subs && v.subs.length) {
           return <SubMenu key={v.key} title={msg[v.title]} icon={React.createElement(Icons[v.icon])}>{
-            MenuDom(v.subs, msg)
+            MenuDom(v.subs, msg, addTabs)
           }</SubMenu>
         }
         if (!v.isNoSub) {
           return <Menu.Item key={v.key} icon={React.createElement(Icons[v.icon])} >
-            <Link to={v.route}>{msg[v.title]}</Link>
+            <Link to={v.route} onClick={() => {addTabs(v)}}>{msg[v.title]}</Link>
           </Menu.Item>
         }
       })
@@ -34,11 +35,12 @@ const MenuDom = (menuList: RouterConfig[], msg: LangMessage ) => {
 }
 
 interface Props extends INITSTATE {
-  message: LangMessage
+  message: LangMessage,
+  dispatch: any
 }
 
-const MenuTabs: React.FC<Props> = (props) => {
-  const { collapsed, message: msg } = props;
+const MenuNav: React.FC<Props> = (props) => {
+  const { collapsed, message: msg, dispatch } = props;
 
   let menus:RouterConfig[] = [];
   Object.keys(routerConfig).map((key: string) => {
@@ -59,9 +61,21 @@ const MenuTabs: React.FC<Props> = (props) => {
       setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
     }
   };
+
+  const addTabs = (v: RouterConfig) => {
+    dispatch({
+      type: MENUTABS_ADD,
+      value: {
+        key: v.key,
+        title: v.title,
+        route: v.route
+      }
+    })
+  }
+
   return (
     <Sider
-      style={{ width: props.collapsed ? '200px' : '80px' }}
+      style={{ width: props.collapsed ? '200px' : '80px', overflowY: 'auto' }}
       collapsed={collapsed}
     >
       <Menu
@@ -70,7 +84,7 @@ const MenuTabs: React.FC<Props> = (props) => {
         onOpenChange={onOpenChange}
       >
         {
-          MenuDom(menus, msg)
+          MenuDom(menus, msg, addTabs)
         }
       </Menu>
     </Sider>
@@ -82,4 +96,4 @@ export default connect((state: any) => {
     collapsed: state.toggleCollapsed.collapsed,
     message: state.langSwitch.message
   }
-})(MenuTabs);
+})(MenuNav);

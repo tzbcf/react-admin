@@ -4,31 +4,46 @@
 import React from 'react';
 import Routers from 'src/router/router';
 import Menu from 'src/components/menu';
+import { connect } from 'react-redux';
 import HeaderDom from 'src/components/header';
-import FooterDom from 'src/components/footer';
+import MenuTabs from 'src/components/menu/menuTabs';
+import News from 'src/components/header/news';
 import { Layout } from 'antd';
+import indexStyle from './index.module.less';
 
-const { Header, Footer, Content } = Layout;
+const { Header, Content } = Layout;
 
-const Main: React.FC = () => {
+type Props = {
+  newsShow: boolean
+}
+
+const Main: React.FC<Props> = (props) => {
+  const { newsShow } = props; 
   return (
     <Layout>
-      <Header>
+      <Header className={indexStyle.header}>
         <HeaderDom />
       </Header>
       <Layout>
         <Menu />
-        <Layout>
-          <Content className='p20'>
-            <Routers />
-          </Content>
-          <Footer>
-            <FooterDom />
-          </Footer>
+        <Layout className='positionRelative'>
+          <div className={indexStyle.layoutContent}>
+            <MenuTabs />
+            <Content className={`${indexStyle.routerContent} p20`}>
+              <Routers />
+            </Content>
+          </div>
+          {
+            newsShow && <News />
+          }
         </Layout>
       </Layout>
     </Layout>
   );
 };
 
-export default Main;
+export default connect((state: any) => {
+  return {
+    newsShow: state.toggleNews.newsShow
+  }
+})(Main);

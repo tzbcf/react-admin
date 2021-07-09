@@ -36,13 +36,11 @@ html,body,#root,.ant-layout-has-sider,.ant-layout{
 a{
   color:rgba(0,0,0,0.85);
 }
-h4{
-  font-size: 16px;
-  padding: 10px 20px;
-  border-bottom: 1px solid #eee;
-}
 ul li{
   list-style-type: none;
+}
+i{
+  font-style: normal;
 }
 // --------------------- flex 相关样式  start -------------------------
 
@@ -96,6 +94,7 @@ ul li{
 // ------------------  end -----------------------------
 
 // ------------------  设置padding start ---------------
+// v: vertical 垂直  h: horizontal 水平
 .ant-layout-header{
   padding: 0 10px;
 }
@@ -105,14 +104,23 @@ ul li{
 .pl10{
   padding-left: 10px;
 }
+.pr10{
+  padding-right: 10px;
+}
 .pv10h20{
   padding: 10px 20px;
+}
+.pv0h20{
+  padding: 0 20px;
 }
 .pr15{
   padding-right: 15px;
 }
 .pv0h8{
   padding: 0px 8px;
+}
+.pv8h0{
+  padding: 8px 0;
 }
 // ------------------  end  ----------------------------
 
@@ -129,6 +137,9 @@ ul li{
 .mr10{
   margin-right: 10px;
 }
+.ml10{
+  margin-left: 10px;
+}
 .mb20{
   margin-bottom: 20px;
 }
@@ -141,6 +152,29 @@ ul li{
 }
 // ------------------  end  ----------------------------
 
+
+// ------------------ postion start -------------------------
+.positionRelative{
+  position: relative;
+}
+// ------------------    end    -------------------------
 .point{
   cursor: pointer;
+}
+
+// 警告
+.ant-btn-dangerous{
+  color: #ff4d4f!important;
+  background: #fff!important;
+  border-color: #ff4d4f!important;
+}
+.bgWarn{
+  background: #ff4d4f!important;
+  border-color: #ff4d4f!important;
+  color:#fff!important;
+}
+.title{
+  font-size: 16px;
+  padding: 10px 20px;
+  border-bottom: 1px solid #eee;
 }

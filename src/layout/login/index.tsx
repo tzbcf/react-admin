@@ -13,6 +13,7 @@ import LOGO from 'src/assets/imgs/common/logo_login.png';
 const { Header, Footer, Content } = Layout;
 import { LangMessage } from 'src/store/common/language';
 import user from 'src/api/user';
+import 'src/mock/user';
 
 type Props = {
   Mes: LangMessage;

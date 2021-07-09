@@ -18,10 +18,11 @@ import Lang from 'src/components/common/language';
 import { LangMessage } from 'src/store/common/language';
 import  logo5  from 'src/assets/imgs/common/logo5.png';
 import overseas from 'src/assets/imgs/common/overseas.png';
-
+import { NEW_TOGGLE } from 'src/store/common/news';
 interface Props extends INITSTATE {
   dispatch: any;
   message: LangMessage;
+  newsShow: boolean;
  }
 
 const HelpHint = (
@@ -46,8 +47,8 @@ const UserList: React.FC<Userprops> = (userprops) => {
 }
 
 const Header: React.FC<Props> = (props) => {
-  const { collapsed, dispatch, message: msg } = props;
-  const [zoomState, setZoomState] = useState(false);
+  const { collapsed, dispatch, message: msg, newsShow } = props;
+  const [zoomState, setZoomState] = useState<boolean>(false);
   let [news, serNews] = useState(1);
 
   const toggle = () => {
@@ -61,12 +62,16 @@ const Header: React.FC<Props> = (props) => {
     setZoomState(!zoomState)
   }
 
-  const increaseNew = () => {
-    serNews(news+=1)
+  const openNews = () => {
+    serNews(news+=1);
+    dispatch({
+      type: NEW_TOGGLE,
+      value: !newsShow
+    })
   }
 
   return (
-    <Row className='flexCenter flexBetween '>
+    <Row className='flexCenter flexBetween'>
       <Col>
         <Row>
           <Col className='flexCenter flexColumn mr10'>
@@ -101,7 +106,7 @@ const Header: React.FC<Props> = (props) => {
             }
           </Col>
           <Col>
-            <a href='#' onClick={increaseNew}  className='colorBlack85'>
+            <a href='#' onClick={openNews}  className='colorBlack85'>
               <span className='avatar-item'>
                 <Badge count={news}>
                   <BellOutlined className='f20' />
@@ -127,6 +132,7 @@ const Header: React.FC<Props> = (props) => {
 export default connect((state: any) => {
   return {
     collapsed: state.toggleCollapsed.collapsed,
-    message: state.langSwitch.message
+    message: state.langSwitch.message,
+    newsShow: state.toggleNews.newsShow
   }
 })(Header);
