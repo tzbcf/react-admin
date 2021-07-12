@@ -1,8 +1,6 @@
+// eslint-disable-next-line no-use-before-define
 import React from 'react';
 
-const UserList: React.FC = () => {
-  return (<div>我是MeasurePoint Management</div>)
-};
-
+const UserList: React.FC = () => <div>我是MeasurePoint Management</div>;
 
 export default UserList;

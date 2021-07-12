@@ -12,39 +12,39 @@
  */
 
 
- import { RouterConfig } from 'src/router/types';
- import {lazy} from 'react';
+import { RouterConfig } from 'src/router/types';
+import {lazy} from 'react';
 
- const opreateRoleRouterConfig: RouterConfig[] = [
-   {
-     key: 'opreatorMgnt',
-     title: 'opreatorMgnt',
-     icon: 'TeamOutlined',
-     subs: [
-       {
-         key: 'roleManage_list',
-         route: '/home/roleManage/list',
-         title: 'roleListTitle',
-         icon: 'OrderedListOutlined',
-         component: lazy(() => import('src/pages/opreatorMgnt/roleManage/roleList'))
-       },
-       {
-         key: 'roleManage_add',
-         route: '/home/roleManage/add',
-         title: 'roleAddTitle',
-         icon: 'UserAddOutlined',
-         isNoSub: true,
-         component: lazy(() => import('src/pages/opreatorMgnt/roleManage/roleAdd'))
-       },
-       {
-        key: 'userManage_list',
-        route: '/home/userManage/list',
-        title: 'userListTitle',
-        icon: 'OrderedListOutlined',
-        component: lazy(() => import('src/pages/opreatorMgnt/userMange/userList'))
-      }
-     ]
-   }
- ]
+const opreateRoleRouterConfig: RouterConfig[] = [
+    {
+        key: 'opreatorMgnt',
+        title: 'opreatorMgnt',
+        icon: 'TeamOutlined',
+        subs: [
+            {
+                key: 'roleManage_list',
+                route: '/home/roleManage/list',
+                title: 'roleListTitle',
+                icon: 'OrderedListOutlined',
+                component: lazy(() => import('src/pages/opreatorMgnt/roleManage/roleList')),
+            },
+            {
+                key: 'roleManage_add',
+                route: '/home/roleManage/add',
+                title: 'roleAddTitle',
+                icon: 'UserAddOutlined',
+                isNoSub: true,
+                component: lazy(() => import('src/pages/opreatorMgnt/roleManage/roleAdd')),
+            },
+            {
+                key: 'userManage_list',
+                route: '/home/userManage/list',
+                title: 'userListTitle',
+                icon: 'OrderedListOutlined',
+                component: lazy(() => import('src/pages/opreatorMgnt/userMange/userList')),
+            },
+        ],
+    },
+];
 
- export default opreateRoleRouterConfig;
+export default opreateRoleRouterConfig;

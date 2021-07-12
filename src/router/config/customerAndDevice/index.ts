@@ -12,8 +12,8 @@
  */
 
 
- import {lazy} from 'react';
- import { RouterConfig } from '../../types';
+import {lazy} from 'react';
+import { RouterConfig } from '../../types';
 
 const customerAndDeviceRouterConfig: RouterConfig[] = [
     {
@@ -26,21 +26,21 @@ const customerAndDeviceRouterConfig: RouterConfig[] = [
                 title: 'menuTitleDcuManagement',
                 icon: 'HomeOutlined',
                 route: '/home/customerAndDevice/dcuManagement',
-                component: lazy(() => import('src/pages/customerAndDevice/dcuManagement'))
+                component: lazy(() => import('src/pages/customerAndDevice/dcuManagement')),
             },
             {
                 key: 'meterManagement',
                 title: 'menuTitleMeterManagement',
                 icon: 'HomeOutlined',
                 route: '/home/customerAndDevice/meterManagement',
-                component: lazy(() => import('src/pages/customerAndDevice/meterManagement'))
+                component: lazy(() => import('src/pages/customerAndDevice/meterManagement')),
             },
             {
                 key: 'customerManagement',
                 title: 'menuTitleCustomerManagement',
                 icon: 'HomeOutlined',
                 route: '/home/customerAndDevice/customerManagement',
-                component: lazy(() => import('src/pages/customerAndDevice/customerManagement'))
+                component: lazy(() => import('src/pages/customerAndDevice/customerManagement')),
             },
 
             {
@@ -48,10 +48,10 @@ const customerAndDeviceRouterConfig: RouterConfig[] = [
                 title: 'menuTitleMeasurePointManagement',
                 icon: 'HomeOutlined',
                 route: '/home/customerAndDevice/measurePointManagement',
-                component: lazy(() => import('src/pages/customerAndDevice/measurePointManagement'))
+                component: lazy(() => import('src/pages/customerAndDevice/measurePointManagement')),
             },
-        ]
+        ],
     },
-]
+];
 
 export default customerAndDeviceRouterConfig;

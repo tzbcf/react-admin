@@ -1,5 +1,5 @@
 const initState = {
-  collapsed: false
+    collapsed: false,
 };
 
 export type INITSTATE = {
@@ -14,16 +14,16 @@ type ACTION = {
 export const COLLAPSED_TOGGLE = 'collapsed_toggle'; // menu展开与缩小的切换
 
 /**
- * 左边导航栏的切换；collapsed为true时，展开，否则缩小
- * @param state
- * @param action
- * @returns
+ * 状态切换
+ * @param {INITSTATE} state 状态器
+ * @param {ACTION} action 切换器
+ * @returns {state} state
  */
 export const toggleCollapsed = (state: INITSTATE = initState, action: ACTION) => {
-  switch (action.type) {
-    case COLLAPSED_TOGGLE:
-      return {...state, collapsed: action.value};
-    default:
-      return state;
-  }
-}
+    switch (action.type) {
+        case COLLAPSED_TOGGLE:
+            return {...state, collapsed: action.value};
+        default:
+            return state;
+    }
+};

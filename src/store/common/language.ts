@@ -1,11 +1,11 @@
 import zhCN from 'src/assets/langLocales/zhCN';
-import es_ES from 'src/assets/langLocales/es_ES';
-import en_US from 'src/assets/langLocales/en_US';
+import esES from 'src/assets/langLocales/es_ES';
+import enUS from 'src/assets/langLocales/en_US';
 
 // 默认英语。使用英语模块
 const initState = {
-  locale: 'en_US',
-  message: en_US
+    locale: 'en_US',
+    message: esES,
 };
 
 
@@ -28,10 +28,10 @@ export type INITSTATE = {
  */
 
 const messageObject: Message = {
-  'zhCN': zhCN,
-  'en_US': en_US,
-  'es_ES': es_ES
-}
+    'zhCN': zhCN,
+    'en_US': enUS,
+    'es_ES': esES,
+};
 
 type ACTION = {
   type: string
@@ -41,16 +41,16 @@ type ACTION = {
 export const LANG_SWITCH = 'lang_switch';
 
 /**
- * 语言的切换
- * @param state
- * @param action
- * @returns
+ * 语言切换
+ * @param {INITSTATE} state 状态值
+ * @param {ACTION} action 切换器
+ * @returns {state} 返回state
  */
 export const langSwitch = (state: INITSTATE = initState, action: ACTION) => {
-  switch (action.type) {
-    case LANG_SWITCH:
-      return {...state, locale: action.value, message: messageObject[action.value] };
-    default:
-      return state;
-  }
-}
+    switch (action.type) {
+        case LANG_SWITCH:
+            return {...state, locale: action.value, message: messageObject[action.value] };
+        default:
+            return state;
+    }
+};

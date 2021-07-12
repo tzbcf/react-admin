@@ -3,7 +3,7 @@ import menu from './menu';
 import common from './common';
 
 export default {
-  ...login,
-  ...menu,
-  ...common
-}
+    ...login,
+    ...menu,
+    ...common,
+};

@@ -11,9 +11,8 @@
  * Copyright (c) 2021 Magina Corporation. All rights reserved.
  */
 
-
- import {lazy} from 'react';
- import { RouterConfig } from '../../types';
+import { lazy } from 'react';
+import { RouterConfig } from '../../types';
 
 const homePageRouterConfig: RouterConfig[] = [
     {
@@ -26,17 +25,17 @@ const homePageRouterConfig: RouterConfig[] = [
                 title: 'mdrMainTitle',
                 icon: 'HomeOutlined',
                 route: '/home/mdrHomePage',
-                component: lazy(() => import('src/pages/homePage/mdrHomePage'))
+                component: lazy(() => import('src/pages/homePage/mdrHomePage')),
             },
             {
                 key: 'pvmsHomePge',
                 title: 'pvmsMainTitle',
                 icon: 'HomeOutlined',
                 route: '/home/pvmsHomePage',
-                component: lazy(() => import('src/pages/homePage/pvmsHomePage'))
-            }
-        ]
+                component: lazy(() => import('src/pages/homePage/pvmsHomePage')),
+            },
+        ],
     },
-]
+];
 
 export default homePageRouterConfig;

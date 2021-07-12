@@ -49,12 +49,15 @@
   },
   "devDependencies": {
     "@craco/craco": "^6.1.1",
+    "compression-webpack-plugin": "5.0.1",
     "craco-antd": "^1.19.0",
     "craco-less": "^1.17.1",
     "cross-env": "^7.0.3",
+    "happypack": "^5.0.1",
     "query-string": "^7.0.0",
     "simple-progress-webpack-plugin": "^1.1.2",
     "speed-measure-webpack-plugin": "^1.5.0",
+    "terser-webpack-plugin": "^5.1.4",
     "webpack-bundle-analyzer": "^4.4.2"
   }
 }

@@ -1,6 +1,7 @@
 /**
  * 业务上层布局组件
  */
+// eslint-disable-next-line no-use-before-define
 import React from 'react';
 import Routers from 'src/router/router';
 import Menu from 'src/components/menu';
@@ -17,33 +18,32 @@ type Props = {
   newsShow: boolean
 }
 
-const Main: React.FC<Props> = (props) => {
-  const { newsShow } = props; 
-  return (
-    <Layout>
-      <Header className={indexStyle.header}>
-        <HeaderDom />
-      </Header>
-      <Layout>
-        <Menu />
-        <Layout className='positionRelative'>
-          <div className={indexStyle.layoutContent}>
-            <MenuTabs />
-            <Content className={`${indexStyle.routerContent} p20`}>
-              <Routers />
-            </Content>
-          </div>
-          {
-            newsShow && <News />
-          }
+const Main = (props: Props) => {
+    const { newsShow } = props;
+
+    return (
+        <Layout>
+            <Header className={indexStyle.header}>
+                <HeaderDom />
+            </Header>
+            <Layout>
+                <Menu />
+                <Layout className="positionRelative">
+                    <div className={indexStyle.layoutContent}>
+                        <MenuTabs />
+                        <Content className={`${indexStyle.routerContent} p20`}>
+                            <Routers />
+                        </Content>
+                    </div>
+                    {
+                        newsShow && <News />
+                    }
+                </Layout>
+            </Layout>
         </Layout>
-      </Layout>
-    </Layout>
-  );
+    );
 };
 
-export default connect((state: any) => {
-  return {
-    newsShow: state.toggleNews.newsShow
-  }
-})(Main);
+export default connect((state: any) => ({
+    newsShow: state.toggleNews.newsShow,
+}))(Main);

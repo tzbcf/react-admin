@@ -17,18 +17,18 @@ const routerConfig: {
   others: RouterConfig[] | [],
   [index: string]: any;
 } = {
-  menus: [],
-  others: []
+    menus: [],
+    others: [],
 };
 
 routerConfig.menus = [
-  ...homePageRouterConfig,
-  ...customerAndDevice,
-  ...amiFunction,
-  ...configuration,
-  ...collectReport,
-  ...basicData,
-  ...opreateRoleRouterConfig
+    ...homePageRouterConfig,
+    ...customerAndDevice,
+    ...amiFunction,
+    ...configuration,
+    ...collectReport,
+    ...basicData,
+    ...opreateRoleRouterConfig,
 ];
 
 routerConfig.others = othersRouterConfig;

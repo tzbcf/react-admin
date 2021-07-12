@@ -1,8 +1,7 @@
+// eslint-disable-next-line no-use-before-define
 import React from 'react';
 
-const UserList: React.FC = () => {
-  return (<div>我是Dcu Monitoring</div>)
-};
+const UserList: React.FC = () => <div>我是Dcu Monitoring</div>;
 
 
 export default UserList;

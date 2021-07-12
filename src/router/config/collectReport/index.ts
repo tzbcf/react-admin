@@ -12,8 +12,8 @@
  */
 
 
- import {lazy} from 'react';
- import { RouterConfig } from '../../types';
+import {lazy} from 'react';
+import { RouterConfig } from '../../types';
 
 const collectReportRouterConfig: RouterConfig[] = [
     {
@@ -26,45 +26,45 @@ const collectReportRouterConfig: RouterConfig[] = [
                 title: 'menuTitleLoadProfileDataQuery',
                 icon: 'HomeOutlined',
                 route: '/home/collectReport/loadProfileDataQuery',
-                component: lazy(() => import('src/pages/collectReport/loadProfileDataQuery'))
+                component: lazy(() => import('src/pages/collectReport/loadProfileDataQuery')),
             },
             {
                 key: 'dailyFrozenDataQuery',
                 title: 'menuTitleDailyFrozenDataQuery',
                 icon: 'HomeOutlined',
                 route: '/home/collectReport/dailyFrozenDataQuery',
-                component: lazy(() => import('src/pages/collectReport/dailyFrozenDataQuery'))
+                component: lazy(() => import('src/pages/collectReport/dailyFrozenDataQuery')),
             },
             {
                 key: 'monthlyFrozenDataQuery',
                 title: 'menuTitleMonthlyFrozenDataQuery',
                 icon: 'HomeOutlined',
                 route: '/home/collectReport/monthlyFrozenDataQuery',
-                component: lazy(() => import('src/pages/collectReport/monthlyFrozenDataQuery'))
+                component: lazy(() => import('src/pages/collectReport/monthlyFrozenDataQuery')),
             },
             {
                 key: 'meterAlarmEvent',
                 title: 'menuTitleMeterAlarmEvent',
                 icon: 'HomeOutlined',
                 route: '/home/collectReport/meterAlarmEvent',
-                component: lazy(() => import('src/pages/collectReport/meterAlarmEvent'))
+                component: lazy(() => import('src/pages/collectReport/meterAlarmEvent')),
             },
             {
                 key: 'dcuAlarmEvent',
                 title: 'menuTitleDcuAlarmEvent',
                 icon: 'HomeOutlined',
                 route: '/home/collectReport/dcuAlarmEvent',
-                component: lazy(() => import('src/pages/collectReport/dcuAlarmEvent'))
+                component: lazy(() => import('src/pages/collectReport/dcuAlarmEvent')),
             },
             {
                 key: 'lineLossQuery',
                 title: 'menuTitleLineLossQuery',
                 icon: 'HomeOutlined',
                 route: '/home/collectReport/lineLossQuery',
-                component: lazy(() => import('src/pages/collectReport/lineLossQuery'))
+                component: lazy(() => import('src/pages/collectReport/lineLossQuery')),
             },
-        ]
+        ],
     },
-]
+];
 
 export default collectReportRouterConfig;

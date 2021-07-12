@@ -11,6 +11,7 @@
  * Copyright (c) 2021 Magina Corporation. All rights reserved.
  */
 
+// eslint-disable-next-line no-use-before-define
 import React from 'react';
 import { connect } from 'react-redux';
 import { Table, Button, Modal } from 'antd';
@@ -23,13 +24,13 @@ type Props = {
 }
 const roleList: React.FC<Props> = (props) => {
     const { mes } = props;
-    
-    const editor = (item: any)=> {
-        console.log('item------', item)
-    } 
+
+    const editor = (item: any) => {
+        console.log('item------', item);
+    };
 
     const showDeleteConfirm = (item: any) => {
-        console.log('item------', item)
+        console.log('item------', item);
         confirm({
             title: 'Are you sure delete this task?',
             icon: <ExclamationCircleOutlined />,
@@ -37,101 +38,97 @@ const roleList: React.FC<Props> = (props) => {
             okText: 'Yes',
             okType: 'danger',
             cancelText: 'No',
-            onOk() {
-              console.log('OK');
+            onOk () {
+                console.log('OK');
             },
-            onCancel() {
-              console.log('Cancel');
+            onCancel () {
+                console.log('Cancel');
             },
-          });
-    }
+        });
+    };
 
     const columns = [
         {
-            title: mes['commonTitleSequence'],
+            title: mes.commonTitleSequence,
             dataIndex: 'rn_',
-          },
+        },
         {
-            title: `${mes['roleManageTitleRole']} ${mes['commonTitleName']}`,
+            title: `${mes.roleManageTitleRole} ${mes.commonTitleName}`,
             dataIndex: 'GROUP_NAME',
-          },
-          {
-            title: mes['commonTitleRemark'],
+        },
+        {
+            title: mes.commonTitleRemark,
             dataIndex: 'REMARK',
-          },
-          {
-            title: mes['roleManageTitleGlobalMaintenance'],
+        },
+        {
+            title: mes.roleManageTitleGlobalMaintenance,
             dataIndex: 'GLOBE_MODIFY_FLAG',
-            render(_: any, record: any){
+            render (_: any, record: any) {
                 return (
-                    <span>{ parseInt(record['GLOBE_MODIFY_FLAG'], 10) ? mes['commonTextYes'] : mes['commonTextNo']}</span>
-                )
-            }
-          },
-          {
-            title: `${mes['commonTitleCreate']}${mes['commonTitleTime']}`,
+                    <span>{ parseInt(record.GLOBE_MODIFY_FLAG, 10) ? mes.commonTextYes : mes.commonTextNo}</span>
+                );
+            },
+        },
+        {
+            title: `${mes.commonTitleCreate}${mes.commonTitleTime}`,
             dataIndex: 'CRETE_TIME',
-            render(_: any, record: any){
+            render (_: any, record: any) {
                 return (
-                    <span>{ record['CRETE_TIME'].split(' ')[0] }</span>
-                )
-            }
-          },
-          {
-            title: mes['commonTitleOperate'],
+                    <span>{ record.CRETE_TIME.split(' ')[0] }</span>
+                );
+            },
+        },
+        {
+            title: mes.commonTitleOperate,
             dataIndex: 'operate',
             width: 200,
-            render(_: any, record: any) {
+            render (_: any, record: any) {
                 return (
                     <>
-                        <Button type='primary' onClick={() => editor(record)}>{ mes['commonBtnEtitor'] }</Button>
-                        <Button type='default' className='ml10' onClick={()=>showDeleteConfirm(record)} danger>{ mes['commonBtnDelete'] }</Button>
+                        <Button type="primary" onClick={() => editor(record)}>{ mes.commonBtnEtitor }</Button>
+                        <Button type="default" className="ml10" onClick={() => showDeleteConfirm(record)} danger>{ mes.commonBtnDelete }</Button>
                     </>
-                )
-            }
-          }
+                );
+            },
+        },
     ];
     const pagination = {
         total: 2,
     };
     const data = [
         {
-            rn_: 1, 
+            rn_: 1,
             GROUP_NAME: 'test',
             REMARK: '测试',
             GLOBE_MODIFY_FLAG: '1',
-            CRETE_TIME: '2020-10-10 19:10:10'
+            CRETE_TIME: '2020-10-10 19:10:10',
         },
         {
             rn_: 2,
             GROUP_NAME: 'admin',
             REMARK: 'amin',
             GLOBE_MODIFY_FLAG: '0',
-            CRETE_TIME: '2020-10-10 19:20:10'
+            CRETE_TIME: '2020-10-10 19:20:10',
         },
     ];
-    
+
     return (
-        <div className='main'>
-            <div className='list'>
-                <div className='flexCenter flexBetween title'>
-                    <h4>{ `${mes['roleManageTitleRole']}${mes['commonTitleList']}` }</h4>
-                    <Button type='primary'>{ mes['commonBtnAdd'] }</Button>
+        <div className="main">
+            <div className="list">
+                <div className="flexCenter flexBetween title">
+                    <h4>{ `${mes.roleManageTitleRole}${mes.commonTitleList}` }</h4>
+                    <Button type="primary">{ mes.commonBtnAdd }</Button>
                 </div>
-                <div className='pv10h20'>
+                <div className="pv10h20">
                     <Table dataSource={data} pagination={pagination} columns={columns} />
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default connect((state: any) => {
-    return {
-      mes: state.langSwitch.message
-    }
-  })(roleList);
-
-
+export default connect((state: any) => ({
+    mes: state.langSwitch.message,
+}))(roleList);
 
 
