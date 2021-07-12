@@ -5,7 +5,7 @@
  * Created Date: 2021-07-03 22:55:31
  * Description :
  * -----
- * Last Modified: 2021-07-04 19:08:51
+ * Last Modified: 2021-07-12 22:19:00
  * Modified By :
  * -----
  * Copyright (c) 2021 Magina Corporation. All rights reserved.
@@ -13,7 +13,7 @@
 // eslint-disable-next-line no-use-before-define
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Spin} from 'antd';
+import { Spin } from 'antd';
 
 const showLoading = () => {
     const loading = document.getElementById('loading') as HTMLElement;
@@ -23,7 +23,7 @@ const showLoading = () => {
 
         dom.setAttribute('id', 'loading');
         document.body.appendChild(dom);
-        ReactDOM.render(<Spin tip="加载中..." size="large"/>, dom);
+        ReactDOM.render(<Spin tip='加载中...' size='large' />, dom);
     }
 };
 
@@ -37,7 +37,4 @@ const hideLoading = (timeout = 0) => {
     }, timeout);
 };
 
-export {
-    showLoading,
-    hideLoading,
-};
+export { showLoading, hideLoading };

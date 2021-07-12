@@ -23,10 +23,10 @@ const Lang = (props: any) => {
     };
 
     return (
-        <Select placeholder="Languages" value={locale || lang} bordered={false} onChange={handleChange} className="flexCenter w100">
-            <Option value="en_US">English</Option>
-            <Option value="es_ES">España</Option>
-            <Option value="zhCN">简体中文</Option>
+        <Select placeholder='Languages' value={locale || lang} bordered={false} onChange={handleChange} className='flexCenter w100'>
+            <Option value='en_US'>English</Option>
+            <Option value='es_ES'>España</Option>
+            <Option value='zhCN'>简体中文</Option>
         </Select>
     );
 };

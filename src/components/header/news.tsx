@@ -5,7 +5,7 @@
  * Created Date: 2021-07-07 16:11:35
  * Description :
  * -----
- * Last Modified: 2021-07-08 11:24:02
+ * Last Modified: 2021-07-12 22:13:15
  * Modified By :
  * -----
  * Copyright (c) 2021 Magina Corporation. All rights reserved.
@@ -24,7 +24,7 @@ const { Option } = Select;
 type Props = {
     mes: LangMessage;
     dispatch: any;
-}
+};
 
 const News = (props: Props) => {
     const { mes, dispatch } = props;
@@ -36,17 +36,17 @@ const News = (props: Props) => {
     };
 
     return (
-        <div id="news">
-            <div className="flexCenter flexBetween pv10h20">
+        <div id='news'>
+            <div className='flexCenter flexBetween pv10h20'>
                 <div>
-                    <span className="pr10">{mes.newsTitleAlarmInfo}</span>
-                    <i className="count">0</i>
+                    <span className='pr10'>{mes.newsTitleAlarmInfo}</span>
+                    <i className='count'>0</i>
                 </div>
                 <div>
-                    <Select defaultValue="ALL" className="pr10">
-                        <Option value="ALL">ALL</Option>
-                        <Option value="Meter">Meter</Option>
-                        <Option value="DCU">DCU</Option>
+                    <Select defaultValue='ALL' className='pr10'>
+                        <Option value='ALL'>ALL</Option>
+                        <Option value='Meter'>Meter</Option>
+                        <Option value='DCU'>DCU</Option>
                     </Select>
                     <CloseOutlined onClick={() => newsClose()} />
                 </div>
@@ -58,5 +58,3 @@ const News = (props: Props) => {
 export default connect((state: any) => ({
     mes: state.langSwitch.message,
 }))(News);
-
-

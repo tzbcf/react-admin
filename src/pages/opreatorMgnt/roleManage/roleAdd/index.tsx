@@ -5,7 +5,7 @@
  * Created Date: 2021-06-20 17:17:01
  * Description :
  * -----
- * Last Modified: 2021-06-20 18:42:34
+ * Last Modified: 2021-07-12 19:53:41
  * Modified By :
  * -----
  * Copyright (c) 2021 Magina Corporation. All rights reserved.
@@ -62,16 +62,11 @@ const Details: React.FC = () => {
     return (
         <div>
             <h4>权限树</h4>
-            <div className="pv10h20">
-                <Tree
-                    checkable
-                    treeData={treeData}
-                />
+            <div className='pv10h20'>
+                <Tree checkable treeData={treeData} />
             </div>
         </div>
     );
 };
 
 export default Details;
-
-

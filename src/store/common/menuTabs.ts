@@ -36,10 +36,10 @@ export const MENUTABS_ADD = 'add_menutabs'; // 添加菜单tabs
 export const MENUTABS_DELETE = 'delete_menutabs'; // 删除菜单tabs
 
 /**
- * 菜单标签处理
- * @param state
- * @param action
- * @returns
+ *  菜单标签
+ * @param {initState} state state
+ * @param {ACTION} action action
+ * @returns {state} state
  */
 export const menuTabsDispose = (state: MenuList = initState, action: ACTION) => {
     const {menuTabs} = state;

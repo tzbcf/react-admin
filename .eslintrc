@@ -39,7 +39,7 @@
         // 禁止不必要的布尔转换
         "no-extra-boolean-cast": 2,
         // 禁止不必要的括号 //(a * b) + c;//报错
-        "no-extra-parens": 1,
+        "no-extra-parens": 0,
         // 禁止不必要的分号
         "no-extra-semi": 2,
         // 禁止对 function 声明重新赋值
@@ -149,7 +149,7 @@
         // 禁止在循环中出现 function 声明和表达式
         "no-loop-func": 1,
         // 禁用魔术数字(3.14什么的用常量代替)
-        "no-magic-numbers": [1, { "ignore": [0, -1, 1] }],
+        "no-magic-numbers": 0,
         // 禁止使用多个空格
         "no-multi-spaces": 2,
         // 禁止使用多行字符串，在 JavaScript 中，可以在新行之前使用斜线创建多行字符串
@@ -301,7 +301,7 @@
         // 要求标识符匹配一个指定的正则表达式
         "id-match": 0,
         // 强制在 JSX 属性中一致地使用双引号或单引号
-        "jsx-quotes": 1,
+        "jsx-quotes": [1, "prefer-single"],
         // 强制在关键字前后使用一致的空格 (前后腰需要)
         "keyword-spacing": 2,
         // 强制一行的最大长度

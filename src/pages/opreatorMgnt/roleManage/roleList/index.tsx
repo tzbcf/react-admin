@@ -5,7 +5,7 @@
  * Created Date: 2021-06-20 17:17:08
  * Description :
  * -----
- * Last Modified: 2021-07-08 19:29:47
+ * Last Modified: 2021-07-12 22:08:21
  * Modified By :
  * -----
  * Copyright (c) 2021 Magina Corporation. All rights reserved.
@@ -20,9 +20,9 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 const { confirm } = Modal;
 
 type Props = {
-    mes: LangMessage
-}
-const roleList: React.FC<Props> = (props) => {
+    mes: LangMessage;
+};
+const roleList = (props: Props) => {
     const { mes } = props;
 
     const editor = (item: any) => {
@@ -64,18 +64,14 @@ const roleList: React.FC<Props> = (props) => {
             title: mes.roleManageTitleGlobalMaintenance,
             dataIndex: 'GLOBE_MODIFY_FLAG',
             render (_: any, record: any) {
-                return (
-                    <span>{ parseInt(record.GLOBE_MODIFY_FLAG, 10) ? mes.commonTextYes : mes.commonTextNo}</span>
-                );
+                return <span>{parseInt(record.GLOBE_MODIFY_FLAG, 10) ? mes.commonTextYes : mes.commonTextNo}</span>;
             },
         },
         {
             title: `${mes.commonTitleCreate}${mes.commonTitleTime}`,
             dataIndex: 'CRETE_TIME',
             render (_: any, record: any) {
-                return (
-                    <span>{ record.CRETE_TIME.split(' ')[0] }</span>
-                );
+                return <span>{record.CRETE_TIME.split(' ')[0]}</span>;
             },
         },
         {
@@ -85,8 +81,12 @@ const roleList: React.FC<Props> = (props) => {
             render (_: any, record: any) {
                 return (
                     <>
-                        <Button type="primary" onClick={() => editor(record)}>{ mes.commonBtnEtitor }</Button>
-                        <Button type="default" className="ml10" onClick={() => showDeleteConfirm(record)} danger>{ mes.commonBtnDelete }</Button>
+                        <Button type='primary' onClick={() => editor(record)}>
+                            {mes.commonBtnEtitor}
+                        </Button>
+                        <Button type='default' className='ml10' onClick={() => showDeleteConfirm(record)} danger>
+                            {mes.commonBtnDelete}
+                        </Button>
                     </>
                 );
             },
@@ -113,13 +113,13 @@ const roleList: React.FC<Props> = (props) => {
     ];
 
     return (
-        <div className="main">
-            <div className="list">
-                <div className="flexCenter flexBetween title">
-                    <h4>{ `${mes.roleManageTitleRole}${mes.commonTitleList}` }</h4>
-                    <Button type="primary">{ mes.commonBtnAdd }</Button>
+        <div className='main'>
+            <div className='list'>
+                <div className='flexCenter flexBetween title'>
+                    <h4>{`${mes.roleManageTitleRole}${mes.commonTitleList}`}</h4>
+                    <Button type='primary'>{mes.commonBtnAdd}</Button>
                 </div>
-                <div className="pv10h20">
+                <div className='pv10h20'>
                     <Table dataSource={data} pagination={pagination} columns={columns} />
                 </div>
             </div>
@@ -130,5 +130,3 @@ const roleList: React.FC<Props> = (props) => {
 export default connect((state: any) => ({
     mes: state.langSwitch.message,
 }))(roleList);
-
-

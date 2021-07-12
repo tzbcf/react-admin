@@ -49,6 +49,7 @@
   },
   "devDependencies": {
     "@craco/craco": "^6.1.1",
+    "@types/compression-webpack-plugin": "^6.0.6",
     "compression-webpack-plugin": "5.0.1",
     "craco-antd": "^1.19.0",
     "craco-less": "^1.17.1",

@@ -15,8 +15,8 @@ import indexStyle from './index.module.less';
 const { Header, Content } = Layout;
 
 type Props = {
-  newsShow: boolean
-}
+    newsShow: boolean;
+};
 
 const Main = (props: Props) => {
     const { newsShow } = props;
@@ -28,16 +28,14 @@ const Main = (props: Props) => {
             </Header>
             <Layout>
                 <Menu />
-                <Layout className="positionRelative">
+                <Layout className='positionRelative'>
                     <div className={indexStyle.layoutContent}>
                         <MenuTabs />
                         <Content className={`${indexStyle.routerContent} p20`}>
                             <Routers />
                         </Content>
                     </div>
-                    {
-                        newsShow && <News />
-                    }
+                    {newsShow && <News />}
                 </Layout>
             </Layout>
         </Layout>

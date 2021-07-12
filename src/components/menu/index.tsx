@@ -2,7 +2,7 @@
  * 侧边导航栏组件
  */
 // eslint-disable-next-line no-use-before-define
-import React, {useState, Key} from 'react';
+import React, { useState, Key } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import routerConfig from 'src/router/menuRouter';
@@ -16,32 +16,41 @@ import { MENUTABS_ADD } from 'src/store/common/menuTabs';
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
-const MenuDom = (menuList: RouterConfig[], msg: LangMessage, addTabs: Function) => <>
-    {
-        menuList.map((v: RouterConfig) => {
+const MenuDom = (menuList: RouterConfig[], msg: LangMessage, addTabs: Function) =>
+    <>
+        {menuList.map((v: RouterConfig) => {
             if (v.subs && v.subs.length) {
-                return <SubMenu key={v.key} title={msg[v.title]} icon={React.createElement(Icons[v.icon])}>{
-                    MenuDom(v.subs, msg, addTabs)
-                }</SubMenu>;
+                return (
+                    <SubMenu key={v.key} title={msg[v.title]} icon={React.createElement(Icons[v.icon])}>
+                        {MenuDom(v.subs, msg, addTabs)}
+                    </SubMenu>
+                );
             }
             if (!v.isNoSub) {
-                return <Menu.Item key={v.key} icon={React.createElement(Icons[v.icon])} >
-                    <Link to={v.route} onClick={() => {addTabs(v);}}>{msg[v.title]}</Link>
-                </Menu.Item>;
+                return (
+                    <Menu.Item key={v.key} icon={React.createElement(Icons[v.icon])}>
+                        <Link
+                            to={v.route}
+                            onClick={() => {
+                                addTabs(v);
+                            }}>
+                            {msg[v.title]}
+                        </Link>
+                    </Menu.Item>
+                );
             }
-        })
-    }
-</>;
+        })}
+    </>;
 
 interface Props extends INITSTATE {
-  message: LangMessage,
-  dispatch: any
+    message: LangMessage;
+    dispatch: any;
 }
 
 const MenuNav = (props: Props) => {
     const { collapsed, message: msg, dispatch } = props;
 
-    let menus:RouterConfig[] = [];
+    let menus: RouterConfig[] = [];
 
     Object.keys(routerConfig).map((key: string) => {
         menus = menus.concat(routerConfig[key]);
@@ -76,18 +85,9 @@ const MenuNav = (props: Props) => {
     };
 
     return (
-        <Sider
-            style={{ width: props.collapsed ? '200px' : '80px', overflowY: 'auto' }}
-            collapsed={collapsed}
-        >
-            <Menu
-                mode="inline"
-                openKeys={openKeys}
-                onOpenChange={onOpenChange}
-            >
-                {
-                    MenuDom(menus, msg, addTabs)
-                }
+        <Sider style={{ width: props.collapsed ? '200px' : '80px', overflowY: 'auto' }} collapsed={collapsed}>
+            <Menu mode='inline' openKeys={openKeys} onOpenChange={onOpenChange}>
+                {MenuDom(menus, msg, addTabs)}
             </Menu>
         </Sider>
     );

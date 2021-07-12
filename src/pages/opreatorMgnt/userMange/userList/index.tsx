@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { Table, Button } from 'antd';
 import { LangMessage } from 'src/store/common/language';
 type Props = {
-  mes: LangMessage
-}
+    mes: LangMessage;
+};
 
 const UserList = (props: Props) => {
     const { mes } = props;
@@ -29,9 +29,7 @@ const UserList = (props: Props) => {
             title: mes.commonTitleStatus,
             dataIndex: 'CLOSE_FLAG',
             render (_: any, record: any) {
-                return (
-                    <span>{ parseInt(record.CLOSE_FLAG, 10) === 1 ? mes.commonTextEnable : mes.commonTextDisable}</span>
-                );
+                return <span>{parseInt(record.CLOSE_FLAG, 10) === 1 ? mes.commonTextEnable : mes.commonTextDisable}</span>;
             },
         },
         {
@@ -65,9 +63,7 @@ const UserList = (props: Props) => {
                     default:
                         valueStr = record.DB_DOT;
                 }
-                return (
-                    <span>{ valueStr }</span>
-                );
+                return <span>{valueStr}</span>;
             },
         },
         {
@@ -78,9 +74,7 @@ const UserList = (props: Props) => {
             title: `${mes.commonTitleCreate}${mes.commonTitleTime}`,
             dataIndex: 'CREATE_TIME',
             render (_: any, record: any) {
-                return (
-                    <span>{ record.CREATE_TIME.split(' ')[0] }</span>
-                );
+                return <span>{record.CREATE_TIME.split(' ')[0]}</span>;
             },
         },
         {
@@ -89,9 +83,13 @@ const UserList = (props: Props) => {
             render (_: any, record: any) {
                 return (
                     <>
-                        <Button type="primary" onClick={() => editor(record)}>{ mes.commonBtnEtitor }</Button>
-                        <Button type="default" className="ml10" onClick={() => showDeleteConfirm(record)} danger>{ mes.commonBtnDelete }</Button>
-                        <Button type="default" className="ml10" onClick={() => resetPassword(record)} danger>{ `${mes.commonBtnReset}${mes.password}` }</Button>
+                        <Button type='primary' onClick={() => editor(record)}>
+                            {mes.commonBtnEtitor}
+                        </Button>
+                        <Button type='default' className='ml10' onClick={() => showDeleteConfirm(record)} danger>
+                            {mes.commonBtnDelete}
+                        </Button>
+                        <Button type='default' className='ml10' onClick={() => resetPassword(record)} danger>{`${mes.commonBtnReset}${mes.password}`}</Button>
                     </>
                 );
             },
@@ -113,17 +111,18 @@ const UserList = (props: Props) => {
         },
     ];
 
-    return <div className="main">
-        <div className="flexCenter flexBetween title">
-            <h4>{ mes.userListTitle }</h4>
-            <Button type="primary">{ mes.commonBtnAdd }</Button>
+    return (
+        <div className='main'>
+            <div className='flexCenter flexBetween title'>
+                <h4>{mes.userListTitle}</h4>
+                <Button type='primary'>{mes.commonBtnAdd}</Button>
+            </div>
+            <div className='pv10h20'>
+                <Table dataSource={data} pagination={pagination} columns={columns} />
+            </div>
         </div>
-        <div className="pv10h20">
-            <Table dataSource={data} pagination={pagination} columns={columns} />
-        </div>
-    </div>;
+    );
 };
-
 
 export default connect((state: any) => ({
     mes: state.langSwitch.message,

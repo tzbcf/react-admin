@@ -5,7 +5,7 @@
  * Created Date: 2021-07-07 16:37:54
  * Description :
  * -----
- * Last Modified: 2021-07-08 10:24:27
+ * Last Modified: 2021-07-12 22:21:17
  * Modified By :
  * -----
  * Copyright (c) 2021 Magina Corporation. All rights reserved.
@@ -29,9 +29,9 @@ export const NEW_TOGGLE = 'new_toggle'; // 消息列表的展示与隐藏
 
 /**
    * 右边消息的显示与隐藏；newShow为true时，显示，否则隐藏
-   * @param state
-   * @param action
-   * @returns
+   * @param {initState} state state
+   * @param {ACTION} action action
+   * @returns {state} state
    */
 export const toggleNews = (state: INITSTATE = initState, action: ACTION) => {
     switch (action.type) {

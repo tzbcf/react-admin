@@ -36,31 +36,31 @@ const Login = (props: Props) => {
                 <Lang />
             </Header>
             <Content>
-                <Row justify="center">
+                <Row justify='center'>
                     <Col>
-                        <img src={LOGO} alt="LOGO" />
+                        <img src={LOGO} alt='LOGO' />
                     </Col>
                 </Row>
-                <Row justify="center" style={{ marginBottom: '40px' }}>
-                    <Col className="f34 colorBlack fontWightBold">{Mes.platformName}</Col>
+                <Row justify='center' style={{ marginBottom: '40px' }}>
+                    <Col className='f34 colorBlack fontWightBold'>{Mes.platformName}</Col>
                 </Row>
-                <Row justify="center">
-                    <Form name="normal_login" className={indexStyle.loginForm} initialValues={{ remember: true }} onFinish={onFinish}>
-                        <Form.Item name="userName" rules={[ { required: true, message: Mes.ruleMessageUser } ]}>
-                            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder={Mes.userName} />
+                <Row justify='center'>
+                    <Form name='normal_login' className={indexStyle.loginForm} initialValues={{ remember: true }} onFinish={onFinish}>
+                        <Form.Item name='userName' rules={[ { required: true, message: Mes.ruleMessageUser } ]}>
+                            <Input prefix={<UserOutlined className='site-form-item-icon' />} placeholder={Mes.userName} />
                         </Form.Item>
-                        <Form.Item name="password" rules={[ { required: true, message: Mes.ruleMessagePass } ]}>
-                            <Input prefix={<LockOutlined className="site-form-item-icon" />} type="password" placeholder={Mes.password} />
+                        <Form.Item name='password' rules={[ { required: true, message: Mes.ruleMessagePass } ]}>
+                            <Input prefix={<LockOutlined className='site-form-item-icon' />} type='password' placeholder={Mes.password} />
                         </Form.Item>
                         <Form.Item>
-                            <Row justify="space-between">
+                            <Row justify='space-between'>
                                 <Col>
-                                    <Form.Item name="remember" valuePropName="checked" noStyle>
+                                    <Form.Item name='remember' valuePropName='checked' noStyle>
                                         <Checkbox>{Mes.rememberText}</Checkbox>
                                     </Form.Item>
                                 </Col>
                                 <Col>
-                                    <a className="login-form-forgot" href="">
+                                    <a className='login-form-forgot' href=''>
                                         {Mes.forgotPassText}
                                     </a>
                                 </Col>
@@ -68,7 +68,7 @@ const Login = (props: Props) => {
                         </Form.Item>
 
                         <Form.Item>
-                            <Button type="primary" htmlType="submit" className={indexStyle.loginFormButton}>
+                            <Button type='primary' htmlType='submit' className={indexStyle.loginFormButton}>
                                 {Mes.loginBtnName}
                             </Button>
                         </Form.Item>
