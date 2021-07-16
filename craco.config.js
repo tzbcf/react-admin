@@ -48,7 +48,7 @@ module.exports = {
                     },
                 ],
                 // ... 其它配置项
-                threads: os.cpus().length - 1,
+                threads: os.cpus().length,
                 // 使用共享进程池中的子进程去处理任务
                 threadPool: happyThreadPool,
                 // ... 其它配置项
@@ -70,7 +70,7 @@ module.exports = {
                     },
                 ], // 给css-loader传递参数 ?minimize
                 // ... 其它配置项
-                threads: os.cpus().length - 1,
+                threads: os.cpus().length,
                 // 使用共享进程池中的子进程去处理任务
                 threadPool: happyThreadPool,
             }),
