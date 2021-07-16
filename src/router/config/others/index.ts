@@ -39,6 +39,13 @@ const othersRouterConfig: RouterConfig[] = [
                 isNoSub: true,
                 component: lazy(() => import('src/pages/others/table/details')),
             },
+            {
+                key: 'langManage',
+                route: '/home/langManage/list',
+                title: 'commonLangManage',
+                icon: 'CopyOutlined',
+                component: lazy(() => import('src/pages/others/langManage/index')),
+            },
         ],
     },
 ];

@@ -42,6 +42,18 @@ const CreateColumns = (props: any) => {
                 </Space>
             );
             break;
+        case 'SelectInput':
+            element = (
+                <div className={indexLess.selectInput}>
+                    <Select defaultValue='zhCN' style={{width: 'auto'}}>
+                        <Option value='zhCN'>中文</Option>
+                        <Option value='esUS'>英语</Option>
+                        <Option value='esES'>西班牙</Option>
+                    </Select>
+                    <Input style={{ width: '100%', flex: 1 }} />
+                </div>
+            );
+            break;
         default:
             element = <span></span>;
             break;
@@ -74,9 +86,9 @@ const SearchList = (props: Props) => {
         <div className={indexLess.searchForm}>
             <h4>{mes.compontentTitleSearchList}</h4>
             <Form form={form} name='search-form' onFinish={onFinish}>
-                <Row justify='space-between'>{getFields()}</Row>
-                <Row justify='end'>
-                    <Col>
+                <Row justify='start'>
+                    {getFields()}
+                    <Col span='6' className='pv0h8'>
                         <Form.Item>
                             <Button type='primary' htmlType='submit'>
                                 {mes.commonBtnSearch}

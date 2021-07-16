@@ -8,7 +8,7 @@ const os = require('os');
 const CracoLessPlugin = require('craco-less');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
-const compressionWebpackPlugin = require('compression-webpack-plugin');
+const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const smp = new SpeedMeasurePlugin();
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
@@ -22,9 +22,9 @@ module.exports = {
             rules: [
                 {
                     test: /\.(jsx|js|ts|tsx)$/,
-                    include: [path.resolve(__dirname, './src')],
-                    exclude: [/node_modules/],
-                    use: ['eslint-loader'],
+                    include: [ path.resolve(__dirname, './src') ],
+                    exclude: [ /node_modules/ ],
+                    use: [ 'eslint-loader' ],
                     enforce: 'pre',
                 },
             ],
@@ -43,7 +43,7 @@ module.exports = {
                         loader: 'babel-loader',
                         options: {
                             // 2.使用bable,新语法转成es5语法
-                            presets: ['@babel/preset-env'],
+                            presets: [ '@babel/preset-env' ],
                         },
                     },
                 ],
@@ -76,7 +76,7 @@ module.exports = {
             }),
             new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
             new SimpleProgressWebpackPlugin(),
-            new compressionWebpackPlugin({
+            new CompressionWebpackPlugin({
                 // gzip打包
                 filename: '[path].gz[query]',
                 algorithm: 'gzip',
@@ -86,9 +86,9 @@ module.exports = {
                 minRatio: 0.8, // 只有压缩率小于这个值的资源才会被处理
                 // deleteOriginalAssets: true // 删除原文件
             }),
-            ...whenProd(() => [new BundleAnalyzerPlugin()], []),
+            ...whenProd(() => [ new BundleAnalyzerPlugin() ], []),
         ]),
-        //抽离公用模块
+        // 抽离公用模块
         optimization: {
             splitChunks: {
                 chunks: 'all',
@@ -137,12 +137,10 @@ module.exports = {
         {
             plugin: CracoLessPlugin,
             options: {
-                modifyLessRule: () => {
-                    return {
-                        test: /\.less$/,
-                        use: ['style-loader', 'css-loader', 'less-loader'],
-                    };
-                },
+                modifyLessRule: () => ({
+                    test: /\.less$/,
+                    use: [ 'style-loader', 'css-loader', 'less-loader' ],
+                }),
             },
         },
     ],

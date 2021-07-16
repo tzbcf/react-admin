@@ -23,4 +23,5 @@ export default {
     'commonTextWeb': 'web',
     'commonTextDealer': '经销商',
     'commonTextDealerOperator': '经销商操作员',
+    'commonLangManage': '语言管理',
 };

@@ -11,7 +11,9 @@
     <script>
       const primaryColor = localStorage.getItem('@primary-color');
       primaryColor && window.less.modifyVars({
-          '@primary-color': primaryColor,
+          '@primary-color': '#3AB17A',
+          '@ant-layout-sider':'#fff',
+          '@titleBg': '#3AB17A'
         }).then((res)=>console.info('color change suceess', res))
         .catch((err)=> console.warn('color changge error',err));
     </script>
