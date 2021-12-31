@@ -1,0 +1,187 @@
+{
+    "workbench.iconTheme": "vscode-icons",
+    "workbench.colorTheme": "Dracula Soft",
+    "prettier.arrowParens": "avoid",
+    "prettier.bracketSpacing": true,
+    "prettier.ignorePath": ".prettierignore",
+    "prettier.jsxBracketSameLine": false,
+    "prettier.printWidth": 80,
+    "prettier.proseWrap": "preserve",
+    "prettier.requireConfig": false,
+    "prettier.semi": true,
+    "prettier.singleQuote": true,
+    "prettier.tabWidth": 2,
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "explorer.confirmDelete": false,
+    "[jsonc]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "editor.formatOnType": true,
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact"
+    ],
+    "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+    "window.zoomLevel": 0,
+    "editor.renderWhitespace": "none",
+    "editor.renderControlCharacters": false,
+    "editor.minimap.enabled": false,
+    "breadcrumbs.enabled": true,
+    "editor.fontSize": 14,
+    "editor.tabSize": 2,
+    "editor.wordWrap": "on",
+    "files.trimTrailingWhitespace": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "files.associations": {
+        "*.cjson": "jsonc",
+        "*.wxss": "css",
+        "*.wxs": "javascript"
+    },
+    "emmet.includeLanguages": {
+        "wxml": "html"
+    },
+    "minapp-vscode.disableAutoConfig": true,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "background.enabled": true,
+    "background.useDefault": false,
+    "background.customImages": [
+        ""
+    ],
+    "background.style": {
+        "content": "''",
+        "pointer-events": "none",
+        "position": "absolute",
+        "z-index": "99999",
+        "width": "100%",
+        "height": "100%",
+        "background-position": "center",
+        "background-repeat": "no-repeat",
+        "background-size": "100%,100%",
+        "opacity": 0.1
+    },
+    "explorer.confirmDragAndDrop": false,
+    "files.autoSave": "afterDelay",
+    "[json]": {
+        "editor.quickSuggestions": {
+            "strings": true
+        },
+        "editor.suggest.insertMode": "replace",
+        "gitlens.codeLens.scopes": [
+            "document"
+        ]
+    },
+    "security.workspace.trust.untrustedFiles": "open",
+    "psi-header.templates": [
+        {
+            "language": "*",
+            "template": [
+                "FileName : <<filename>>",
+                "ProjectName : <<projectname>>",
+                "Author : <<author>>",
+                "Created Date: <<filecreated('YYYY-MM-DD HH:mm:ss')>>",
+                "Description : ",
+                "-----",
+                "Last Modified: ",
+                "Modified By : ",
+                "-----",
+                "Copyright (c) <<year>> <<company>>. All rights reserved."
+            ]
+        }
+    ],
+    "psi-header.variables": [
+        [
+            "projectpath",
+            ""
+        ],
+        [
+            "company",
+            ""
+        ],
+        [
+            "author",
+            ""
+        ],
+        [
+            "authoremail",
+            ""
+        ],
+        [
+            "year",
+            ""
+        ]
+    ],
+    "psi-header.changes-tracking": {
+        "isActive": true,
+        "modAuthor": "Modified By: ",
+        "modDate": "Last Modified: ",
+        "modDateFormat": "YYYY-MM-DD HH:mm:ss",
+        "include": [],
+        "exclude": [
+            "markdown",
+            "json"
+        ],
+        "autoHeader": "manualSave"
+    },
+    "psi-header.config": {
+        "forceToTop": true,
+        "blankLinesAfter": 6,
+        "license": "Custom"
+    },
+    "psi-header.lang-config": [
+        {
+            "language": "javascript",
+            "begin": "/**",
+            "prefix": " * ",
+            "end": " */",
+            "blankLinesAfter": 2,
+            "forceToTop": false
+        },
+        {
+            "language": "typescript",
+            "mapTo": "javascript"
+        }
+    ],
+    "editor.renderIndentGuides": false,
+    "git.autofetch": true,
+    "git.enableSmartCommit": true,
+    "git.confirmSync": false,
+    "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "extensions.ignoreRecommendations": false,
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "background.useFront": false,
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "prettier.embeddedLanguageFormatting": "auto",
+    "prettier.htmlWhitespaceSensitivity": "css",
+    "prettier.enable": true,
+    "prettier.enableDebugLogs": true,
+    "prettier.endOfLine": "auto",
+    "prettier.insertPragma": true,
+    "prettier.jsxSingleQuote": true,
+    "prettier.quoteProps": "as-needed",
+    "prettier.requirePragma": false,
+    "prettier.resolveGlobalModules": false,
+    "prettier.useEditorConfig": true,
+    "prettier.useTabs": true,
+    "prettier.withNodeModules": false,
+    "prettier.vueIndentScriptAndStyle": false,
+    "editor.fontLigatures": false,
+    "typescript.format.insertSpaceBeforeFunctionParenthesis": true,
+    "typescript.format.insertSpaceAfterConstructor": true,
+    "standard.autoFixOnSave": true
+}

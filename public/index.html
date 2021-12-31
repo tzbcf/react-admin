@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Overseas Integration Platform</title>
+  </head>
+  <body>
+    <link rel="stylesheet/less" type="text/css" href="%PUBLIC_URL%/static/style/theme.less" />
+    <!-- <link rel="stylesheet/less" type="text/css" href="%PUBLIC_URL%/static/style/bg.less" /> -->
+    <script src="%PUBLIC_URL%/static/js/less.min.js"></script>
+    <script>
+      const primaryColor = localStorage.getItem('@primary-color');
+      primaryColor && window.less.modifyVars({
+          '@primary-color': '#3AB17A',
+          '@ant-layout-sider':'#fff',
+          '@titleBg': '#3AB17A'
+        }).then((res)=>console.info('color change suceess', res))
+        .catch((err)=> console.warn('color changge error',err));
+    </script>
+    <div id="root"></div>
+  </body>
+</html>

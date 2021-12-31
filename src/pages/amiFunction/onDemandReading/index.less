@@ -1,0 +1,123 @@
+/*
+ * FileName : index.less
+ * ProjectName : admin
+ * Author : terrorblade
+ * Created Date: 2021-09-30 10:17:11
+ * Description :
+ * -----
+ * Last Modified:
+ * Modified By :
+ * -----
+ * Copyright (c) 2021 Magina Corporation. All rights reserved.
+ */
+
+.OnDemand {
+  padding-top: 12px!important;
+  >.cardBody {
+    width: 100%;
+    flex: 1;
+    margin-left: 0 !important;
+
+    >.ant-col {
+      height: 100%;
+
+      .card {
+        width: 100%;
+        height: 100%;
+        border: 1px solid #ccc;
+        padding: 6px 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .top {
+          padding-bottom: 6px;
+          border-bottom: 1px solid #ccc;
+          margin-left: -6px !important;
+          margin-right: -6px !important;
+          height: 30px;
+          .ant-col-9 {
+            padding-right: 0 !important;
+          }
+        }
+
+        .tree {
+          height: 100%;
+          flex: 1;
+          overflow-y: auto;
+          width: 100%;
+          overflow-x: hidden;
+          .ant-tree {
+
+            .ant-tree-treenode-switcher-close,
+            .ant-tree-treenode {
+              width: 230px;
+              overflow: hidden;
+
+              .ant-tree-node-content-wrapper {
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                .ant-tree-title {
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  display: block;
+                  flex: 1;
+                  width: 100%;
+                }
+              }
+            }
+          }
+        }
+        .tree::-webkit-scrollbar{
+          width: 2px;
+        }
+        .tree::-webkit-scrollbar-thumb {
+          border-radius: 10px;
+          box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+          background: rgba(0, 0, 0, 0.2);
+        }
+        .tree::-webkit-scrollbar-track {
+          box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+          border-radius: 0;
+          background: rgba(0, 0, 0, 0.1);
+        }
+      }
+
+      .reading {
+        width: 100%;
+        height: 100%;
+        border: 1px solid #ccc;
+        position: relative;
+        .top {
+          padding: 6px;
+        }
+        .table{
+          .ant-table-wrapper{
+            .ant-table-tbody{
+              .ant-table-cell{
+                .tdIncon{
+                  display: inline-block;
+                  width: 16px;
+                  height: 16px;
+                  margin-right: 2px;
+                }
+              }
+            }
+          }
+        }
+        .pagetion{
+          position: absolute;
+          left: 12px;
+          bottom:10px;
+        }
+      }
+    }
+
+    >.ant-col-18 {
+      padding-left: 0 !important;
+    }
+  }
+}

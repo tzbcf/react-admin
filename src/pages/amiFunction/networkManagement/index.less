@@ -1,0 +1,197 @@
+/*
+ * FileName : index.less
+ * ProjectName : admin
+ * Author : terrorblade
+ * Created Date: 2021-11-30 10:11:04
+ * Description :
+ * -----
+ * Last Modified:
+ * Modified By :
+ * -----
+ * Copyright (c) 2021 Magina Corporation. All rights reserved.
+ */
+
+.netWork {
+    padding-top: 12px !important;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    --describeHeight: 20px;
+    --graphColor: #aaa;
+    .wrapRight {
+        width: 100%;
+        flex: 1;
+        margin-left: 12px;
+        .content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            .condition {
+                padding: 6px;
+                .ant-row {
+                    margin-left: 0 !important;
+                    margin-right: 0 !important;
+                    .ant-col {
+                        padding-left: 0 !important;
+                        padding-right: 0 !important;
+                    }
+                }
+            }
+            .intro {
+                padding: 6px;
+                ul {
+                    li {
+                        float: left;
+                        margin-right: 5px;
+                    }
+                    li:last-child {
+                        float: none;
+                        clear: both;
+                    }
+                }
+                .graph {
+                    margin-left: 5px;
+                    margin-right: 5px;
+                }
+                i {
+                    display: inline-block;
+                    margin: 0;
+                    padding: 0;
+                }
+                .star {
+                    width: 0;
+                    height: 0;
+                    border-left: calc(var(--describeHeight) / 1.8) solid transparent;
+                    border-right: calc(var(--describeHeight) / 1.8) solid transparent;
+                    border-top: calc(var(--describeHeight) / 2.5) solid var(--graphColor);
+                    position: relative;
+                    transform: translateY(0);
+                }
+                .star::before {
+                    content: '';
+                    width: 0;
+                    height: 0;
+                    border-left: calc(var(--describeHeight) / 1.8) solid transparent;
+                    border-right: calc(var(--describeHeight) / 1.8) solid transparent;
+                    border-top: calc(var(--describeHeight) / 2.5) solid var(--graphColor);
+                    transform: rotate(72deg);
+                    position: absolute;
+                    left: calc(var(--describeHeight) - 1.6 * var(--describeHeight));
+                    top: calc(var(--describeHeight) - 1.4 * var(--describeHeight));
+                }
+                .star::after {
+                    content: '';
+                    width: 0;
+                    height: 0;
+                    border-left: calc(var(--describeHeight) / 1.8) solid transparent;
+                    border-right: calc(var(--describeHeight) / 1.8) solid transparent;
+                    border-top: calc(var(--describeHeight) / 2.5) solid var(--graphColor);
+                    transform: rotate(-73deg);
+                    position: absolute;
+                    left: calc(var(--describeHeight) - 1.55 * var(--describeHeight));
+                    top: calc(var(--describeHeight) - 1.4 * var(--describeHeight));
+                }
+                .triangle {
+                    width: 0;
+                    height: 0;
+                    border-left: calc(var(--describeHeight) / 3) solid transparent;
+                    border-right: calc(var(--describeHeight) / 3) solid transparent;
+                    border-bottom: calc(var(--describeHeight) / 1.2) solid var(--graphColor);
+                    transform: translateY(10%);
+                }
+                .diamond {
+                    width: calc(var(--describeHeight) / 1.5);
+                    height: calc(var(--describeHeight) / 1.5);
+                    transform: rotate(45deg);
+                    background-color: var(--graphColor);
+                }
+                .ellipse {
+                    width: calc(var(--describeHeight) / 1.2);
+                    height: calc(var(--describeHeight) / 1.2);
+                    background-color: var(--graphColor);
+                    border-radius: 100%;
+                    transform: translateY(20%);
+                }
+                .square {
+                    width: calc(var(--describeHeight) / 1.2);
+                    height: calc(var(--describeHeight) / 1.2);
+                    background-color: var(--graphColor);
+                    transform: translateY(15%);
+                }
+                .circle{
+                    background-color: var(--graphColor);
+                    border-radius: 100%;
+                    width: calc(var(--describeHeight) / 1.2);
+                    height: calc(var(--describeHeight) / 1.2);
+                    transform: translateY(15%);
+                }
+                .rect {
+                    width: calc(var(--describeHeight) / 0.8);
+                    height: calc(var(--describeHeight) / 1.2);
+                    background-color: var(--graphColor);
+                    transform: translateY(15%);
+                }
+                .color{
+                    display: inline-block;
+                    width: 20px;
+                    height: 20px;
+                    transform: translateY(25%);
+                    cursor: pointer;
+                    opacity: 0.3;
+                    border-radius: 50%;
+                    margin-left: 8px;
+                    border: 1px solid transparent;
+                }
+                .color-current {
+                    opacity: 1;
+                    box-shadow: 0px 0px 6px 3px #888888;
+                }
+            }
+            .netG6{
+                height: 100%;
+                flex: 1;
+                position: relative;
+                overflow: hidden;
+                #canvas {
+                    .g6-minimap {
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        .g6-minimap-viewport {
+                            border: 1px solid #aaa !important;
+                            outline: none !important;
+                        }
+                    }
+                    .g6-ul{
+                        li {
+                            list-style-type: none;
+                            width: 100%;
+                            padding: 10px;
+                            border-top: 1px solid #ccc;
+                            cursor: pointer;
+                        }
+                        li:hover {
+                            background: #009688;
+                            color: white;
+                        }
+                        li:nth-child(1) {
+                            border-top-width: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.net-modal{
+    .wrap-modal{
+        overflow-y: auto;
+        overflow-x: hidden;
+        .historyRecord{
+            height: 400px;
+            >div{
+                height: 100%;
+            }
+        }
+    }
+}

@@ -1,0 +1,127 @@
+/*
+ * FileName : index.less
+ * ProjectName : admin
+ * Author : terrorblade
+ * Created Date: 2021-10-15 14:53:13
+ * Description :
+ * -----
+ * Last Modified:
+ * Modified By :
+ * -----
+ * Copyright (c) 2021 Magina Corporation. All rights reserved.
+ */
+
+.firmwareUpgrade {
+    .queryResult,
+    .remoteUpgrade {
+        .wrapLeft {
+            border: 1px solid #dadada;
+            display: flex;
+            flex-direction: column;
+            .search {
+                padding: 6px 12px;
+                margin-bottom: 0!important;
+                margin-right: -1px;
+            }
+            .list {
+                width: 100%;
+                height: 100%;
+                padding-bottom: 6px;
+                flex: auto;
+                overflow-y: auto;
+                overflow-x: hidden;
+                padding: 0 12px 12px;
+                .ant-tree {
+                    width: 100%;
+                    .ant-tree-treenode-switcher-close,
+                    .ant-tree-treenode {
+                        width: 220px;
+                        overflow: hidden;
+                        .ant-tree-node-content-wrapper {
+                            overflow: hidden;
+                            .ant-tree-title {
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                display: block;
+                                width: 100%;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .wrapRight {
+            .top {
+                .ant-select {
+                    width: 100%;
+                }
+            }
+            .info {
+                padding: 20px;
+                .upgradeInfo {
+                    .title {
+                        border-bottom: none;
+                        .ant-col-24 {
+                            text-align: center;
+                            font-size: 24px;
+                            font-weight: bold;
+                            margin-bottom: 12px;
+                        }
+                    }
+                    .baseInfo {
+                        border: 1px solid #dadada;
+                        border-bottom: none;
+                        > .ant-col {
+                            padding: 6px 0;
+                            border-right: 1px solid #dadada;
+                            border-bottom: 1px solid #dadada;
+                        }
+                        > .ant-col:nth-child(even) {
+                            border-bottom: 1px solid #dadada;
+                            border-right: none;
+                        }
+                        .label {
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+        }
+        height: 100%;
+    }
+    .remoteUpgrade{
+        .btn{
+            padding: 12px 12px 6px;
+        }
+        h4{
+            padding: 6px 12px;
+        }
+        .list{
+            .ant-tree-list{
+                .ant-tree-list-holder-inner{
+                    .ant-tree-switcher-noop{
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+    .queryResult {
+        .wrapRight {
+            .page {
+                border-bottom: 1px solid #dadada;
+                border-top: 1px solid #dadada;
+                padding: 6px 0;
+                margin-left: 0!important;
+            }
+            .statistical {
+                margin-left: 0!important;
+                > .ant-col {
+                    border-right: 1px solid #dadada;
+                    padding: 6px 0;
+                }
+            }
+        }
+    }
+}

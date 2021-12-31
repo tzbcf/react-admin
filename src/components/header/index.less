@@ -1,0 +1,131 @@
+/*
+ * FileName : header.less
+ * ProjectName : admin
+ * Author : terrorblade
+ * Created Date: 2021-07-07 16:20:59
+ * Description :
+ * -----
+ * Last Modified: 2021-12-15 18:05:49
+ * Modified By :
+ * -----
+ * Copyright (c) 2021 Magina Corporation. All rights reserved.
+ */
+
+ #header{
+     width: 100%;
+    .baseInfo{
+        color: #fff;
+        .news{
+            position: relative;
+            top: 5px;
+            color: #fff;
+        }
+        .user{
+            .username{
+                position: relative;
+                z-index: 101;
+                align-items: center;
+                height: 100%;
+            }
+            .UserMgt{
+                position: absolute;
+                left: 0;
+                top: 46px;
+                width: 100%;
+                background-color: #fff;
+                padding: 10px;
+                z-index: 100;
+                color: rgba(0,0,0,.75);
+                li{
+                    width: 100%;
+                    text-align: center;
+                    line-height: 40px;
+                    cursor: pointer;
+                }
+            }
+        }
+        .ant-badge{
+            color:#fff;
+        }
+    }
+}
+
+#news{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 373px;
+    height: 100%;
+    background: #fff;
+    z-index: 90;
+    box-sizing: border-box;
+    border-top: 1px solid rgba(0,0,0,0.13);
+    box-shadow: -1px 2px 4px 0px rgba(0,0,0,0.13);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10px;
+    .flexCenter{
+        border-bottom: 1px solid rgba(0,0,0,0.13);
+        .count{
+            color: red;
+        }
+    }
+    .alarmList{
+        height: 100%;
+        flex: 1;
+        overflow-y: auto;
+        li{
+            background: #F8F8F8;
+            border-bottom: 1px solid #E4E4E4;
+            margin-bottom: 6px;
+            .top{
+                button{
+                    margin-left: 4px;
+                }
+            }
+            .info{
+                p{
+                    margin-bottom: 6px;
+                    font-size: 14px;
+                    line-height: 1;
+                    span:first-child{
+                        display: inline-block;
+                        width:100px;
+                    }
+                    .red{
+                        color:#ff0000;
+                    }
+                }
+
+            }
+        }
+    }
+}
+
+.helpModel{
+    .ant-modal-confirm-body{
+        .ant-modal-confirm-content{
+            margin-left: 0!important;
+        }
+        // p{
+        //     display: flex;
+        //     align-items: center;
+        //     justify-content: center;
+        //     span{
+        //         display: block;
+        //     }
+        //     .label{
+        //         font-weight: bold;
+        //         text-align: right;
+        //         width: 130px;
+        //     }
+        //     .text{
+        //         flex:1;
+        //         padding-left: 4px;
+        //     }
+        // }
+    }
+}
+
+

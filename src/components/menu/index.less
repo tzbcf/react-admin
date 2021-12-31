@@ -1,0 +1,71 @@
+/*
+ * FileName : index.less
+ * ProjectName : admin
+ * Author : terrorblade
+ * Created Date: 2021-07-07 09:46:42
+ * Description :
+ * -----
+ * Last Modified: 2021-12-14 16:49:29
+ * Modified By :
+ * -----
+ * Copyright (c) 2021 Magina Corporation. All rights reserved.
+ */
+
+#menuNav{
+   overflow-y: auto;
+}
+#menuNav::-webkit-scrollbar{
+   width: 2px;
+}
+#menuNav::-webkit-scrollbar-thumb {
+   border-radius: 10px;
+   box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+   background: rgba(0,0,0,0.2);
+}
+#menuNav::-webkit-scrollbar-track {
+   box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+   border-radius: 0;
+   background: rgba(0,0,0,0.1);
+}
+
+#menuTabs{
+   width: 100%;
+   height: 34px;
+   overflow-x: auto;
+   overflow-y: hidden;
+   border-bottom:1px solid #d9d9d9;
+   .content{
+      display: flex;
+      margin-bottom: 0;
+      height: 100%;
+      align-items: center;
+      .menuBg{
+         flex-shrink:0;
+         cursor: pointer;
+      }
+   }
+
+}
+
+#menuTabs::-webkit-scrollbar{
+   height: 6px;
+}
+#menuTabs::-webkit-scrollbar-thumb {
+   border-radius: 10px;
+   box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+   background: rgba(0,0,0,0.2);
+   transition: all ease 1s;
+   cursor: pointer;
+}
+#menuTabs::-webkit-scrollbar-track {
+   box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+   border-radius: 0;
+   background: rgba(0,0,0,0.1);
+}
+
+.menuOpenStyle{
+   width: 240px!important;
+   max-width: 240px!important;
+   min-width: 240px!important;
+   flex: 0 0 240px!important;
+}

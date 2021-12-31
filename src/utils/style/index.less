@@ -1,0 +1,435 @@
+// 设置dom盒子模型
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box!important;
+}
+// 设置页面与浏览器视窗宽高一致
+html,body,#root,.ant-layout-has-sider,.ant-layout{
+  width: 100%;
+  height: 100%;
+  min-width: 1200px;
+}
+
+//------------ common --------------
+
+.main > div {
+  background: #fff;
+}
+.search{
+  margin-bottom: 20px;
+}
+#loading{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: rgba(0,0,0,.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fullscreen{
+  width: 100%;
+  height: 100%;
+}
+//----------------------- 标签 ------------------------
+// 设置去掉a标签默认样式
+a{
+  color:rgba(0,0,0,0.85);
+}
+ul li{
+  list-style-type: none;
+}
+i{
+  font-style: normal;
+}
+ol, ul, dl{
+  margin-top: 0;
+  margin-bottom: 0;
+}
+// --------------------- flex 相关样式  start -------------------------
+
+// flex垂直居中
+.flex{
+  display: flex;
+}
+.flexCenter{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+// flex方向
+.flexColumn{
+  flex-direction: column;
+}
+// 两边对齐
+.flexBetween{
+  justify-content: space-between;
+}
+//列等宽
+.flex1>div{
+  flex:1;
+}
+.flexH100{
+  flex: 1;
+  height: 100%;
+}
+// ------------------- end --------------------
+
+
+// ------------------  设置颜色 start -------------------
+// 黑色
+.colorBlack{
+  color: rgba(0,0,0,1)
+}
+.colorBlack85{
+  color: rgba(0,0,0,0.85)
+}
+// ------------------  end -----------------------------
+
+
+// ------------------ 设置字体 start -------------------
+// 34号字体
+.f34{
+  font-size: 34px;
+}
+.f20{
+  font-size: 20px;
+}
+.f16{
+  font-size: 16px;
+}
+// ------------------  end -----------------------------
+
+// ------------------  设置宽度 start -------------------
+// 宽度100
+.w100{
+  width: 100px;
+}
+// ------------------  end -----------------------------
+
+// ------------------  设置padding start ---------------
+// v: vertical 垂直  h: horizontal 水平
+.ant-layout-header{
+  padding: 0 10px;
+}
+.p6{
+  padding: 6px;
+}
+.p10{
+  padding: 10px;
+}
+.plr12{
+  padding: 0 12px;
+}
+.p20{
+  padding: 20px;
+}
+.pl10{
+  padding-left: 10px;
+}
+.pr10{
+  padding-right: 10px;
+}
+.pv10h20{
+  padding: 10px 20px;
+}
+.pv0h20{
+  padding: 0 20px;
+}
+.pr15{
+  padding-right: 15px;
+}
+.pv0h8{
+  padding: 0px 8px;
+}
+.pv8h0{
+  padding: 8px 0;
+}
+.pb6{
+  padding-bottom: 6px;
+}
+.pt8{
+  padding-top: 8px;
+}
+// ------------------  end  ----------------------------
+
+// ------------------  设置font-weight start -----------
+// 加粗
+.fontWightBold{
+  font-weight: bold;
+}
+// ------------------  end  ----------------------------
+
+
+// ------------------  设置margin start ----------------
+// 右间距
+.mr10{
+  margin-right: 10px;
+}
+.ml10{
+  margin-left: 10px;
+}
+.mb20{
+  margin-bottom: 20px;
+}
+.mb24{
+  margin-bottom: 24px;
+}
+.mb10{
+  margin-bottom: 10px;
+}
+.mb18{
+  margin-bottom: 18px;
+}
+.mb0{
+  margin-bottom: 0;
+}
+.mb6{
+  margin-bottom: 6px!important;
+}
+.mb0{
+  margin-bottom: 0px!important;
+}
+.mt10{
+  margin-top: 10px;
+}
+.mt20{
+  margin-top: 20px;
+}
+// 设置子集div左间距10px
+.chlidDivML10>div{
+  margin-left: 10px;
+}
+// ------------------  end  ----------------------------
+
+// ------------------ float 浮动 start-------------------
+.flotR{
+  float: right;
+}
+//-------------------------end---------------------------
+
+// ------------------ postion start -------------------------
+.positionRelative{
+  position: relative;
+}
+.positonLtBt{ // 固订左下角
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+}
+
+// ------------------    end    -------------------------
+
+// ------------------  border ---------------------------
+.border{
+  border: 1px solid #dadada;
+}
+.borderTop{
+  border-top: 1px solid #dadada;
+}
+.borderBot{
+  border-bottom: 1px solid #dadada;
+}
+.borderRight{
+  border-right: 1px solid #dadada;
+}
+.borderLeft{
+  border-left: 1px solid #dadada;
+}
+// -------------------  end -----------------------------
+.point{
+  cursor: pointer;
+}
+// 警告
+.ant-btn-dangerous{
+  color: #ff4d4f!important;
+  background: #fff!important;
+  border-color: #ff4d4f!important;
+}
+.bgWarn{
+  background: #ff4d4f!important;
+  border-color: #ff4d4f!important;
+  color:#fff!important;
+}
+.title{
+  width: 100%;
+  font-size: 16px;
+  padding: 10px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+
+// ----------------- lang start -----------------
+.whiteLang{
+  color: #fff;
+  font-weight: bold;
+  .ant-select-arrow{
+    color: #fff;
+  }
+  .ant-select-selection-item{
+    color: #fff!important;
+  }
+}
+.blackLang{
+  color: rgba(0,0,0,0.85);
+  font-weight: bold;
+  .ant-select-arrow{
+    color: rgba(0,0,0,0.85);
+  }
+  .ant-select-selection-item{
+    color: rgba(0,0,0,0.85)!important;
+  }
+}
+// -----------------    end     -----------------
+
+// ----------------- antd start ------------------
+.formModal{
+  .ant-modal-body{
+    padding-bottom: 0;
+  }
+}
+
+.ant-table-wrapper .ant-table .ant-table-thead tr th,
+.ant-table-wrapper .ant-table .ant-table-tbody tr td{
+  padding: 10px;
+  font-size: 12px;
+}
+.ant-table-wrapper{
+  .ant-table{
+    .ant-table-body::-webkit-scrollbar{
+      width: 2px;
+    }
+    .ant-table-body::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.2);
+    }
+    .ant-table-body::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+      border-radius: 0;
+      background: rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+.ant-tree{
+  .ant-tree-treenode{
+    padding: 2px 0 2px 0!important;
+    // border-bottom: 1px solid #d5d5e1;
+  }
+}
+.ant-modal-wrap{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .ant-modal{
+    top: 0;
+  }
+}
+.ant-modal-header{
+  padding: 12px!important;
+}
+//---------------------  end ---------------------
+
+//--------------------------- 带设备树的样式 start----------
+.deviceWrap{
+  display: flex;
+  align-items:flex-start;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  .wrapLeft{
+    width: 240px;
+    height: 100%;
+    padding-top: 12px;
+  }
+  .wrapRight{
+    flex:1;
+    height: 100%;
+    background: #fff;
+    padding-left: 10px;
+    .ant-tabs{
+      height: 100%;
+      .ant-tabs-content{
+        height: 100%;
+      }
+    }
+  }
+}
+
+.contentWrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  overflow: hidden;
+  .wrapLeft{
+    width: 240px;
+    height: 100%;
+    margin-right: 12px;
+    border: 1px solid #dadada;
+  }
+  .wrapRight{
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #DADADA;
+    position: relative;
+    overflow: hidden;
+    .top{
+      padding: 6px 0 6px;
+      margin-left: 0!important;
+      border-bottom: 1px solid #DADADA;
+      .ant-select{
+        width: 100%;
+      }
+    }
+    .table{
+      height: 100%;
+      flex: 1;
+    }
+    .page{
+      padding: 6px 0 6px 6px;
+    }
+  }
+}
+
+.tabWrap {
+  .ant-tabs{
+    height: 100%;
+    .ant-tabs-content{
+      height: 100%;
+    }
+  }
+}
+
+.tablePage{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  .table{
+    height: 100%;
+    flex: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
+
+.scrollbar::-webkit-scrollbar{
+  width: 6px;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.2);
+}
+.scrollbar::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+//--------------------------------end-----------------------

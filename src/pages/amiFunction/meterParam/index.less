@@ -1,0 +1,87 @@
+.metertParam{
+  .meterControl{
+    display: flex;
+    height: 100%;
+    .fileList{
+      width: 240px;
+      height: 100%;
+      padding: 12px;
+      border: 1px solid #dadada;
+      display: flex;
+      flex-direction: column;
+      .search {
+          padding: 6px 0;
+          margin-bottom: 0;
+      }
+      .list {
+          width: 100%;
+          height: 100%;
+          padding-bottom: 6px;
+          flex: auto;
+          overflow-y: auto;
+          overflow-x: hidden;
+          .ant-tree {
+              width: 100%;
+              .ant-tree-treenode-switcher-close,
+              .ant-tree-treenode {
+                  width: 220px;
+                  overflow: hidden;
+                  .ant-tree-switcher-noop{
+                    display: none;
+                  }
+                  .ant-tree-node-content-wrapper {
+                      overflow: hidden;
+                      .ant-tree-title {
+                          white-space: nowrap;
+                          overflow: hidden;
+                          text-overflow: ellipsis;
+                          display: block;
+                          width: 100%;
+                      }
+                  }
+              }
+          }
+      }
+    }
+    #deviceTree{
+      margin: 0 12px;
+    }
+    .paramList{
+      width:100%;
+      flex:1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      .table{
+        height: 100%;
+        flex: 1;
+      }
+      .page{
+        padding: 6px;
+      }
+      .top{
+        padding: 6px;
+        .ant-select{
+          width: 100%;
+        }
+      }
+    }
+  }
+  .queryResult{
+    .wrapRight {
+      .page {
+          border-bottom: 1px solid #dadada;
+          border-top: 1px solid #dadada;
+          padding: 6px 0;
+          margin-left: 0!important;
+      }
+      .statistical {
+          margin-left: 0!important;
+          > .ant-col {
+              border-right: 1px solid #dadada;
+              padding: 6px 0;
+          }
+      }
+  }
+  }
+}

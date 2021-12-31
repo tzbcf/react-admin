@@ -1,0 +1,50 @@
+/*
+ * FileName : index.less
+ * ProjectName : admin
+ * Author : terrorblade
+ * Created Date: 2021-10-18 19:17:28
+ * Description :
+ * -----
+ * Last Modified:
+ * Modified By :
+ * -----
+ * Copyright (c) 2021 Magina Corporation. All rights reserved.
+ */
+
+
+.taskMgnt{
+  display: flex;
+  flex-direction: column;
+  .contentWrap{
+    height: 100%;
+    flex: 1;
+    .wrapRight{
+      .opterate {
+        padding-left: 12px;
+      }
+      .table{
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+      .search{
+        margin-bottom: 0;
+        padding-bottom: 6px;
+        padding-left: 12px;
+        border-bottom: 1px solid #DADADA;
+        #search-form{
+          .ant-row-start{
+            >.ant-col{
+              padding-left: 0!important;
+              .ant-row{
+                margin-bottom: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+

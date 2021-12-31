@@ -1,0 +1,76 @@
+/*
+ * FileName : index.less
+ * ProjectName : admin
+ * Author : terrorblade
+ * Created Date: 2021-09-09 18:25:09
+ * Description :
+ * -----
+ * Last Modified:
+ * Modified By :
+ * -----
+ * Copyright (c) 2021 Magina Corporation. All rights reserved.
+ */
+.terminalModal{
+  .ant-modal-content{
+    .ant-modal-close{
+      .ant-modal-close-x{
+        width: 36px;
+        height: 36px;
+        line-height: 36px;
+      }
+    }
+    .ant-modal-header{
+      padding: 8px 16px;
+    }
+    .ant-modal-body{
+      padding: 0 16px 16px;
+      .ant-tabs-nav{
+        margin-bottom: 10px;
+      }
+      .ant-tabs-tabpane>div{
+        height: 300px;
+        overflow-y: auto;
+      }
+      .ant-tabs-tabpane>div::-webkit-scrollbar{
+        width: 2px;
+      }
+      .ant-tabs-tabpane>div::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+        background: rgba(0, 0, 0, 0.2);
+      }
+      .ant-tabs-tabpane>div::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+        border-radius: 0;
+        background: rgba(0, 0, 0, 0.1);
+      }
+    }
+    .ant-modal-footer{
+      padding: 0;
+    }
+  }
+}
+.terminal{
+  .ant-spin-container{
+    .ant-list-item{
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #f0f0f0;
+      padding-bottom: 6px;
+      margin-bottom: 6px;
+      .label,
+      .value{
+        display: block;
+        width: 50%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .label{
+        font-weight: 600;
+        text-align: right;
+        margin-right: 10px;
+      }
+    }
+  }
+}
