@@ -293,6 +293,7 @@ const ConfigLoadTask: React.FC<Props> = (props) => {
 
         configuration.configLoadProfile.batchSendCaptureByMeterType(params).then(() => {
             message.success('Save Success!');
+            getGroupList();
         })
             .catch((err) => {
                 message.error(err);

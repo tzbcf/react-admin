@@ -16,7 +16,7 @@ export type CaptureObjectData = {
     CAPTURE_OBJ_ATTRIBUTE_INDEX: string;
     CAPTURE_OBJ_CLASSID: string;
     CAPTURE_OBJ_DATA_INDEX: string;
-    CAPTURE_OBJ_INDEX: string;
+    CAPTURE_OBJ_INDEX: number;
     CAPTURE_OBJ_OBIS: string;
     CAPTURE_UINT: string;
     GROUP_TYPE_NAME: string;

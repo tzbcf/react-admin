@@ -59,6 +59,7 @@ export const devicedIntersection = (data: any[], keyList: Key[], nodeList: any[]
 
 // 将设备树数据不同类型的树设置为禁选
 export const forbiddenNodeCheck = (treeData: any[], deviceModel: string, type: boolean, typeKey:string) => treeData.map((v) => {
+    console.log('s--s-s-');
     if (!type) {
         if (v[typeKey] !== deviceModel && deviceModel) {
             v.disabled = true;

@@ -417,7 +417,7 @@ const SpecialDaysConfig: React.FC<Props> = (props) => {
                         </Form.Item>
 
                         <Form.Item name='selectTime'>
-                            <TimePicker.RangePicker format={ timeFormat}/>
+                            <TimePicker.RangePicker format={timeFormat} order={ false}/>
                         </Form.Item>
                     </div>
                 </Form>

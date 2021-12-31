@@ -25,7 +25,8 @@ import { PaginationProps } from 'antd';
 import { amiFunc, common } from 'src/api';
 import { abnormalFn } from 'src/utils/function';
 import { useDebounce } from 'src/utils/utils';
-import {intersection, find, map} from 'lodash';
+import { intersection, find, map } from 'lodash';
+import ToLoad from 'src/components/common/toLoad';
 import './index.less';
 
 const { Option, OptGroup } = Select;
@@ -171,12 +172,11 @@ const DeviceTree: React.FC<Props> = (props) => {
     // 分页总数
     const [ total, setTotal ] = useFetchState<number>(0);
     const [ flagType, setFlagType ] = useFetchState<boolean>(false);
+    const [ treeStatus, setTreeStatus ] = useFetchState<number>(1);
     // 获取设备树数据
     const getTreeData = async (page = 1, pageSize = PAGESIZE, val: string|undefined = undefined) => {
         abnormalFn(async () => {
-            setCheckedKeys([]);
-            setExpandedKeys([]);
-            setTreeData([]);
+            setTreeStatus(0);
             let status = '';
 
             if (checkBox.length === 1) { // 单选
@@ -195,12 +195,28 @@ const DeviceTree: React.FC<Props> = (props) => {
                 deviceStatus: status,
             });
 
-            setTotal(res.total);
-            setCurrent(page);
             const newTreeData = treeFormat(res.rows);
 
+            if (selectedKeys === 'METER_NO') {
+                const meterKeys = newTreeData?.map((v) => v.key) || [];
+                const newExpandedKeys = [ ...tRef.current.expandedSelKeys, ...meterKeys ];
+
+                tRef.current.expandedSelKeys = newExpandedKeys;
+                setExpandedKeys(newExpandedKeys);
+            }
             tRef.current.treeData = newTreeData;
             setTreeData(newTreeData);
+            if (res.total !== total) {
+                setTotal(res.total);
+            }
+            if (page !== current) {
+                setCurrent(page);
+            }
+            if (!res.total) {
+                setTreeStatus(2);
+            } else {
+                setTreeStatus(1);
+            }
             setDeviceStatus({
                 onLine: res.onlineTotal,
                 offLine: res.offlineTotal,
@@ -216,7 +232,10 @@ const DeviceTree: React.FC<Props> = (props) => {
         current: current,
         total: total,
         pageSize: PAGESIZE,
-        onChange (page:number) {
+        onChange (page: number) {
+            setCheckedKeys([]);
+            tRef.current.expandedSelKeys = [];
+            setExpandedKeys([]);
             getTreeData(page, PAGESIZE);
             if (movePage) {
                 movePage(page);
@@ -296,10 +315,12 @@ const DeviceTree: React.FC<Props> = (props) => {
 
                     if (info.node.children && info.node.children.length) { // 如果有子集
                         getChildTypeList(info.node.children, childDataKey, checkType); // 集中器下所有表计选中
-                        const newExpandedKeys = info.node.children.map((v:any) => v.key);
+                        const childExpandedKeys = info.node.children.map((v:any) => v.key);
+                        const newExpandedKeys = [ ...expandedKeys, info.node.key, ...childExpandedKeys ];
 
-                        console.log('2--------');
-                        setExpandedKeys([ ...expandedKeys, info.node.key, ...newExpandedKeys ]);
+                        console.log('t--------1');
+                        setExpandedKeys(newExpandedKeys);
+                        tRef.current.expandedSelKeys = newExpandedKeys;
                         if (info.node.children.length === childDataKey.length) {
                             childDataKey.push(info.node.key);
                         }
@@ -309,27 +330,35 @@ const DeviceTree: React.FC<Props> = (props) => {
                             nodeType: info.node.nodeType,
                         } as DeviceTreeRows);
 
-                        getChildTypeList(childData, childDataKey, checkType, 'deviceGuid'); // 集中器下所有表计选中
-                        // 将加载的数据设置到设备树种
-                        const treeList = deepClone(tRef.current.treeData);
-                        const item = newDevicedList.find((v: DeviceTreeRows) => v.deviceGuid === info.node.key);
-                        const deviceItem = treeList.find((v: DataNode) => v.key === info.node.key);
-                        const childListData = treeChildFormat(childData, checkType, checkNodeType, checkNodeTypeKey);
+                        if (childData.length) {
+                            getChildTypeList(childData, childDataKey, checkType, 'deviceGuid'); // 集中器下所有表计选中
+                            // 将加载的数据设置到设备树种
+                            const treeList = deepClone(tRef.current.treeData);
+                            const item = newDevicedList.find((v: DeviceTreeRows) => v.deviceGuid === info.node.key);
+                            const deviceItem = treeList.find((v: DataNode) => v.key === info.node.key);
+                            const childListData = treeChildFormat(childData, checkType, checkNodeType, checkNodeTypeKey);
 
-                        if (deviceItem && item) {
-                            deviceItem.children = childListData;
-                            item.children = childData;
+                            if (deviceItem && item) {
+                                deviceItem.children = childListData;
+                                item.children = childData;
+                            }
+                            tRef.current.treeData = treeList;
+                            tRef.current.devicedList = newDevicedList;
+                            setTreeData(treeList);
+                            setDevicedList(newDevicedList);
+                            const newExpandedKeys = childData.map((v) => v.deviceGuid);
+                            const setNewExpandedKeys = [ ...tRef.current.expandedSelKeys, info.node.key, ...newExpandedKeys ];
+
+                            tRef.current.expandedSelKeys = setNewExpandedKeys;
+                            console.log('t--------2');
+                            setExpandedKeys(setNewExpandedKeys);
+                        } else {
+                            const newExpandedKeys = [ ...tRef.current.expandedSelKeys, info.node.key ];
+
+                            tRef.current.expandedSelKeys = newExpandedKeys;
+                            setExpandedKeys(newExpandedKeys);
                         }
-                        tRef.current.treeData = treeList;
-                        tRef.current.devicedList = newDevicedList;
-                        setTreeData(treeList);
-                        setDevicedList(newDevicedList);
-                        const newExpandedKeys = childData.map((v) => v.deviceGuid);
-                        const setNewExpandedKeys = [ ...expandedKeys, info.node.key, ...newExpandedKeys ];
 
-                        tRef.current.expandedSelKeys = setNewExpandedKeys;
-                        console.log('3--------');
-                        setExpandedKeys(setNewExpandedKeys);
                         if (childData.length === childDataKey.length) {
                             childDataKey.push(info.node.key);
                         }
@@ -379,12 +408,14 @@ const DeviceTree: React.FC<Props> = (props) => {
             } else {
                 if (info.checked) { // 选中
                     checkedKeysList.push(info.node.key);
-                    const parentData = find(tRef.current.treeData, { key: info.node.parentId });
-                    const parentChildKey = map(parentData?.children, 'key');
-                    const intersectionkey = intersection(checkedKeysList, parentChildKey);
+                    if (selectedKeys !== 'METER_NO') { // 一级节点是集中器的情况
+                        const parentData = find(tRef.current.treeData, { key: info.node.parentId });
+                        const parentChildKey = map(parentData?.children, 'key');
+                        const intersectionkey = intersection(checkedKeysList, parentChildKey);
 
-                    if (intersectionkey.length === parentChildKey.length) {
-                        checkedKeysList.push(info.node.parentId);
+                        if (intersectionkey.length === parentChildKey.length) { // 如果该集中器下所有表计都被选中了，那么集中器也要选中
+                            checkedKeysList.push(info.node.parentId);
+                        }
                     }
                 } else { // 取消
                     checkedKeysList = checkedKeysList.filter((key) => key !== info.node.key);
@@ -396,13 +427,14 @@ const DeviceTree: React.FC<Props> = (props) => {
                     if (!deviceModel) { // 如果没有设置类型
                         deviceModel = info.node[checkNodeTypeKey];
                         setCheckNodeType(deviceModel);
+                        tRef.current.deviceModel = deviceModel;
                     }
                     if (!checkedKeysList.length && !flagType) { // 如果选中为空，取消禁选
                         deviceModel = '';
                         setCheckNodeType('');
                         tRef.current.deviceModel = '';
                     }
-                    const newTreeData = forbiddenNodeCheck(tRef.current.treeData, deviceModel, isExpand, checkNodeTypeKey);
+                    const newTreeData = forbiddenNodeCheck(tRef.current.treeData, deviceModel, selectedKeys !== 'METER_NO' && isExpand, checkNodeTypeKey);
 
                     tRef.current.treeData = newTreeData;
                     setTreeData(newTreeData);
@@ -453,8 +485,9 @@ const DeviceTree: React.FC<Props> = (props) => {
                     const newExpandedKeys = data.map((v) => v.deviceGuid);
                     const { expandedSelKeys } = tRef.current;
 
-                    console.log('4--------');
+                    console.log('t--------3');
                     setExpandedKeys([ ...expandedSelKeys, ...newExpandedKeys ]);
+                    tRef.current.expandedSelKeys = [ ...expandedSelKeys, ...newExpandedKeys ];
                     tRef.current.treeData = treeList;
                     setTreeData(treeList);
                     setDevicedList(devicedList);
@@ -469,21 +502,20 @@ const DeviceTree: React.FC<Props> = (props) => {
         expanded: boolean;
         node: any;
     }) => {
-        const oldExpandedKeys = deepClone(expandedKeys);
-        const { expandedSelKeys } = tRef.current;
+        const expandedSelKeys = deepClone(tRef.current.expandedSelKeys);
 
         if (!info.expanded) {
-            const newExpandedKeys = oldExpandedKeys.filter((v) => v !== info.node.key);
+            const newExpandedKeys = expandedSelKeys.filter((v) => v !== info.node.key);
 
-            tRef.current.expandedSelKeys = expandedSelKeys.filter((v) => v !== info.node.key);
-            console.log('5--------');
+            tRef.current.expandedSelKeys = newExpandedKeys;
+            console.log('t--------4');
             setExpandedKeys(newExpandedKeys);
 
         } else {
-            console.log('6--------');
-            oldExpandedKeys.push(info.node.key);
-            setExpandedKeys(oldExpandedKeys);
+            console.log('t--------5');
             expandedSelKeys.push(info.node.key);
+            setExpandedKeys(expandedSelKeys);
+            tRef.current.expandedSelKeys = expandedSelKeys;
         }
     };
 
@@ -503,12 +535,17 @@ const DeviceTree: React.FC<Props> = (props) => {
         setCheckBox(value.map((v) => v.toString()));
     };
 
+    const onLoad = (loadedKeys:Key[], info:any) => {
+        console.log('ssss--', loadedKeys, info);
+    };
+
     // 暴露给父级调用的方法
     useImperativeHandle(cRef, () => ({
         clearCheckedKeys () {
             setCheckedKeys([]);
         },
         clearExpandedKeys () {
+            console.log('t-------6');
             setExpandedKeys([]);
         },
         refreshTree () {
@@ -610,17 +647,22 @@ const DeviceTree: React.FC<Props> = (props) => {
                 </div>
                 <div className='contentTree'>
                     <div className='scrollBox'>
-                        <Tree
-                            showIcon
-                            checkable
-                            onCheck={onCheck}
-                            checkedKeys={checkedKeys}
-                            expandedKeys={expandedKeys}
-                            onSelect={onSelect}
-                            loadData={isExpand ? onLoadData : undefined}
-                            onExpand={onExpand}
-                            treeData={treeData}
-                        />
+                        {
+                            treeStatus === 1 ? (
+                                <Tree
+                                    showIcon
+                                    checkable
+                                    onCheck={onCheck}
+                                    checkedKeys={checkedKeys}
+                                    expandedKeys={expandedKeys}
+                                    onSelect={onSelect}
+                                    loadData={isExpand ? onLoadData : undefined}
+                                    onExpand={onExpand}
+                                    treeData={treeData}
+                                    onLoad={onLoad}
+                                />
+                            ) : treeStatus === 2 ? '没有数据' : (<ToLoad/>)
+                        }
                     </div>
                 </div>
             </div>

@@ -592,7 +592,6 @@ const OnDemandRead: React.FC<Props> = (props) => {
                     setTaskSelectKeys([]);
                     setTableData([]);
                     setCurrent(1);
-                    setCheckData([]);
                     setCheckKeyList([]);
                     setTaskLogList([]);
                 } catch (e: any) {
@@ -656,14 +655,9 @@ const OnDemandRead: React.FC<Props> = (props) => {
     // 重置任务列表
     const resetTask = () => {
         cRef.current?.clearCheckedKeys();
-        cRef.current?.clearExpandedKeys();
         cRef.current?.setSameTypeDevice('');
-        onConfig.current.tableData = [];
         setTreeData([]);
-        setCheckData([]);
         setCheckKeyList([]);
-        setTableData([]);
-        setTaskSelectKeys([]);
     };
     // 设备类型选择
     const handleTypeChange = (val: string) => {
@@ -690,8 +684,6 @@ const OnDemandRead: React.FC<Props> = (props) => {
                     deviceType: deviceList[0]?.nodeType,
                     deviceId: deviceList[0]?.deviceGuid,
                 });
-            } else {
-                resetTask();
             }
         } else {
             resetTask();
@@ -705,13 +697,18 @@ const OnDemandRead: React.FC<Props> = (props) => {
     } | Key[], info: { halfCheckedKeys?: Key[], checkedNodes: any[], node:any }) => {
         console.log('-------', checkKeyList);
         console.log('-------1', checkedKeysValue);
-        if (!info.node.checked) {
-            const selKeysList = checkedKeysValue as Key[];
+        const selKeysList = checkedKeysValue as Key[];
+
+        if (!info.node.checked) { // 选择下发任务项
 
             setCheckKeyList(selKeysList);
-
-            const data = addTask(info.node, deviceRow, READ_STATUS.READY);
             const cloneTaskTableData = deepClone(checkData);
+            const item = cloneTaskTableData.find((v) => v.COMMAND_SN === info.node.no);
+
+            if (item) { // 如果已存在，不在添加
+                return;
+            }
+            const data = addTask(info.node, deviceRow, READ_STATUS.READY);
             const newTaskTableData = [ ...cloneTaskTableData, ...data ];
             const keyList = data.map((v) => v.SN);
             const newKeyList = [ ...taskSelectKeys, ...keyList ];
@@ -721,6 +718,10 @@ const OnDemandRead: React.FC<Props> = (props) => {
             onConfig.current.taskSelectKeys = newKeyList;
             setCheckData(newTaskTableData);
             setTableData(newTaskTableData.slice(current - 1, 10));
+        } else {
+            const newSelKeys = selKeysList.filter((key) => key !== info.node.key);
+
+            setCheckKeyList(newSelKeys);
         }
         console.log('-------2', checkData);
     };

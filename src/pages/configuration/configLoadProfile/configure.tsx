@@ -167,6 +167,7 @@ const ConfigLoadProfile: React.FC<Props> = (props) => {
 
         nodeList.map((v) => {
             v.parentGuid = v.parentId;
+            v.deviceId = v.deviceGuid;
             nodes.push(v);
         });
         let params = {
@@ -178,12 +179,14 @@ const ConfigLoadProfile: React.FC<Props> = (props) => {
         };
 
         configuration.configLoadProfile.sendCommand(params).then((res) => {
+            console.log(res);
             let mess = res.mes;
 
             if (res.flag === '1') {
                 let messArr = mess.split(';');
                 let taskNum = messArr[1];
 
+                onConfig.current.groupId = messArr[0];
                 onConfig.current.totalTaskNum = parseInt(taskNum, 10); // 总任务数量
                 sendTimeOut = setTimeout(function () {
                     hideLoading();
@@ -191,6 +194,7 @@ const ConfigLoadProfile: React.FC<Props> = (props) => {
                 }, 1000 * 60);
             } else {
                 onConfig.current.totalTaskNum = 0;
+                onConfig.current.groupId = '';
                 hideLoading();
             }
         })
@@ -215,13 +219,14 @@ const ConfigLoadProfile: React.FC<Props> = (props) => {
             if (onConfig.current.receiveMessNum === 1 && name === 'otask-confirm') {
                 sendProtocalCommand();
                 onConfig.current.receiveMessNum = 0;
-            } else {
+            } else if (onConfig.current.receiveMessNum > 0) {
                 clearTimeout(sendTimeOut);
 
                 if (onConfig.current.totalTaskNum === onConfig.current.receiveMessNum) {
                     onConfig.current.totalTaskNum = 0;
+                    onConfig.current.groupId = '';
                     hideLoading();
-                    if (isSuccess === true) {
+                    if (isSuccess === 1) {
                         message.success('Operate Success!');
                     } else {
                         message.error(result);
@@ -440,7 +445,7 @@ const ConfigLoadProfile: React.FC<Props> = (props) => {
 
     // 弹窗右边table数据刷新
     const rightGetData = async (page: PaginationConfig, protocol: string = ''): Promise<any> => {
-        console.log(page);
+        console.log(page, rightTableData);
         tRef.current?.setRightLoading(true);
         let list: CaptureObjectData[] = [];
 
@@ -514,6 +519,38 @@ const ConfigLoadProfile: React.FC<Props> = (props) => {
 
     // 按钮
     const btnList: BtnConfig[] = [
+        {
+            type: 'Del',
+            btnType: 'primary',
+            title: 'Stop',
+            async onClick () {
+                if (meterObject) {
+                    let groupName = meterObject.GROUP_NAME;
+                    let type = meterObject.METER_TYPE;
+
+                    let curStatus = meterObject.STATUS_FLAG;
+
+                    let status = '1';
+
+                    if (curStatus !== '0') {
+                        status = '0';
+                    }
+                    let params = {
+                        subSysNo: subSysNo,
+                        meterType: type,
+                        groupName: groupName,
+                        status: status,
+                        snCommand: meterObject.SN_PROTOCOL_COMMAND,
+                    };
+
+                    configuration.configLoadProfile.stopCaptureObject(params).then(() => {
+                        message.success('Save Success!');
+                        getMeterObjectFileList(deviceType, '', '');
+                        setTableData([]);
+                    });
+                }
+            },
+        },
         {
             type: 'Add',
             btnType: 'primary',
@@ -591,37 +628,7 @@ const ConfigLoadProfile: React.FC<Props> = (props) => {
                 }
             },
         },
-        {
-            type: 'Start',
-            btnType: 'primary',
-            title: 'Stop',
-            async onClick () {
-                if (meterObject) {
-                    let groupName = meterObject.GROUP_NAME;
-                    let type = meterObject.METER_TYPE;
 
-                    let curStatus = meterObject.STATUS_FLAG;
-
-                    let status = '1';
-
-                    if (curStatus !== '0') {
-                        status = '0';
-                    }
-                    let params = {
-                        subSysNo: subSysNo,
-                        meterType: type,
-                        groupName: groupName,
-                        status: status,
-                    };
-
-                    configuration.configLoadProfile.stopCaptureObject(params).then(() => {
-                        message.success('Save Success!');
-                        getMeterObjectFileList(deviceType, meterObject.SN_PROTOCAL, meterObject.METER_TYPE);
-                        setTableData([]);
-                    });
-                }
-            },
-        },
         {
             type: 'BatchSync',
             btnType: 'primary',
@@ -753,13 +760,17 @@ const ConfigLoadProfile: React.FC<Props> = (props) => {
 
     // 点击弹窗save按钮
     const handleOk = () => {
-        const rightList = tRef.current?.getRightTableData() as CaptureObjectData[];
+        // const rightList = tRef.current?.getRightTableData() as CaptureObjectData[];
         let protocolItem = protocolItemOpt.filter((v) => v.SN === protocolType)[0];
-        let list = [ ...rightList ];
+        let list = [ ...rightTableData ];
 
-        rightList.map((v, index) => {
+        rightTableData.map((v, index) => {
             if (!v.CAPTURE_OBJ_INDEX) {
-                v.CAPTURE_OBJ_INDEX = (index + 1) + '';
+                v.CAPTURE_OBJ_INDEX = (index + 1);
+                list[index] = v;
+            }
+            if (!v.SN_PROTOCOL_COMMAND) {
+                v.SN_PROTOCOL_COMMAND = meterObject ? meterObject.SN_PROTOCOL_COMMAND : protocolType;
                 list[index] = v;
             }
         });
@@ -810,6 +821,17 @@ const ConfigLoadProfile: React.FC<Props> = (props) => {
         },
     ];
 
+    const isInclude = (list:CaptureObjectData[], item:CaptureObjectData) => {
+        let isClude = false;
+
+        list.map((v) => {
+            if (v.AFN_NAME === item.AFN_NAME) {
+                isClude = true;
+            }
+        });
+        return isClude;
+    };
+
     // 左移
     const btnL = (keys?:string[]) => {
         // 获取右边选择数据key
@@ -822,7 +844,7 @@ const ConfigLoadProfile: React.FC<Props> = (props) => {
             let list = [ ...rightList ];
 
             rightList.map((v, index) => {
-                if (rightSelectedRowKeys.includes(v.SN_PROTOCOL_COMMAND_CHILDREN)) {
+                if (rightSelectedRowKeys.includes(v.AFN_NAME)) {
                     if (modalType === '0' && v.AFN_NAME === 'Clock') {// clock是必选项不可清除
                         console.log(v);
                     } else {
@@ -872,13 +894,14 @@ const ConfigLoadProfile: React.FC<Props> = (props) => {
             // 获取左边列表数据
             const leftList = tRef.current?.getLeftTableData() as CaptureObjectData[];
 
-            const leftSelectData = leftList.filter((v) => leftSelectedRowKeys.includes(v.SN_PROTOCOL_COMMAND_CHILDREN));
+            const leftSelectData = leftList.filter((v) => leftSelectedRowKeys.includes(v.AFN_NAME));
 
-            let rightList = tRef.current?.getRightTableData() as CaptureObjectData[];
-            let list = [ ...rightList ];
+            // let rightList = tRef.current?.getRightTableData() as CaptureObjectData[];
+            let list = [ ...rightTableData ];
 
+            console.log(leftSelectData, rightTableData);
             leftSelectData.map((v) => {
-                if (!rightList.includes(v)) {
+                if (!isInclude(rightTableData, v)) {
                     list.push(v);
                     rightTableData.push(v);
                 }
@@ -897,14 +920,17 @@ const ConfigLoadProfile: React.FC<Props> = (props) => {
         // 获取左边列表数据
         const leftList = tRef.current?.getLeftTableData() as CaptureObjectData[];
 
-        let rightList = tRef.current?.getRightTableData() as CaptureObjectData[];
+        // let rightList = tRef.current?.getRightTableData() as CaptureObjectData[];
 
-        let list = [ ...rightList ];
+        let list = [ ...rightTableData ];
 
         leftList.map((v) => {
-            if (!rightList.includes(v)) {list.push(v);}
+            if (!isInclude(rightTableData, v)) {
+                list.push(v);
+                rightTableData.push(v);
+            }
         });
-        console.log(list);
+        console.log(rightTableData);
         tRef.current?.setRightData({
             rows: list,
             total: list.length,
@@ -1139,7 +1165,7 @@ const ConfigLoadProfile: React.FC<Props> = (props) => {
                 </Row>
                 <div style={{marginTop: '10px', height: '500px'}}>
                     <TransferTable<CaptureObjectData, CaptureObjectData>
-                        rowKey={'SN_PROTOCOL_COMMAND_CHILDREN'}
+                        rowKey={'AFN_NAME'}
                         leftColumns={leftColumns}
                         rightColums={rightColumns}
                         leftGetData={leftGetData}
