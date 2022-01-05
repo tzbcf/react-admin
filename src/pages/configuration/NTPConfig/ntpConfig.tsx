@@ -177,9 +177,7 @@ const NtpConfigTab: React.FC<Props> = (props) => {
                 setCstList(res.rows);
                 onConfig.current.tableData = res.rows;
             })
-                .catch((err) => {
-                    message.error(err);
-                });
+            ;
         });
     };
 
@@ -220,21 +218,27 @@ const NtpConfigTab: React.FC<Props> = (props) => {
     const readNtp = () => {
         if (selectedRowKeys.length > 0) {
             onConfig.current.selects = [];
+            let select = [ ...selectedRowKeys ];
 
             cstList.map((v:CstData) => {
                 if (selectedRowKeys.includes(v.rn__)) {
-                    onConfig.current.selects.push(v);
+                    if (v.ONLINESTATUS === '1' && v.OPERATION !== '3' && v.OPERATION !== '2') {
+                        onConfig.current.selects.push(v);
+                    } else {
+                        select.splice(select.indexOf(v.rn__), 1);
+                    }
                 }
             });
-            let vaild = onConfig.current.selects.every((v: CstData) => v.ONLINESTATUS === '1' && v.OPERATION !== '3' && v.OPERATION !== '2');
+            setSelectedRowKeys(select);
+            // let vaild = onConfig.current.selects.every((v: CstData) => v.ONLINESTATUS === '1' && v.OPERATION !== '3' && v.OPERATION !== '2');
 
-            if (vaild) {
+            if (onConfig.current.selects.length > 0) {
                 onConfig.current.commandType = CONST_READ;
                 startSend();
             } else {
                 message.warn(Mes['messageAlarmSelectvalidrowselectvalidrow']);
             }
-            console.log('read', cstList);
+            // console.log('read', cstList);
         } else {
             message.warn(Mes['messageAlarmPleaseselectrowpleaseselectrow']);
         }
@@ -243,15 +247,21 @@ const NtpConfigTab: React.FC<Props> = (props) => {
     const activeNtp = () => {
         if (selectedRowKeys.length > 0) {
             onConfig.current.selects = [];
+            let select = [ ...selectedRowKeys ];
 
             cstList.map((v:CstData) => {
                 if (selectedRowKeys.includes(v.rn__)) {
-                    onConfig.current.selects.push(v);
+                    if (v.ONLINESTATUS === '1' && v.OPERATION !== '3' && v.OPERATION !== '2' && v.NTP_STATUS !== '1') {
+                        onConfig.current.selects.push(v);
+                    } else {
+                        select.splice(selectedRowKeys.indexOf(v.rn__), 1);
+                    }
                 }
             });
-            let vaild = onConfig.current.selects.every((v: CstData) => v.ONLINESTATUS === '1' && v.OPERATION !== '3' && v.OPERATION !== '2' && v.NTP_STATUS !== '1');
+            setSelectedRowKeys(select);
+            // let vaild = onConfig.current.selects.every((v: CstData) => v.ONLINESTATUS === '1' && v.OPERATION !== '3' && v.OPERATION !== '2' && v.NTP_STATUS !== '1');
 
-            if (vaild) {
+            if (onConfig.current.selects.length > 0) {
                 onConfig.current.commandType = CONST_WRITE;
                 startSend();
             } else {

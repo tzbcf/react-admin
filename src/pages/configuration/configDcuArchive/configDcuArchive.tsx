@@ -734,7 +734,7 @@ const ConfigDcuArchiveTab: React.FC<Props> = (props) => {
         let list = meterList.filter((v) => v.dcuId === item.CST_ID);
 
 
-        return <Table columns={columns} dataSource={list[0].meterList} pagination={false} bordered={ true} rowKey='METER_NO' rowSelection={{
+        return <Table columns={columns} dataSource={list[0].meterList} pagination={{pageSize: 10, hideOnSinglePage: true, showSizeChanger: false }} bordered={ true} rowKey='METER_NO' rowSelection={{
             type: 'checkbox',
             ...rowSelection,
         }}

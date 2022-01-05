@@ -204,7 +204,7 @@ export type Options = {
     name: string;
 }
 export const formatArrOptions = <T>(arr: T[], key: string, name: string) => arr.map((v) => {
-    if (typeof v[key] !== undefined && typeof v[name] !== undefined) {
+    if (typeof v[key] !== undefined && typeof v[name] !== undefined && v[name]) {
         return {
             value: v[key],
             name: v[name],

@@ -228,6 +228,10 @@ const Header: React.FC<Props> = (props) => {
                 message.error(error.toString());
             }
         });
+        // newsNotice({
+        //     result: '07312222',
+        //     etime: '2022-1-5 10:10:10',
+        // }, 'textDeviceOnline', msg);
         return () => {
         // 离开页面销毁监听
             bus.removeAllListeners('alarm-dcu');

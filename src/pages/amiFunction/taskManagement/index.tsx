@@ -230,7 +230,7 @@ const TaskMgnt: React.FC<Props> = (props) => {
             };
             const res = await amiFunc.taskMgnt.getOperatorList(params);
 
-            if (res.length && res[0].text) {
+            if (res.length) {
                 const optList = formatArrOptions(res, 'value', 'text');
 
                 optList.unshift({value: '0', name: 'All'});
@@ -295,7 +295,7 @@ const TaskMgnt: React.FC<Props> = (props) => {
         },
         {
             name: 'operator',
-            col: 2,
+            col: 3,
             type: 'Select',
             options: operateOpt,
         },
@@ -312,7 +312,7 @@ const TaskMgnt: React.FC<Props> = (props) => {
         },
         {
             name: 'afn',
-            col: 4,
+            col: 3,
             type: 'Input',
             attr: {
                 placeholder: 'Command AFN',

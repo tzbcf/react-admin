@@ -16,6 +16,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Icon from 'src/assets/imgs/common/formlight.png';
 import { LangMessage } from 'src/store/common/language';
+import { CloseOutlined } from '@ant-design/icons';
 
 const newsNotice = (row: any, status: string, Mes:LangMessage) => {
     console.log('a-----');
@@ -24,12 +25,22 @@ const newsNotice = (row: any, status: string, Mes:LangMessage) => {
 
     if (!notcie) {
         const dom = document.createElement('div');
+        const closeEvent = (selector:string) => {
+            const news = document.getElementById(selector) as HTMLElement;
+
+            if (news) {
+                document.body.removeChild(news);
+            }
+        };
 
         dom.setAttribute('id', id);
         dom.setAttribute('class', 'newModal');
         document.body.appendChild(dom);
         ReactDOM.render((<div className='newNotice'>
-            <h6>{Mes['titleNewMessage']}</h6>
+            <h6>
+                <span className='text'>{Mes['titleNewMessage']}</span>
+                <CloseOutlined onClick={() => closeEvent(id)} />
+            </h6>
             <div className='intro'>
                 <div className='info'>
                     <p>{ Mes[status] }</p>
