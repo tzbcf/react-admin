@@ -16,7 +16,7 @@ import { v4 } from 'uuid';
 import { randomStr } from 'src/utils/utils';
 import { showLoading, hideLoading } from 'src/components/common/loding';
 import { ExclamationCircleOutlined, LoadingOutlined } from '@ant-design/icons';
-import { DeviceTreeRows } from 'src/api/common/type';
+// import { DeviceTreeRows } from 'src/api/common/type';
 
 type Props = {
     Mes: LangMessage;
@@ -46,7 +46,7 @@ const ConfigDcuArchiveTab: React.FC<Props> = (props) => {
     const [ meterList, setMeterList ] = useFetchState<MeterListByDcu[]>([]);
     const [ selectedRowKeys, setSelectedRowKeys ] = useFetchState<any[]>([]);
     const [ expandedRowKeys, setExpandedRowKeys ] = useFetchState<string[]>([]);
-    const [ dcuSelectedList, setDcuSelectedList ] = useFetchState<any[]>([]);
+    const [ dcuSelectedList, setDcuSelectedList ] = useFetchState<string[]>([]);
     const [ modalVisible, setModalVisible ] = useFetchState<boolean>(false);
     const [ modalTitle, setModalTitle ] = useFetchState<string>('');
     const [ operationList, setOperationList ] = useFetchState<OperationData[]>([]);
@@ -58,7 +58,7 @@ const ConfigDcuArchiveTab: React.FC<Props> = (props) => {
     const [ paramInfoList, setParamInfoList ] = useFetchState<ParamInfo[]>([]);
     const [ modalVisible1, setModalVisible1 ] = useFetchState<boolean>(false);
     const [ tableHeight, setTableHeight ] = useFetchState<number>(500);
-    // const [ nodeSelectedList, setNodeSelectedList ] = useFetchState<any[]>([]);
+    const [ nodeSelectedList, setNodeSelectedList ] = useFetchState<any[]>([]);
     const ROWS = 10;
 
     // 弹窗显示DCU或者Meter的基本信息
@@ -150,7 +150,7 @@ const ConfigDcuArchiveTab: React.FC<Props> = (props) => {
 
     // 获取DCU下的表计列表
     const getMeterList = (dcuId:string) => {
-        configuration.configDcuArchive.getMeterListByDcu(1, 99, dcuId, subSysNo).then((res:MeterList) => {
+        configuration.configDcuArchive.getMeterListByDcu(1, 999, dcuId, subSysNo).then((res:MeterList) => {
             let list = [ ...meterList ];
 
             if (res) {
@@ -188,6 +188,21 @@ const ConfigDcuArchiveTab: React.FC<Props> = (props) => {
         console.log(page);
         setDcuList([]);
         setDcuSelectedList([]);
+        setMeterList([]);
+        setExpandedRowKeys([]);
+        setSelectedRowKeys([]);
+        setNodeSelectedList([]);
+        cRef.current?.clearCheckedKeys();
+    };
+
+    // 设备树刷新，清空当前所选设备列表
+    const clearTree = () => {
+        setDcuList([]);
+        setDcuSelectedList([]);
+        setMeterList([]);
+        setExpandedRowKeys([]);
+        setSelectedRowKeys([]);
+        setNodeSelectedList([]);
         cRef.current?.clearCheckedKeys();
     };
 
@@ -195,7 +210,29 @@ const ConfigDcuArchiveTab: React.FC<Props> = (props) => {
         let isExist = false;
 
         dcuSelectedList.map((v) => {
+            if (v === item.deviceGuid) {
+                isExist = true;
+            }
+        });
+        return isExist;
+    };
+
+    const isNodeExist = (item:any, list:any[]) => {
+        let isExist = false;
+
+        list.map((v) => {
             if (v.deviceGuid === item.deviceGuid) {
+                isExist = true;
+            }
+        });
+        return isExist;
+    };
+
+    const isMeterExist = (item:MeterInfo, list:any[]) => {
+        let isExist = false;
+
+        list.map((v) => {
+            if (v.deviceNo === item.METER_NO) {
                 isExist = true;
             }
         });
@@ -204,86 +241,234 @@ const ConfigDcuArchiveTab: React.FC<Props> = (props) => {
 
     // 点击设备树的DCU
     const onNodeCheck = (row: any[]) => {
-        console.log(row);
-        // if (row.length > nodeSelectedList.length) {// 新增
-        //     let addItem: any = {};
-
-        //     row.map((v) => {
-        //         if (!nodeSelectedList.includes(v)) {
-        //             addItem = v;
-        //         }
-        //     });
-        //     console.log('addItem', addItem);
-        // } else { // 减少
-        //     if (row.length > 0) {
-        //         let subItem: any = {};
-
-        //         nodeSelectedList.map((v) => {
-        //             if (!row.includes(v)) {
-        //                 subItem = v;
-        //             }
-        //         });
-        //         console.log('subItem', subItem);
-        //     } else {
-        //         setDcuList([]);
-        //         setDcuSelectedList([]);
-        //         setMeterList([]);
-        //         setExpandedRowKeys([]);
-        //         setSelectedRowKeys([]);
-        //     }
-        // }
-        if (row.length > dcuList.length) {// table新增DCU
+        console.log(row, nodeSelectedList);
+        if (row.length > nodeSelectedList.length) { // 新增
+            let addList: any[] = [];
             let dcu = [ ...dcuSelectedList ];
 
             row.map((v) => {
-                if (!isDcuExist(v)) {
+                if (!isNodeExist(v, nodeSelectedList)) {
+                    addList.push(v);
+                }
+            });
+            console.log('addList', addList);
+
+            let tmpList = addList.filter((v) => v.nodeType === '1');
+
+            if (tmpList.length > 0) { // 新增的列表中有集中器和表计
+                let v = tmpList[0];
+
+                if (!isDcuExist(v)) {// 新集中器
                     getDcuAccountInfo(v.CST_ID);
                     getMeterList(v.CST_ID);
-                    dcu.push(v);
+                    if (!dcuSelectedList.includes(v.CST_ID)) {
+                        dcu.push(v.CST_ID);
+                    }
+                } else {// 新表计
+                    let meters = [ ...meterList ];
+                    let index = dcuSelectedList.indexOf(v.CST_ID);
+
+                    if (meters.length > 0) {
+                        configuration.configDcuArchive.getMeterListByDcu(1, 999, v.CST_ID, subSysNo).then((res: MeterList) => {
+                            if (meters[index]) {
+                                let list = meters[index].meterList;
+                                let selecteds = [ ...selectedRowKeys ];
+                                let tt = [ ...list ];
+
+                                res.rows.map((item) => {
+                                    if (!list.includes(item) && isMeterExist(item, addList)) {
+                                        tt.push(item);
+                                        selecteds.push(item.METER_NO);
+                                    }
+                                });
+                                console.log(tt);
+                                meters[index].meterList = tt;
+
+                                setMeterList(meters);
+                                setSelectedRowKeys(selecteds);
+                            }
+                        });
+                    }
                 }
+                setDcuSelectedList(dcu);
+            } else {// 新增的列表中只有表计
+                addList.map((v) => {
+                    let index = dcuSelectedList.indexOf(v.CST_ID);
 
-            });
-            setDcuSelectedList(dcu);
-        } else {// table减少DCU
-            if (row.length > 0) {
-                dcuSelectedList.map((v) => {
-                    if (!row.includes(v)) {// 找出减少的DCU是哪一个
-                        let index = dcuSelectedList.indexOf(v);
-                        let dcuIds = [ ...dcuSelectedList ];
-
-                        dcuIds.splice(index, 1);
-
-                        let dcus = [ ...dcuList ];
-
-                        dcus.splice(index, 1);
+                    if (index >= 0) {// 已经存在的集中器
                         let meters = [ ...meterList ];
 
                         if (meters.length > 0) {
-                            let list = meters[index].meterList;
+
+                            configuration.configDcuArchive.getMeterListByDcu(1, 999, v.CST_ID, subSysNo).then((res: MeterList) => {
+                                let list = meters[index].meterList;
+                                let selecteds = [ ...selectedRowKeys ];
+                                let tt = [ ...list ];
+
+                                res.rows.map((item) => {
+                                    if (!list.includes(item) && v.deviceNo === item.METER_NO) {
+                                        tt.push(item);
+                                        selecteds.push(item.METER_NO);
+                                    }
+                                });
+                                meters[index].meterList = tt;
+                                console.log(tt);
+                                setMeterList(meters);
+                                setSelectedRowKeys(selecteds);
+                            });
+                        }
+                    } else {// 不存在的新集中器
+                        getDcuAccountInfo(v.CST_ID);
+
+                        configuration.configDcuArchive.getMeterListByDcu(1, 999, v.CST_ID, subSysNo).then((res: MeterList) => {
+                            let list = [ ...meterList ];
                             let selecteds = [ ...selectedRowKeys ];
 
-                            list.map((meter) => {
-                                if (selecteds.includes(meter.METER_NO)) {
-                                    selecteds.splice(selecteds.indexOf(meter.METER_NO), 1);
-                                }
-                            });
+                            if (res) {
+                                let tt:MeterInfo[] = [];
 
-                            setSelectedRowKeys(selecteds);
-                            meters.splice(index, 1);
-                            if (expandedRowKeys.includes(v.CST_ID)) {
-                                let index1 = expandedRowKeys.indexOf(v.CST_ID);
-                                let expands = [ ...expandedRowKeys ];
-
-                                expands.splice(index1, 1);
-                                setExpandedRowKeys(expands);
+                                res.rows.map((item) => {
+                                    if (isMeterExist(item, addList)) {
+                                        tt.push(item);
+                                        selecteds.push(item.METER_NO);
+                                    }
+                                });
+                                list.push({
+                                    dcuId: v.CST_ID,
+                                    meterList: tt,
+                                });
                             }
-                            setDcuList(dcus);
-                            setDcuSelectedList(dcuIds);
-                            setMeterList(meters);
-                        }
+                            setMeterList(list);
+                            let expaned = [ ...expandedRowKeys ];
+
+                            if (!expaned.includes(v.CST_ID)) {
+                                expaned.push(v.CST_ID);
+                            }
+                            setExpandedRowKeys(expaned);// 默认展开
+                            setSelectedRowKeys(selecteds);// 默认选中
+
+                        });
+                    }
+                    if (!dcuSelectedList.includes(v.CST_ID)) {
+                        dcu.push(v.CST_ID);
+                    }
+
+                    setDcuSelectedList(dcu);
+                });
+            }
+        } else { // 减少
+            if (row.length > 0) {// 减少部分
+                let subList: any[] = [];
+                let dcu = [ ...dcuSelectedList ];
+                let meters = [ ...meterList ];
+
+                nodeSelectedList.map((v) => {
+                    if (!isNodeExist(v, row)) {
+                        subList.push(v);
                     }
                 });
-            } else {// 清除所有DCU table
+                console.log('subList', subList);
+
+                let tmpList = subList.filter((v) => v.nodeType === '1');
+
+                if (tmpList.length > 0) {// 删除列表中包含集中器和表计
+                    let tmp = tmpList[0];
+                    let index = dcu.indexOf(tmp.CST_ID);
+
+                    if (meters.length > 0) {
+                        if (meters[index]) {
+                            let list = meters[index].meterList;
+
+                            if (subList.length - list.length === 1) {// 删除集中器所有表计
+                                let dcus = [ ...dcuList ];
+
+                                dcu.splice(index, 1);
+                                dcus.splice(index, 1);
+                                let selecteds = [ ...selectedRowKeys ];
+
+                                list.map((meter) => {
+                                    if (selecteds.includes(meter.METER_NO)) {
+                                        selecteds.splice(selecteds.indexOf(meter.METER_NO), 1);
+                                    }
+                                });
+
+                                setSelectedRowKeys(selecteds);
+                                meters.splice(index, 1);
+                                if (expandedRowKeys.includes(tmp.CST_ID)) {
+                                    let index1 = expandedRowKeys.indexOf(tmp.CST_ID);
+                                    let expands = [ ...expandedRowKeys ];
+
+                                    expands.splice(index1, 1);
+                                    setExpandedRowKeys(expands);
+                                }
+                                setDcuList(dcus);
+                                setDcuSelectedList(dcu);
+                                setMeterList(meters);
+                            } else { // 删除集中器下某个表计
+                                subList.map((v) => {
+                                    if (v.nodeType === '0') {
+                                        if (meters.length > 0) {
+                                            let selecteds = [ ...selectedRowKeys ];
+                                            let tt = [ ...list ];
+
+                                            list.map((meter, i) => {
+                                                if (meter.METER_NO === v.deviceNo) {
+                                                    tt.splice(i, 1);
+                                                    selecteds.splice(selecteds.indexOf(meter.METER_NO), 1);
+                                                }
+                                            });
+                                            meters[index].meterList = tt;
+                                            setSelectedRowKeys(selecteds);
+                                            setMeterList(meters);
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    } else {
+                        let dcus = [ ...dcuList ];
+
+                        dcu.splice(index, 1);
+                        dcus.splice(index, 1);
+                        setDcuList(dcus);
+                        setDcuSelectedList(dcu);
+                    }
+                } else {// 删除列表中只有表计
+                    subList.map((v) => {
+                        let index = dcu.indexOf(v.CST_ID);
+
+                        if (meters.length > 0) {
+                            let list = meters[index].meterList;
+
+                            if (v.nodeType === '0') {
+                                if (meters.length > 0) {
+                                    let selecteds = [ ...selectedRowKeys ];
+                                    let tt = [ ...list ];
+
+                                    list.map((meter, i) => {
+                                        if (meter.METER_NO === v.deviceNo) {
+                                            tt.splice(i, 1);
+                                            selecteds.splice(selecteds.indexOf(meter.METER_NO), 1);
+                                        }
+                                    });
+                                    meters[index].meterList = tt;
+                                    setSelectedRowKeys(selecteds);
+                                    setMeterList(meters);
+                                    if (tt.length === 0) {// 集中器下所有表计已经删除完毕
+                                        let dcus = [ ...dcuList ];
+
+                                        dcu.splice(index, 1);
+                                        dcus.splice(index, 1);
+                                        setDcuList(dcus);
+                                        setDcuSelectedList(dcu);
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+            } else {// 减少全部
                 setDcuList([]);
                 setDcuSelectedList([]);
                 setMeterList([]);
@@ -291,7 +476,8 @@ const ConfigDcuArchiveTab: React.FC<Props> = (props) => {
                 setSelectedRowKeys([]);
             }
         }
-        // setNodeSelectedList(row);
+        setNodeSelectedList(row);
+
     };
 
     // 获取所有DCU的档案信息
@@ -478,6 +664,16 @@ const ConfigDcuArchiveTab: React.FC<Props> = (props) => {
         }
     };
 
+    // const meterPagination = {
+    //     total: total,
+    //     // onChange (page: number) {
+    //     // },
+    //     current: current,
+    //     hideOnSinglePage: true,
+    //     pageSize: ROWS,
+    //     showSizeChanger: false,
+    // };
+
     // DCU table展开的子table也就是表计table
     const expandedRowRender = (item: DCUAccountInfo) => {
         const columns = [
@@ -628,44 +824,45 @@ const ConfigDcuArchiveTab: React.FC<Props> = (props) => {
             configuration.configDcuArchive.getLoadingResult(groupId).then((res:string[]) => {
                 if (res.length > 0) {
                     clearInterval(timer);
-                    let str = '';
-
-                    for (let i = 0;i < refreshIds.length; i++) {
-                        if (i === 0) {
-                            str += "\'" + refreshIds[i] + "\'";
-                        } else {
-                            str += ",\'" + refreshIds[i] + "\'";
-                        }
-                    }
-                    configuration.configDcuArchive.refreshMeterList(str).then((result:MeterList) => {
-                        if (result.rows) {
-                            let list = [ ...meterList ];
-
-                            list.map((meter, i) => {
-                                meter.meterList.map((v, index) => {
-                                    let j = result.rows.findIndex((item) => item.METER_GUID === v.METER_GUID);
-
-                                    if (j >= 0) {
-                                        v.LOAD_METER_FLG = result.rows[j].LOAD_METER_FLG;
-                                        meter.meterList[index] = v;
-                                        list[i] = meter;
-                                    }
-                                });
-                            });
-                            setMeterList(list);
-                        }
-                        if (dcuSelectedList.length > 0) {
-                            dcuSelectedList.map((v, index) => {
-                                refreshDcuAccountInfo(v.CST_ID, index);
-                            });
-                        }
-                    });
                 }
+                let str = '';
+
+                for (let i = 0;i < refreshIds.length; i++) {
+                    if (i === 0) {
+                        str += "\'" + refreshIds[i] + "\'";
+                    } else {
+                        str += ",\'" + refreshIds[i] + "\'";
+                    }
+                }
+                configuration.configDcuArchive.refreshMeterList(str).then((result:MeterList) => {
+                    if (result.rows) {
+                        let list = [ ...meterList ];
+
+                        list.map((meter, i) => {
+                            meter.meterList.map((v, index) => {
+                                let j = result.rows.findIndex((item) => item.METER_GUID === v.METER_GUID);
+
+                                if (j >= 0) {
+                                    v.LOAD_METER_FLG = result.rows[j].LOAD_METER_FLG;
+                                    meter.meterList[index] = v;
+                                    list[i] = meter;
+                                }
+                            });
+                        });
+                        setMeterList(list);
+                    }
+                    if (dcuSelectedList.length > 0) {
+                        dcuSelectedList.map((v, index) => {
+                            refreshDcuAccountInfo(v, index);
+                        });
+                    }
+                });
+
             })
                 .catch(() => {
                     clearInterval(timer);
                 });
-        }, 1000);
+        }, 5000);
     };
 
     // 装载档案或者卸载档案
@@ -811,7 +1008,7 @@ const ConfigDcuArchiveTab: React.FC<Props> = (props) => {
                                     }
                                     if (dcuSelectedList.length > 0) {
                                         dcuSelectedList.map((v, index) => {
-                                            refreshDcuAccountInfo(v.CST_ID, index);
+                                            refreshDcuAccountInfo(v, index);
                                         });
                                     }
                                 });
@@ -852,7 +1049,7 @@ const ConfigDcuArchiveTab: React.FC<Props> = (props) => {
     ];
 
     // 设备树展开子集
-    const calladdNextNode = async (item: DeviceTreeRows) => await cRef.current?.addNextNodeByLoading(item) || null;
+    // const calladdNextNode = async (item: DeviceTreeRows) => await cRef.current?.addNextNodeByLoading(item) || null;
 
     useEffect(() => {
         let screenHeight = window.innerHeight;
@@ -863,7 +1060,7 @@ const ConfigDcuArchiveTab: React.FC<Props> = (props) => {
     return (
         <div className='remoteControl contentWrap'>
             <div className='wrapLeft'>
-                <DeviceTree onNodeCheck={onNodeCheck} checkbox={false} cRef={cRef} PAGESIZE={12} movePage={movePage } selectOpt={ [ 'DCU', 'Meter' ]} calladdNextNode={calladdNextNode}/>
+                <DeviceTree onNodeCheck={onNodeCheck} isExpand={true} checkbox={false} cRef={cRef} PAGESIZE={12} movePage={movePage } clearTree={clearTree} selectOpt={ [ 'DCU', 'Meter' ]}/>
             </div>
             <div className='wrapRight' style={{overflowY: 'auto'}}>
                 <div className='pv10h20'>

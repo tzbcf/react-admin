@@ -44,7 +44,7 @@ type QueryTransformList = {
 export type GetDstListParasm = {
     subSysNo: string;
     nodeNo: string;
-    sectionId: string;
+    sectionId?: string;
 }
 
 export type GetDstListData = {

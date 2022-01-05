@@ -3,13 +3,18 @@ import React, {useRef, useEffect} from 'react';
 import { connect } from 'react-redux';
 import { LangMessage } from 'src/store/common/language';
 import DeviceTree, { CRef, NodeTree } from 'src/components/business/deviceTree';
-import { Table, Pagination, message, Row, Col, Button, Select, DatePicker, Modal, Cascader } from 'antd';
+import { Table, Pagination, message, Row, Col, Button, Select, DatePicker, Modal } from 'antd';
 import useFetchState from 'src/utils/useFetchState';
 import { MeterListActionList } from 'src/api/AmiFunction/taskMgnt/type.d';
 import { ColumnsType } from 'antd/es/table';
 import SearchList, { SRef } from 'src/components/business/searchList';
 import { formatArrOptions, Options } from 'src/utils/function';
-import { PauseCircleOutlined, SwapOutlined, ClockCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import {
+    PauseCircleOutlined,
+    SwapOutlined,
+    ClockCircleOutlined,
+    ExclamationCircleOutlined,
+} from '@ant-design/icons';
 import { CascaderValueType, DataNode } from 'rc-cascader/es/interface';
 import { DeviceTreeRows } from 'src/api/common/type';
 import { Key } from 'antd/es/table/interface';
@@ -18,6 +23,7 @@ import './index.less';
 import { dateFormat, deepClone } from 'src/utils/utils';
 import { amiFunc } from 'src/api';
 import { uniq } from 'lodash';
+import ColumnsSelect from 'src/components/common/columnsSelect';
 const { Option } = Select;
 
 import {abnormalFn} from 'src/utils/function';
@@ -32,6 +38,8 @@ type Cadtion = {
     taskType: string;
     meterIds: string[];
     dcuIds: string[];
+    sortName: string;
+    sortOrder: string;
 }
 
 type Props = {
@@ -115,6 +123,8 @@ const TaskMgnt: React.FC<Props> = (props) => {
         startDateTime: '',
         taskType: '',
         excuteResult: '',
+        sortName: '',
+        sortOrder: 'asc',
         dcuIds: [],
         meterIds: [],
     });
@@ -141,6 +151,7 @@ const TaskMgnt: React.FC<Props> = (props) => {
         {
             title: Mes['titleTableCommandafncommandafn'],
             dataIndex: 'AFN',
+            sorter: true,
         },
         {
             title: Mes['titleTableStatusstatus'],
@@ -158,6 +169,7 @@ const TaskMgnt: React.FC<Props> = (props) => {
         {
             title: Mes['titleTablePrioritypriority'],
             dataIndex: 'COMMAND_PRIORITY',
+            sorter: (a, b) => b.COMMAND_PRIORITY - a.COMMAND_PRIORITY,
             render (val: string) {
                 const item = PRIORITYOPT.find((v) => parseInt(v.value, 10) === parseInt(val, 10));
 
@@ -177,14 +189,17 @@ const TaskMgnt: React.FC<Props> = (props) => {
         {
             title: Mes['titleTableCreatetimecreatetime'],
             dataIndex: 'BUILD_DATE',
+            sorter: true,
         },
         {
             title: Mes['titleTablePlanned_timeplanned_time'],
             dataIndex: 'Execute_date',
+            sorter: true,
         },
         {
             title: Mes['titleTableCompletetimecompletetime'],
             dataIndex: 'COMPLETION_DATE',
+            sorter: true,
         },
         {
             title: Mes['titleTableOperatoroperator'],
@@ -195,6 +210,49 @@ const TaskMgnt: React.FC<Props> = (props) => {
     const timeChange = (dates: any, dateStrings: string[]) => {
         sRef.current?.setFieldsValue({
             startDateTimeValue: [ dateFormat(FORMAT, moment(dateStrings[0])), dateFormat(FORMAT, moment(dateStrings[1])) ],
+        });
+    };
+
+    const getOperatorOpt = (query:Object) => {
+        abnormalFn(async () => {
+            const search = await sRef.current?.getFormData();
+
+            console.log('------', search);
+            const params = {
+                taskType: search.taskType,
+                excuteStatus: search.excuteStatus === 'All' ? '' : search.excuteStatus,
+                excuteResult: search.excuteResult,
+                startDateTime: todayStart,
+                endDateTime: todayEnd,
+                dcuIds: condition.dcuIds.join(','),
+                meterIds: condition.meterIds.join(','),
+                ...query,
+            };
+            const res = await amiFunc.taskMgnt.getOperatorList(params);
+
+            if (res.length && res[0].text) {
+                const optList = formatArrOptions(res, 'value', 'text');
+
+                optList.unshift({value: '0', name: 'All'});
+                setOperateOpt(optList);
+            }
+            console.log('------', res);
+        });
+    };
+
+    const taskTypeChange = (val:string) => {
+        getOperatorOpt({
+            taskType: val,
+        });
+    };
+    const excuteResultChange = (val:string) => {
+        getOperatorOpt({
+            excuteResult: val,
+        });
+    };
+    const excuteStatusChange = (val:string) => {
+        getOperatorOpt({
+            excuteStatus: val === 'All' ? '' : val,
         });
     };
 
@@ -213,18 +271,27 @@ const TaskMgnt: React.FC<Props> = (props) => {
                     name: 'Schedule Task',
                 },
             ],
+            attr: {
+                onChange: taskTypeChange,
+            },
         },
         {
             name: 'excuteStatus',
             col: 3,
             type: 'Select',
             options: EXCUTESTATE,
+            attr: {
+                onChange: excuteStatusChange,
+            },
         },
         {
             name: 'excuteResult',
             col: 2,
             type: 'Select',
             options: EXCUTERESULT,
+            attr: {
+                onChange: excuteResultChange,
+            },
         },
         {
             name: 'operator',
@@ -260,8 +327,8 @@ const TaskMgnt: React.FC<Props> = (props) => {
             let dcuIds = '';
             let meterIds = '';
 
-            query.dcuIds.forEach((v) => dcuIds += `'${v}'`);
-            query.meterIds.forEach((v) => meterIds += `'${v}'`);
+            query.dcuIds.forEach((v, i) => dcuIds += `'${v}'${i < query.dcuIds.length - 1 ? ',' : ''}`);
+            query.meterIds.forEach((v, i) => meterIds += `'${v}'${i < query.meterIds.length - 1 ? ',' : ''}`);
             const res = await amiFunc.taskMgnt.getMeterList({
                 page,
                 rows,
@@ -273,8 +340,8 @@ const TaskMgnt: React.FC<Props> = (props) => {
                 meterIds: query.meterIds.join(',') || '',
                 operator: !parseInt(query.operator, 10) ? '' : query.operator,
                 excuteResult: query.excuteResult,
-                sortName: '',
-                sortOrder: 'asc',
+                sortName: query.sortName,
+                sortOrder: query.sortOrder,
                 taskType: query.taskType,
                 subsysNo: subSysNo,
             });
@@ -350,6 +417,37 @@ const TaskMgnt: React.FC<Props> = (props) => {
         showSizeChanger: false,
     };
 
+    const tableChange = (...val: any[]) => {
+        console.log(val);
+        if (val[2].field && val[2].order) {
+            let key = val[2].field;
+            let order = '';
+
+            if (val[2].order === 'ascend') {
+                order = 'asc';
+            }
+            if (val[2].order === 'descend') {
+                order = 'desc';
+            }
+            setCondition({
+                ...condition,
+                sortName: key,
+                sortOrder: order,
+            });
+            getTableData({
+                ...condition,
+                sortName: key,
+                sortOrder: order,
+            }, {page: current, rows: ROWS});
+        } else {
+            setCondition({
+                ...condition,
+                sortName: '',
+                sortOrder: 'asc',
+            });
+        }
+    };
+
     const getOperatorList = async () => {
         try {
             const res = await amiFunc.taskMgnt.getOperatorList({
@@ -382,6 +480,8 @@ const TaskMgnt: React.FC<Props> = (props) => {
                 dcuIds: [],
                 afn: '',
                 operator: '',
+                sortName: '',
+                sortOrder: 'asc',
             }, {page: 1, rows: 10});
         } catch (error:any) {
             console.error(error);
@@ -486,19 +586,10 @@ const TaskMgnt: React.FC<Props> = (props) => {
         });
     };
 
-    const casChange = (value:CascaderValueType[]) => {
-        console.log(value);
+    const columnsChange = (value:ColumnsType<MeterListActionList>) => {
+        console.log('val--------', value);
         setLoading(true);
-        const newColumns = columns.map((v:any) => {
-            const item = value.find((o) => o[0] === v.dataIndex);
-
-            if (item) {
-                return v;
-            }
-        }).filter((v) => v);
-
-        setCasVal(value);
-        setTableCol(newColumns);
+        setTableCol(value);
         setLoading(false);
     };
 
@@ -512,7 +603,6 @@ const TaskMgnt: React.FC<Props> = (props) => {
         setTableCol(newCol);
         const list = newCol.map((v: any) => [ v.dataIndex ]);
 
-        console.log('list=-==--', list);
         setCasVal(list);
         const casColList = columns.map((v:any) => ({
             label: v.title,
@@ -586,14 +676,12 @@ const TaskMgnt: React.FC<Props> = (props) => {
                                     title={Mes['btnSettimesettime']}
                                     onClick={() => handleTaskEvent('excuteTime')} />
                             </Col>
-                            <Col span={3}>
-                                <Cascader
-                                    multiple={true}
-                                    options={casOpt}
-                                    onChange={casChange}
-                                    maxTagCount='responsive'
-                                    value={casVal}
-                                />
+                            <Col span={2} className='screen'>
+                                <ColumnsSelect<MeterListActionList>
+                                    columns={columns}
+                                    casOpt={casOpt}
+                                    defaultCasVal={casVal}
+                                    change={columnsChange} />
                             </Col>
                         </Row>
                     </div>
@@ -607,6 +695,7 @@ const TaskMgnt: React.FC<Props> = (props) => {
                                 selectedRowKeys: taskSelectKeys,
                                 onChange: tableOnChange,
                             }}
+                            onChange={tableChange}
                             pagination={false} />
                     </div>
                     <div className='page'>

@@ -99,9 +99,9 @@ const ActivityCalenderTask: React.FC<Props> = (props) => {
                 setTaskList(res.rows);
                 setLoading(false);
                 selectGroupId = groupId;
-                if (selectedGroupKeys.length <= 0) {
-                    setSelectedGroupKeys([ groupId ]);
-                }
+                // if (selectedGroupKeys.length <= 0) {
+                setSelectedGroupKeys([ groupId ]);
+                // }
             })
                 .catch((err) => {
                     message.error(err);

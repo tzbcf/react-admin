@@ -23,8 +23,22 @@ export type CascaderData = {
   children?: CascaderData[];
 }
 
-export const nodeDataFormatCascader = (nodeList: UserNode[], rootNode: CascaderData[], parentId: string|null = null) => {
-    const node = nodeList.filter((v: UserNode) => v.PARENTID === parentId);
+/**
+ *
+ * @param nodeList UserNode
+ * @param rootNode CascaderData
+ * @param parentId parentId父级Id
+ * @param flag 如果一级节点有父级Id，但是没返回情况
+ */
+
+export const nodeDataFormatCascader = (nodeList: UserNode[], rootNode: CascaderData[], parentId: string | null = null, flag: boolean = true) => {
+    let node:UserNode[] = [];
+
+    if (flag) {
+        node = nodeList.filter((v: UserNode) => v.PARENTID === parentId);
+    } else {
+        node = nodeList.filter((v: UserNode) => v.PARENTID);
+    }
 
     node.forEach((item:UserNode) => {
         const findNode = nodeList.find((v:UserNode) => v.PARENTID === item.ID);
@@ -140,7 +154,7 @@ export const constructCommandData = (list: ProtocolDataList[] = [], typeNodeMap:
                 key: type + item['NO'],
                 no: item['NO'],
                 id: item['NO'],
-                title: item['NAME'],
+                title: `${item['NAME']}(${item['AFN']})`,
                 tooltip: item['NAME'] + '(' + item['AFN'] + ')', // 气泡提示
                 dataType: item['DATA_TYPE'], // 下发参数类型
                 resultDataType: item['RESULT_DATA_TYPE'],
@@ -238,6 +252,7 @@ export const resCastOption = (res:MeterGroupList[]|GetDstListData[]):valueArr[] 
     let id = 'CLASSICAL_DETAIL_GUID';
     let name = 'CLASSICAL_DETAIL_NAME';
 
+    if (!res.length) {return [];}
     if ('ID' in res[0]) {
         id = 'ID';
         name = 'NAME';

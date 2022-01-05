@@ -75,7 +75,8 @@ type Props = {
     checkType?: boolean; // 是否只支持同类型选择。同类型多选时，使用。
     PAGESIZE?: number; // 一页多少行数据
     onNodeCheck?: (value: any[], node: NodeTree) => void; // Node点击后的事件，全选的参数中会带有集中器，如果只需要表计，需要判断
-    movePage?: (page:number) => void; // tree翻页
+    movePage?: (page: number) => void; // tree翻页
+    clearTree?: () => void; // tree刷新操作
     cRef: React.MutableRefObject<CRef | undefined>;
     calladdNextNode?: (item: DeviceTreeRows) => Promise<DeviceChildData[] | null>;
     checkNodeTypeKey?: string; // checkNodeTypeKey === 'metermodelno'时，取消所有选项，禁选不消失
@@ -103,7 +104,7 @@ const treeChildFormat = (data: DeviceChildData[], checkType: boolean, checkNodeT
     metermodelno: v.metermodelno,
     parentId: v.parentId,
     disabled: !!(checkType && checkNodeType && v[typeKey] !== checkNodeType),
-    title: `${v.deviceNo} ${v.typeAbbr}`,
+    title: `${v.deviceNo} ${v.typeAbbr},${v.protocalType || ''}`,
 }));
 
 // 通过下拉获取默认选择
@@ -145,7 +146,7 @@ const DeviceTree: React.FC<Props> = (props) => {
         devicedList: [],
     });
     // 初始化
-    const { isExpand = false, checkbox = true, cRef, selectOpt = [ 'DCU', 'Meter', 'Group' ], onNodeCheck, checkType = false, PAGESIZE = 15, movePage, calladdNextNode, checkNodeTypeKey = 'deviceModel' } = props;
+    const { isExpand = false, checkbox = true, cRef, selectOpt = [ 'DCU', 'Meter', 'Group' ], onNodeCheck, checkType = false, PAGESIZE = 15, movePage, clearTree, calladdNextNode, checkNodeTypeKey = 'deviceModel' } = props;
     // 设备树数据
     const [ treeData, setTreeData ] = useFetchState<DataNode[]>([]);
     // 接口返回的设备列表数据
@@ -247,21 +248,23 @@ const DeviceTree: React.FC<Props> = (props) => {
     const getChildTypeList = (childrenData: any[], checkedKeysList: Key[], checkTypeFlag: boolean, key:string = 'key') => {
         let { deviceModel } = tRef.current;
 
-        childrenData.forEach((item: any) => {
-            if (!item.disabled) { // 设置禁选的不能添加
-                if (checkTypeFlag && !deviceModel) { // 如果要设置同类型，没有设置，设置类型
-                    tRef.current.deviceModel = item[checkNodeTypeKey];
-                    deviceModel = item[checkNodeTypeKey];
-                }
-                if (checkTypeFlag) { // 如果要设置同类型
-                    if (deviceModel === item[checkNodeTypeKey]) { // 类型相同
+        if (childrenData) {
+            childrenData.forEach((item: any) => {
+                if (!item.disabled) { // 设置禁选的不能添加
+                    if (checkTypeFlag && !deviceModel) { // 如果要设置同类型，没有设置，设置类型
+                        tRef.current.deviceModel = item[checkNodeTypeKey];
+                        deviceModel = item[checkNodeTypeKey];
+                    }
+                    if (checkTypeFlag) { // 如果要设置同类型
+                        if (deviceModel === item[checkNodeTypeKey]) { // 类型相同
+                            checkedKeysList.push(item[key]);
+                        }
+                    } else {
                         checkedKeysList.push(item[key]);
                     }
-                } else {
-                    checkedKeysList.push(item[key]);
                 }
-            }
-        }); // 集中器下所有表计选中
+            }); // 集中器下所有表计选中
+        }
     };
 
     // 获取子集数据
@@ -526,6 +529,9 @@ const DeviceTree: React.FC<Props> = (props) => {
 
     // 搜索
     const onSearch = (value: string) => {
+        if (clearTree) {
+            clearTree();
+        }
         setInputVal(value);
         getTreeData(1, PAGESIZE, value);
     };

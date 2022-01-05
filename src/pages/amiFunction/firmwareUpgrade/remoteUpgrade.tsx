@@ -12,7 +12,7 @@
  */
 
 // eslint-disable-next-line no-use-before-define
-import React, { useEffect } from 'react';
+import React, { useEffect, useImperativeHandle } from 'react';
 import { connect } from 'react-redux';
 import { LangMessage } from 'src/store/common/language';
 import { Input, Tree, Row, Col, Select, Button, message, Modal, Form, DatePicker, Upload, InputNumber } from 'antd';
@@ -31,11 +31,16 @@ const { confirm } = Modal;
 const { Search } = Input;
 const { Option } = Select;
 
+export type UPRef = {
+    refreshInfo (): void;
+}
+
 type Props = {
     Mes: LangMessage,
     subSysNo: string;
     nodeNo: string;
-    tabsChange: (val:string, flag?:boolean) => void
+    tabsChange: (val: string, flag?: boolean) => void;
+    upRef:React.MutableRefObject<UPRef | undefined>; // 暴露给父级调用
 }
 
 const rowsFormatTreeData = (arr: any) => arr.map((v:any) => ({
@@ -45,7 +50,7 @@ const rowsFormatTreeData = (arr: any) => arr.map((v:any) => ({
 }));
 
 const RemoteUpgrade: React.FC<Props> = (props) => {
-    const { Mes, subSysNo, tabsChange } = props;
+    const { Mes, subSysNo, tabsChange, upRef } = props;
     const [ form ] = Form.useForm();
     const fileTypeList = [ 'DCU', 'Meter', 'Main Module', 'Slave Module', 'DC2000' ];
     const CATEGORYLIST = [
@@ -528,6 +533,15 @@ const RemoteUpgrade: React.FC<Props> = (props) => {
         initRetransTimes();
         categoryChange('transformer');
     }, []);
+
+    // 暴露给父级调用的方法
+    useImperativeHandle(upRef, () => ({
+        refreshInfo () {
+            if (selectedRowKeys.length) {
+                getDevicepgradeInfo(selectedRowNode);
+            }
+        },
+    }));
 
     return (
         <>

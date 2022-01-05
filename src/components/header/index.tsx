@@ -19,6 +19,8 @@ import { MENUTABS_DELETE_ALL } from 'src/store/common/menuTabs';
 import bus from 'src/utils/eventBus';
 import { common, user } from 'src/api';
 import * as UserName from 'src/store/common/user';
+import newsNotice from './newsNotice';
+
 interface Props extends INITSTATE {
     dispatch: React.Dispatch<any>;
     msg: LangMessage;
@@ -209,6 +211,7 @@ const Header: React.FC<Props> = (props) => {
         bus.on('deviceOFF', async (row: any) => {
             try {
                 console.log('deviceOFF-----', row);
+                newsNotice(row, 'textDeviceOffline', msg);
                 serNews(news += 1);
             } catch (error: any) {
                 console.error(error.toString());
@@ -219,6 +222,7 @@ const Header: React.FC<Props> = (props) => {
             try {
                 console.log('deviceON-----', row);
                 serNews(news += 1);
+                newsNotice(row, 'textDeviceOnline', msg);
             } catch (error: any) {
                 console.error(error.toString());
                 message.error(error.toString());

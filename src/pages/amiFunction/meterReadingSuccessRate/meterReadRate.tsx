@@ -42,7 +42,6 @@ type SearchValueObj = {
 type Props = {
     Mes: LangMessage;
     subSysNo: string;
-    nodeNo: string;
 };
 
 const formatMeterOpt = (data: SchemetypeList[]) => data.map((item:SchemetypeList) =>
@@ -52,7 +51,7 @@ const formatMeterOpt = (data: SchemetypeList[]) => data.map((item:SchemetypeList
     }));
 
 const MeterReadRateControl: React.FC<Props> = (props) => {
-    const { Mes, subSysNo, nodeNo } = props;
+    const { Mes, subSysNo } = props;
     const sRef = useRef<SRef>();
     const fieldOpt = [
         {
@@ -126,13 +125,16 @@ const MeterReadRateControl: React.FC<Props> = (props) => {
     const nodeChange = (val: string[]) => {
         abnormalFn(async () => {
             sRef.current?.setFieldsValue({
-                dstId: '',
+                destination: '',
             });
             const res = await amiFunc.meterReadRate.getDstListJson({
                 subSysNo,
                 nodeNo: val[val.length - 1],
             });
 
+            sRef.current?.setFieldsValue({
+                destination: res.length ? res[0].ID : '',
+            });
             setLineOpt(resCastOption(res));
         });
     };
@@ -146,6 +148,7 @@ const MeterReadRateControl: React.FC<Props> = (props) => {
                 options: CascaderOpt,
                 changeOnSelect: true,
                 onChange: nodeChange,
+                allowClear: false,
             },
         },
         {
@@ -347,34 +350,36 @@ const MeterReadRateControl: React.FC<Props> = (props) => {
 
     const getInitConfig = () => {
         abnormalFn(async () => {
+            const resNodeTree = await amiFunc.abnormalMgnt.getNodeByLoginUser(subSysNo);
+            let nodeTree: CascaderData[] = [];
+
+            nodeDataFormatCascader(resNodeTree, nodeTree, null, false);
+
+            setCascaderOpt(nodeTree);
             const res = await Promise.all([
-                amiFunc.abnormalMgnt.getNodeByLoginUser(subSysNo),
                 amiFunc.meterReadRate.getDstListJson({
                     subSysNo,
-                    nodeNo,
+                    nodeNo: nodeTree.length ? nodeTree[0].value : '',
                 }),
                 amiFunc.meterReadRate.getSchemetype(),
             ]);
-            let nodeTree: CascaderData[] = [];
 
-            nodeDataFormatCascader(res[0], nodeTree);
 
-            setCascaderOpt(nodeTree);
-            setLineOpt(resCastOption(res[1]));
-            setSchemeOpt(formatMeterOpt(res[2]));
+            setLineOpt(resCastOption(res[0]));
+            setSchemeOpt(formatMeterOpt(res[1]));
             setSearchValue({
                 ...INITSEARCHVALUE,
-                nodeTree: res[0][0].ID,
-                destination: res[1][0].ID,
-                'search_scheme': res[2][0].afn,
+                nodeTree: nodeTree[0]?.value || '',
+                destination: res[0][0]?.ID || '',
+                'search_scheme': res[1][0].afn || '',
                 searchField: 'CST_NO',
                 ratioOrNum: '0',
                 viewType: '0',
             });
             sRef.current?.setFieldsValue({
-                nodeTree: [ res[0][0].ID ],
-                destination: res[1][0].ID,
-                'search_scheme': res[2][0].afn,
+                nodeTree: nodeTree.length ? [ nodeTree[0].value ] : [],
+                destination: res[0][0]?.ID || '',
+                'search_scheme': res[1][0].afn || '',
                 searchField: 'CST_NO',
                 ratioOrNum: '0',
                 viewType: '0',
@@ -384,7 +389,6 @@ const MeterReadRateControl: React.FC<Props> = (props) => {
     };
 
     useEffect(() => {
-        setTableData([]);
         getInitConfig();
     }, []);
 
@@ -418,5 +422,4 @@ const MeterReadRateControl: React.FC<Props> = (props) => {
 export default connect((state: any) => ({
     Mes: state.langSwitch.message,
     subSysNo: state.userInfo.sysType,
-    nodeNo: state.userInfo?.sysUser?.nodeNo,
 }))(MeterReadRateControl);

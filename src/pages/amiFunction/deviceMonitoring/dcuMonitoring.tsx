@@ -316,10 +316,15 @@ const DCUmonitoring: React.FC<Props> = (props) => {
             let nodeTree: CascaderData[] = [];
 
             nodeDataFormatCascader(nodeRes, nodeTree);
+            let searchNode:string[] = [];
+
+            if (nodeTree.length) {
+                searchNode = [ nodeTree[0].value ];
+            }
             setCascaderOpt(nodeTree);
             const initObj = {
                 searchField: 'CST_NO(online)',
-                searchNode: [ nodeTree[0].value ],
+                searchNode: searchNode,
                 fieldValue: '',
             };
 
@@ -352,7 +357,7 @@ const DCUmonitoring: React.FC<Props> = (props) => {
     // 弹窗搜索方法
     const modalSearchFinsh = async (val: any) => {
         console.log('=-=', val);
-        const timeArr = [ dateFormat('YYYY-MM-DD', moment(val.timeDate[0])), dateFormat('YYYY-MM-DD', moment(val.timeDate[1])) ];
+        const timeArr = [ dateFormat('YYYY-MM-DD HH:mm', moment(val.timeDate[0])), dateFormat('YYYY-MM-DD HH:mm', moment(val.timeDate[1])) ];
 
         setLogTimeDate(timeArr);
         getDcuLog(timeArr);

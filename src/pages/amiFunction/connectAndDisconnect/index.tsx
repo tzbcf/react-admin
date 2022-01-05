@@ -245,10 +245,12 @@ const ConnectAndDisconnect: React.FC<Props> = (props) => {
         {
             title: Mes['titleTableMeternometerno'],
             dataIndex: 'METER_NO',
+            sorter: (a, b) => parseInt(a.METER_NO, 10) - parseInt(b.METER_NO, 10),
         },
         {
             title: Mes['titleTableDcuaddrdcuaddr'],
             dataIndex: 'CST_ADDR',
+            sorter: (a, b) => parseInt(a.CST_ADDR, 10) - parseInt(b.CST_ADDR, 10),
         },
         {
             title: Mes['titleTableMeteraddrmeteraddr'],
@@ -257,6 +259,8 @@ const ConnectAndDisconnect: React.FC<Props> = (props) => {
         {
             title: Mes['titleTableCeliangdianhaoceliangdianhao'],
             dataIndex: 'CHECK_POINT_NUM',
+            sorter: (a, b) => parseInt(a.CHECK_POINT_NUM, 10) - parseInt(b.CHECK_POINT_NUM, 10),
+
         },
         {
             title: Mes['titleTableSwitchstatusswitchstatus'],

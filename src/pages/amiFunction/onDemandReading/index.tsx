@@ -17,6 +17,8 @@ import { useHistory } from 'react-router-dom';
 import { ColumnsType } from 'antd/es/table';
 import bus from 'src/utils/eventBus';
 import { deepClone } from 'src/utils/utils';
+import ColumnsSelect from 'src/components/common/columnsSelect';
+import { CascaderValueType, DataNode } from 'rc-cascader/es/interface';
 import moment from 'moment';
 import { v4 } from 'uuid';
 import './index.less';
@@ -205,7 +207,9 @@ const OnDemandRead: React.FC<Props> = (props) => {
     const [ taskLogList, setTaskLogList ] = useFetchState<TaskLogProperty[]>([]);
     // 是否显示弹窗
     const [ visible, setVisible ] = useFetchState<boolean>(false);
-
+    const [ tableColunms, setTableColunms ] = useFetchState<ColumnsType<TableProcolData>>([]);
+    const [ casOpt, setCasOpt ] = useFetchState<DataNode[]>([]);
+    const [ casVal, setCasVal ] = useFetchState<CascaderValueType[]>([]);
     // 发送指令
     const execute = (keys: Key[] = taskSelectKeys) => {
         if (!keys.length) {
@@ -280,7 +284,7 @@ const OnDemandRead: React.FC<Props> = (props) => {
     };
 
     // table列表th
-    const tableColunms:ColumnsType<TableProcolData> = [
+    const colunms:ColumnsType<TableProcolData> = [
         {
             title: Mes['tableTitleSn'],
             dataIndex: 'SN',
@@ -495,6 +499,33 @@ const OnDemandRead: React.FC<Props> = (props) => {
         },
     ];
 
+    const columnsChange = (value:ColumnsType<TableProcolData>) => {
+        setTableColunms(value);
+    };
+        // 设置表头列展示下拉
+    const setThHeaderCol = () => {
+        let newCol = deepClone(colunms);
+
+        if (newCol.length > 3) {
+            newCol = newCol.map((v, i) => {
+                if (i && i !== colunms.length - 2 && i !== colunms.length - 3) {
+                    return v;
+                }
+            }).filter((v) => v) as ColumnsType<TableProcolData>;
+        }
+        setTableColunms(newCol);
+        const list = newCol.map((v: any) => [ v.dataIndex ]);
+
+        setCasVal(list);
+        const casColList = colunms.map((v:any) => ({
+            label: v.title,
+            value: v.dataIndex || v.title,
+        }));
+
+        console.log('------', casColList);
+        setCasOpt(casColList);
+    };
+
     // 右边table按钮
     const btnList: BtnConfig[] = [
         {
@@ -589,6 +620,7 @@ const OnDemandRead: React.FC<Props> = (props) => {
                     }
                     onConfig.current.tableData = [];
                     onConfig.current.taskSelectKeys = [];
+                    setCheckData([]);
                     setTaskSelectKeys([]);
                     setTableData([]);
                     setCurrent(1);
@@ -703,14 +735,34 @@ const OnDemandRead: React.FC<Props> = (props) => {
 
             setCheckKeyList(selKeysList);
             const cloneTaskTableData = deepClone(checkData);
-            const item = cloneTaskTableData.find((v) => v.COMMAND_SN === info.node.no);
+            let taskList:TableProcolData[] = [];
 
-            if (item) { // 如果已存在，不在添加
-                return;
+            if (info.node.parentId) {
+                const item = cloneTaskTableData.find((v) => v.COMMAND_SN === info.node.no);
+
+                if (item) { // 如果已存在，不在添加
+                    return;
+                }
+                const data = addTask(info.node, deviceRow, READ_STATUS.READY);
+
+                taskList = [ ...data ];
+            } else {
+                const childList = info.node.children;
+                const childTaskList:TableProcolData[][] = [];
+
+                for (const item of childList) {
+                    const row = cloneTaskTableData.find((v) => v.COMMAND_SN === item.no);
+
+                    if (row) {continue;}
+                    const data = addTask(item, deviceRow, READ_STATUS.READY);
+
+                    childTaskList.push(data);
+                }
+                taskList = childTaskList.flat();
             }
-            const data = addTask(info.node, deviceRow, READ_STATUS.READY);
-            const newTaskTableData = [ ...cloneTaskTableData, ...data ];
-            const keyList = data.map((v) => v.SN);
+
+            const newTaskTableData = [ ...cloneTaskTableData, ...taskList ];
+            const keyList = taskList.map((v) => v.SN);
             const newKeyList = [ ...taskSelectKeys, ...keyList ];
 
             setTaskSelectKeys(newKeyList);
@@ -1002,7 +1054,7 @@ const OnDemandRead: React.FC<Props> = (props) => {
                 message.error(error.toString());
             }
         });
-        console.log('read-------');
+        setThHeaderCol();
         return () => { // 离开页面销毁监听
             bus.removeAllListeners('otask');
             bus.removeAllListeners('otask-confirm');
@@ -1049,9 +1101,16 @@ const OnDemandRead: React.FC<Props> = (props) => {
                 </Col>
                 <Col span={18}>
                     <div className='reading'>
-                        <Row gutter={24} justify='space-between' className='top'>
-                            <Col span={18}>
+                        <Row gutter={24} className='top'>
+                            <Col span={6}>
                                 <BtnList btnList={ btnList}/>
+                            </Col>
+                            <Col span={3}>
+                                <ColumnsSelect<TableProcolData>
+                                    columns={colunms}
+                                    casOpt={casOpt}
+                                    defaultCasVal={casVal}
+                                    change={columnsChange} />
                             </Col>
                         </Row>
                         <Row gutter={24} className='table'>
@@ -1064,6 +1123,10 @@ const OnDemandRead: React.FC<Props> = (props) => {
                                         type: 'checkbox',
                                         selectedRowKeys: taskSelectKeys,
                                         onChange: tableOnChange,
+                                        // selections: [
+                                        //     Table.SELECTION_ALL,
+                                        //     Table.SELECTION_NONE,
+                                        // ],
                                     }}
                                     rowKey='SN'
                                 />
@@ -1079,12 +1142,12 @@ const OnDemandRead: React.FC<Props> = (props) => {
             </Row>
             <TerminalInfo cRef={tRef} />
             <Modal
-                title='Loog'
+                title={Mes['titleTableLoginfologinfo']}
                 visible={visible}
                 width={600}
                 onCancel={handleCancel}
                 footer={[
-                    <Button key='CLose' onClick={handleCancel}>CLose</Button>,
+                    <Button key='CLose' onClick={handleCancel}>{ Mes['titleLabelCloseclose'] }</Button>,
                 ]}
             >
                 <Table

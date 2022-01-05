@@ -21,7 +21,7 @@ import {
     Options,
     formatArrOptions,
 } from 'src/utils/function';
-import { dateFormat, arrPaging } from 'src/utils/utils';
+import { dateFormat, arrPaging, deepClone } from 'src/utils/utils';
 import TaskCom, { TaskRef } from 'src/components/business/taskCom';
 import { TaskGroupModuleData, TaskListRows } from 'src/api/AmiFunction/connectAndDisConnect/type';
 const { TabPane } = Tabs;
@@ -62,10 +62,9 @@ type PageSizeType = {
 type Props = {
     Mes: LangMessage;
     subSysNo: string;
-    nodeNo: string;
 }
 const AbnormalMgnt: React.FC<Props> = (props) => {
-    const { Mes, subSysNo, nodeNo } = props;
+    const { Mes, subSysNo } = props;
     const ROWS = 10;
     // 状态配置
     const INITSTATUS = [
@@ -190,7 +189,6 @@ const AbnormalMgnt: React.FC<Props> = (props) => {
             const res = await basicData.transformMgt.getDstList({
                 subSysNo,
                 nodeNo: val[val.length - 1],
-                sectionId: '',
             });
 
             setLineOpt(resCastOption(res));
@@ -306,17 +304,17 @@ const AbnormalMgnt: React.FC<Props> = (props) => {
     const searchFinsh = (val: any) => {
         console.log(val);
         if (!val.fieldValue) {
-            message.warning(Mes['messageHintMeternoordcuaddressemptymeternoordcuaddressempty']);
+            return message.warning(Mes['messageHintMeternoordcuaddressemptymeternoordcuaddressempty']);
         }
         const initVal = {
             ...searchFields,
-            afn: val.afn?.split(',')[0],
+            afn: val.afn?.split(',')[0] || '',
             date: val.date,
             dstId: val.dstId,
             fieldValue: val.fieldValue,
             searchField: val.searchField,
-            stationId: val.stationId[val.stationId.length - 1],
-            commandType: val.afn?.split(',')[1],
+            stationId: val.stationId[val.stationId.length - 1] || '',
+            commandType: val.afn?.split(',')[1] || '',
             status: val.status,
         };
 
@@ -448,30 +446,54 @@ const AbnormalMgnt: React.FC<Props> = (props) => {
     // 异常管理获取配置
     const getAbormalConfigInit = () => {
         abnormalFn(async () => {
-            const res = await Promise.all([
-                basicData.transformMgt.getDstList({
-                    subSysNo,
-                    nodeNo,
-                    sectionId: '',
-                }),
-                amiFunc.abnormalMgnt.getNodeByLoginUser(subSysNo),
-                amiFunc.abnormalMgnt.getMeterTypeList(),
-            ]);
+            const resNodeTree = await amiFunc.abnormalMgnt.getNodeByLoginUser(subSysNo);
             let nodeTree: CascaderData[] = [];
 
-            nodeDataFormatCascader(res[1], nodeTree);
+            nodeDataFormatCascader(resNodeTree, nodeTree);
+            if (!nodeTree.length) {
+                const initValue = {
+                    stationId: [ ],
+                    dstId: '',
+                    dcuType: '',
+                    date: dateFormat('YYYY-MM-DD', moment(new Date().getTime() - 24 * 60 * 60 * 1000)),
+                    status: '2',
+                    searchField: 'METER_NO',
+                };
 
+                setSearchFields({
+                    ...SEARCHFIELDS,
+                    ...{
+                        date: dateFormat('YYYY-MM-DD'),
+                        status: '2',
+                        searchField: 'METER_NO',
+                        stationId: '',
+                    },
+                });
+                sRef.current?.setFieldsValue(initValue);
+                return;
+            }
             setCascaderOpt(nodeTree);
-            setLineOpt(resCastOption(res[0]));
-            console.log('-e-3-----', res[2]);
+            const resDst = await basicData.transformMgt.getDstList({
+                subSysNo,
+                nodeNo: nodeTree[0].value,
+            });
 
-            setDcuTypeList(formatArrOptions(res[2], 'CST_TYPE', 'CST_TYPE_NAME'));
-            dstChange(res[2][0].CST_TYPE);
+            setLineOpt(resCastOption(resDst));
+
+            const resMeterTypeList = await amiFunc.abnormalMgnt.getMeterTypeList(resDst[0].ID);
+
+            setDcuTypeList(formatArrOptions(resMeterTypeList, 'CST_TYPE', 'CST_TYPE_NAME'));
+            const resTaskTypeList = await amiFunc.abnormalMgnt.getTaskByMeterType(resMeterTypeList[0].CST_TYPE);
+
+            if (resTaskTypeList.length) {
+                setAfnOpt(formatMeterOpt(resTaskTypeList));
+            }
             const initValue = {
-                stationId: [ res[1][0].ID ],
-                dstId: res[0][0]?.ID,
-                dcuType: res[2][0].CST_TYPE,
+                stationId: [ nodeTree[0].value ],
+                dstId: resDst[0]?.ID,
+                dcuType: resMeterTypeList[0].CST_TYPE,
                 date: dateFormat('YYYY-MM-DD', moment(new Date().getTime() - 24 * 60 * 60 * 1000)),
+                afn: resTaskTypeList.length ? `${resTaskTypeList[0].AFN},${resTaskTypeList[0].COMMAND_TYPE}` : '',
                 status: '2',
                 searchField: 'METER_NO',
             };
@@ -480,9 +502,12 @@ const AbnormalMgnt: React.FC<Props> = (props) => {
                 ...SEARCHFIELDS,
                 ...{
                     date: dateFormat('YYYY-MM-DD'),
+                    dstId: resDst[0]?.ID,
+                    dcuType: resMeterTypeList[0].CST_TYPE,
+                    afn: resTaskTypeList.length ? `${resTaskTypeList[0].AFN},${resTaskTypeList[0].COMMAND_TYPE}` : '',
                     status: '2',
                     searchField: 'METER_NO',
-                    stationId: res[1][0].ID,
+                    stationId: nodeTree[0].value,
                 },
             });
             sRef.current?.setFieldsValue(initValue);
@@ -725,14 +750,22 @@ const AbnormalMgnt: React.FC<Props> = (props) => {
         if (row.guid && row.guid === cacheData.current.groupId) {
             cacheData.current.receiveMessNum++;
             if (cacheData.current.receiveMessNum === 1) {
-                console.log('-----1');
                 supplementaryData();
             }
             if (cacheData.current.receiveMessNum > 1) {
                 console.log('-----2');
+                const taskId = row.taskid;
+                const taskList = deepClone(cacheData.current.taskTableData);
+                const item = taskList.find((v) => v.SN === taskId);
+
+                if (item) {
+                    item.IS_SUCCESS = row.success;
+                    item.IS_EXECUTED = '1';
+                    setTaskTableData(taskList);
+                    cacheData.current.taskTableData = taskList;
+                }
             }
             if (cacheData.current.totalTaskNum === cacheData.current.receiveMessNum - 1) {
-                console.log('-----3');
                 cacheData.current.totalTaskNum = 0;
                 cacheData.current.groupId = '';
             }
@@ -839,5 +872,4 @@ const AbnormalMgnt: React.FC<Props> = (props) => {
 export default connect((state: any) => ({
     Mes: state.langSwitch.message,
     subSysNo: state.userInfo.sysType,
-    nodeNo: state.userInfo?.sysUser?.nodeNo,
 }))(AbnormalMgnt);

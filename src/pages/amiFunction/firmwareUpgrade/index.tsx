@@ -1,8 +1,8 @@
 // eslint-disable-next-line no-use-before-define
-import React from 'react';
+import React, {useRef} from 'react';
 import { connect } from 'react-redux';
 import { LangMessage } from 'src/store/common/language';
-import RemoteUpgrade from './remoteUpgrade';
+import RemoteUpgrade, {UPRef} from './remoteUpgrade';
 import QueryResult from './queryResult';
 import useFetchState from 'src/utils/useFetchState';
 import { Tabs } from 'antd';
@@ -14,6 +14,7 @@ type Props = {
 }
 const FirmwareUpgrade: React.FC<Props> = (props) => {
     const { Mes } = props;
+    const upRef = useRef<UPRef>();
     const [ activeKey, setActiveKey ] = useFetchState<string>('1');
     // 控制结果页数据展示
     const [ queryFlag, setQueryFlag ] = useFetchState<boolean>(false);
@@ -23,6 +24,7 @@ const FirmwareUpgrade: React.FC<Props> = (props) => {
         }
         if (parseInt(val, 10) === 1) {
             setQueryFlag(false);
+            upRef.current?.refreshInfo();
         }
         setActiveKey(val);
     };
@@ -31,7 +33,7 @@ const FirmwareUpgrade: React.FC<Props> = (props) => {
         <div className='firmwareUpgrade tabWrap'>
             <Tabs activeKey={activeKey} onChange={handleTabsChange}>
                 <TabPane tab={Mes['titleTabRemoteupgraderemoteupgrade']} key='1'>
-                    <RemoteUpgrade tabsChange={handleTabsChange} />
+                    <RemoteUpgrade tabsChange={handleTabsChange} upRef={upRef} />
                 </TabPane>
                 <TabPane tab={Mes['titleLabelIdqueryresultidqueryresult']} key='2'>
                     <QueryResult flag={queryFlag} />
