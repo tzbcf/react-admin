@@ -463,10 +463,15 @@ const DeviceTree: React.FC<Props> = (props) => {
     };
 
     // 设备树选择
-    const onSelect = (selectedKeysValue: React.Key[]) => {
+    const onSelect = (selectedKeysValue: React.Key[], info:any) => {
         console.log('onSelect', selectedKeysValue);
-        console.log('------1', checkbox);
-        console.log('------1', checkType);
+        console.log('------1', info);
+        if (info.selected) {
+            info.checked = true;
+        } else {
+            info.checked = false;
+        }
+        delayedCheck(selectedKeysValue, info);
     };
 
     // 加载子集

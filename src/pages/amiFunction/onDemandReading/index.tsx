@@ -493,13 +493,15 @@ const OnDemandRead: React.FC<Props> = (props) => {
         },
         {
             title: 'Show Log',
+            dataIndex: 'showLog',
             render (record: any) {
                 return (<Button type='primary' onClick={() => lookLog(record)}>view</Button>);
             },
         },
     ];
 
-    const columnsChange = (value:ColumnsType<TableProcolData>) => {
+    const columnsChange = (value: ColumnsType<TableProcolData>) => {
+        console.log('-----2222');
         setTableColunms(value);
     };
         // 设置表头列展示下拉
@@ -711,11 +713,13 @@ const OnDemandRead: React.FC<Props> = (props) => {
                 }
             }
             setDeviceRow(deviceList);
-            if (deviceList.length) {
+            if (deviceList.length && !treeData.length) {
                 getProtocolData({
                     deviceType: deviceList[0]?.nodeType,
                     deviceId: deviceList[0]?.deviceGuid,
                 });
+            } else {
+                console.log('-as-s-s-s-');
             }
         } else {
             resetTask();

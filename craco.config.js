@@ -140,7 +140,7 @@ module.exports = {
         port: 3000,
         proxy: {
             '/v1': {
-                target: 'http://172.20.8.146:9085', // 192.168.182.81:8080 http://172.20.8.146:9085/
+                target: 'http://58.20.54.85:9085', // 192.168.182.81:8080 http://172.20.8.146:9085/ 58.20.54.85
                 secure: true,
                 changeOrigin: true,
                 // pathRewrite: {
