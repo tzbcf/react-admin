@@ -70,7 +70,7 @@
     "crypto-js": "^4.1.1",
     "font-awesome": "^4.7.0",
     "happypack": "^5.0.1",
-    "qs": "^6.10.1",
+    "qs": "^6.10.3",
     "query-string": "^7.0.0",
     "redux-persist": "^6.0.0",
     "simple-progress-webpack-plugin": "^1.1.2",
